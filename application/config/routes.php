@@ -52,3 +52,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'welcome';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
+/*function map_resources($resource)
+{
+    echo "$route['{$resource}']['get'] = '{$resource}/list_all'\n";
+    echo "$route['{$resource}']['post'] = '{$resource}/create'\n";
+    echo "$route['{$resource}/(:any)']['get'] = '{$resource}/show/$1'\n";
+    echo "$route['{$resource}/(:any)']['put'] = '{$resource}/update/$1'\n";
+    echo "$route['{$resource}/(:any)']['delete'] = '{$resource}/delete/$1'\n";
+}
+map_resource('socios');
+map_resource('usuarios');*/
