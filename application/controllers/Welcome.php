@@ -20,6 +20,15 @@ class Welcome extends CI_Controller {
 	 */
 	public function index()
 	{
-		$this->load->view('pages/login');
+		$password = password_hash("by45nt5k4n", PASSWORD_DEFAULT);
+
+		if(password_verify('online', $password)){
+			$resultado = 'Contraseña Valida';
+		}else{
+			$resultado = 'Contraseña invalida';
+		}
+		$data['password'] = $resultado;
+
+		$this->load->view('pages/login', $data);
 	}
 }

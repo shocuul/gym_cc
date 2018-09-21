@@ -25,6 +25,7 @@
         <img src="images/logo_login.jpg" alt="" class="mb-4">
         <h2 class="section-title">
             Iniciar Sesion
+            <?= $password ?>
         </h2>
 
         <label for="inputEmail" class="sr-only">Nombre de usuario</label>
