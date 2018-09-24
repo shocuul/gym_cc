@@ -24,7 +24,7 @@ class Custom_hooks
                 'paterno' => 'Admin',
                 'materno' => 'Admin',
                 'email' => 'admin@admin.co',
-                'clave' => md5('online'),
+                'clave' => password_hash("online", PASSWORD_DEFAULT),
                 'usuario' => 'root',
                 'grupo' => '9',
                 'fecha_creacion' => date("Y/m/d")
