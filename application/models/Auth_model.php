@@ -15,6 +15,11 @@ class Auth_model extends CI_Model
     protected $db;
 
 
+    protected $response = NULL;
+
+
+
+
     public function __construct()
     {
         //Helpers pendientes
@@ -196,9 +201,125 @@ class Auth_model extends CI_Model
         
     }
 
-    public function users($group =NULL)
+    public function set_session($user)
     {
+        $session_data = array(
+            'usuario' => $user->usuario,
+            'email' => $user-email,
+            'user_id' => $user->id,
+            'last_check' => time(),
+        );
+
+        $this->session->set_userdata($session_data);
+
+        return TRUE;
+    }
+
+    public function users($filters = NULL, $group =NULL)
+    {
+
+        if(isset($filters)){
+            $this->set_filters($filters);
+        }
+
+        $this->response = $this->db->get('usuarios');
+
+        return this;
         
+    }
+
+    public function user($id = NULL)
+    {
+        $id = isset($id) ? $id : $this->session->userdata('user_id');
+        $filters = array(
+            'limit' => 1,
+            'order_by' => 'usuarios.id',
+            'direction' => 'desc',
+            'where' => array(
+                'id' => $id
+            )
+        );
+        $this->users($filters);
+        return $this;
+    }
+
+    // // $filters = array(
+    // //     'select' => 'title, content, date',
+    //         'where' => array(
+    //             'name' => 'Jose David',
+    //             ),
+    //         'like' => array(
+    //             'name' => $s),
+    //         'limit' => 20, 
+    //         'offset' => 23,
+    //         'order_by' => 'name'
+    //         'direction' => 'DESC'
+    // // )
+
+    protected function set_filters($filters){
+
+        if(array_key_exists('select',$filters))
+        {
+            $this->db->select($filters['select']);
+        }
+
+        if(array_key_exists('where', $filters)){
+            foreach($filters['where'] as $key => $value){
+                $this->db->where($key, $value);
+            }
+        }
+
+        if(array_key_exists('like', $filters)){
+            foreach($filters['like'] as %key => $value){
+                $this->db->or_like($key, $value);
+            }
+        }
+
+        if(array_key_exists('limit', $filters) && array_key_exists('offset')){
+            $this->db->limit($filters['limit'], $filters['offset']);
+        }
+
+        if(array_key_exists('limit', $filters)){
+            $this->db->limit($filters['limit']);
+        }
+
+        if(array_key_exists('order_by', $filters) && array_key_exists('direction')){
+            $this->db->order_by($filters['order_by'],$filters['direction']);
+        }
+    }
+
+    public function row()
+    {
+        $row = $this->response->row();
+        return $row;
+    }
+
+    public function row_array()
+    {
+        $row = $this->response->row_array();
+
+        return $row;
+    }
+
+    public function result()
+    {
+        $result = $this->response->result();
+
+        return $result;
+    }
+
+    public function result_array()
+    {
+        $result = $this->response->result_array();
+
+        return $result;
+    }
+
+    public function num_rows()
+    {
+        $result = $this->response->num_rows();
+
+        return $result;
     }
 
 
