@@ -17,6 +17,8 @@
                     
 
                     <div class="col-md-12">
+                        <?php $form_attributes = array('class' => 'contact-form review-form');
+                        echo form_open('usuarios/create_user', $form_attributes); ?>
                         <form class="contact-form review-form">
                         <div class="row">
                         <h4 class="section-title">Información Basica</h4>

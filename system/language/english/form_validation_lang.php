@@ -37,16 +37,16 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$lang['form_validation_required']		= 'The {field} field is required.';
-$lang['form_validation_isset']			= 'The {field} field must have a value.';
-$lang['form_validation_valid_email']		= 'The {field} field must contain a valid email address.';
-$lang['form_validation_valid_emails']		= 'The {field} field must contain all valid email addresses.';
-$lang['form_validation_valid_url']		= 'The {field} field must contain a valid URL.';
-$lang['form_validation_valid_ip']		= 'The {field} field must contain a valid IP.';
-$lang['form_validation_min_length']		= 'The {field} field must be at least {param} characters in length.';
-$lang['form_validation_max_length']		= 'The {field} field cannot exceed {param} characters in length.';
-$lang['form_validation_exact_length']		= 'The {field} field must be exactly {param} characters in length.';
-$lang['form_validation_alpha']			= 'The {field} field may only contain alphabetical characters.';
+$lang['form_validation_required']		= 'El campo {field} es necesario.';
+$lang['form_validation_isset']			= 'El campo {field} debe tener un valor.';
+$lang['form_validation_valid_email']		= 'El campo {field} debe contener una direccion de correo electronico valido.';
+$lang['form_validation_valid_emails']		= 'El campo {field} debe contener todos los correos electronicos validos.';
+$lang['form_validation_valid_url']		= 'El campo {field} debe contener una URL valida.';
+$lang['form_validation_valid_ip']		= 'El campo {field} debe contener una direccion IP valida.';
+$lang['form_validation_min_length']		= 'El campo {field} debe contener almenos {param} caracteres.';
+$lang['form_validation_max_length']		= 'El campo {field} no puede tener mas de  {param} caracteres.';
+$lang['form_validation_exact_length']		= 'El campo {field} debe tener los mismos caracteres que {param}.';
+$lang['form_validation_alpha']			= 'El campo {field} solo puede tener caracteres alfabeticos.';
 $lang['form_validation_alpha_numeric']		= 'The {field} field may only contain alpha-numeric characters.';
 $lang['form_validation_alpha_numeric_spaces']	= 'The {field} field may only contain alpha-numeric characters and spaces.';
 $lang['form_validation_alpha_dash']		= 'The {field} field may only contain alpha-numeric characters, underscores, and dashes.';

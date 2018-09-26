@@ -322,6 +322,17 @@ class Auth_model extends CI_Model
         return $result;
     }
 
+    public function generate_username($nombre, $paterno, $materno){ 
+
+    $name = strtolower(substr($name, 0, 2));
+    $paterno = strtolower(substr($paterno, 0, 2));
+    $materno = strtolower(substr($materno, 0, 2));
+    $nrRand = rand(100, 1000);
+    return $name . $paterno . $materno . $nrRand;
+
+    }
+
+
 
 
     protected function _filter_data($table, $data)
