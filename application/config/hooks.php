@@ -1,12 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$hook['post_controller_constructor'] = array(
-                    'class' => 'Custom_hooks',
-                    'function' => 'check_for_admin',
-                    'filename' => 'Custom_hooks.php',
-                    'filepath' => 'hooks'
-                    );
+// $hook['post_controller_constructor'] = array(
+//                     'class' => 'Custom_hooks',
+//                     'function' => 'check_for_admin',
+//                     'filename' => 'Custom_hooks.php',
+//                     'filepath' => 'hooks'
+//                     );
     
 	
 /*$hook['post_controller_constructor'] = array(

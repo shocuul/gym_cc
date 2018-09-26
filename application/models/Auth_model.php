@@ -224,7 +224,7 @@ class Auth_model extends CI_Model
 
         $this->response = $this->db->get('usuarios');
 
-        return this;
+        return $this;
         
     }
 
@@ -270,7 +270,7 @@ class Auth_model extends CI_Model
         }
 
         if(array_key_exists('like', $filters)){
-            foreach($filters['like'] as %key => $value){
+            foreach($filters['like'] as $key => $value){
                 $this->db->or_like($key, $value);
             }
         }
