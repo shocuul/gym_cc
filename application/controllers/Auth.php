@@ -31,20 +31,61 @@ class Auth extends MY_Controller{
         }
         if($this->form_validation->run() === TRUE && $this->auth_model->register($password, $username, $email, $additional_data, $grupo))
         {
-            $this-session->set_flashdata('message', $this->auth_model->messages());
+            $this->session->set_flashdata('message', $this->auth_model->messages());
             redirect("usuarios", 'refresh');
         }
         else
         {
-            $this->data['message'] = (validation_errors() ? validation_errors() : ($this->ion_model->errors() ? $this->ion_model->errors() : $this->session->flashdata('message')));
+            $this->data['message'] = (validation_errors() ? validation_errors() : ($this->auth_model->errors() ? $this->auth_model->errors() : $this->session->flashdata('message')));
 
             $this->data['nombre'] = array(
             'name' => 'nombre',
             'id' => 'nombre',
             'type' => 'text',
-            'value' => $this->form_validation->set_value('nombre');
+            'value' => $this->form_validation->set_value('nombre'),
+            'class' => 'form-control'
             );
-            $this->_render('auth/create_user');
+
+            $this->data['paterno'] = array(
+                'name' => 'paterno',
+                'id' => 'paterno',
+                'type' => 'text',
+                'value' => $this->form_validation->set_value('paterno'),
+                'class' => 'form-control'
+            );
+
+            $this->data['materno'] = array(
+                'name' => 'materno',
+                'id' => 'materno',
+                'type' => 'text',
+                'value' => $this->form_validation->set_value('materno'),
+                'class' => 'form-control'
+            );
+
+            $this->data['email'] = array(
+                'name' => 'email',
+                'id' => 'email',
+                'type' => 'email',
+                'value' => $this->form_validation->set_value('email'),
+                'class' => 'form-control'
+            );
+
+            $this->data['password'] = array(
+                'name' => 'password',
+                'id' => 'password',
+                'type' => 'password',
+                'value' => $this->form_validation->set_value('password'),
+                'class' => 'form-control'
+            );
+
+            $this->data['rol_data'] = array(
+                '9' => 'Administrador',
+                '4' => 'Entrenador',
+                '1' => 'Empleado');
+
+            $this->data['rol'] = $this->form_validation->set_value('rol');
+
+            $this->_render('auth/create_user', $this->data);
         }
         
 

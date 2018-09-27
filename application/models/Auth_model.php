@@ -18,8 +18,6 @@ class Auth_model extends CI_Model
     protected $response = NULL;
 
 
-
-
     public function __construct()
     {
         //Helpers pendientes
@@ -324,7 +322,7 @@ class Auth_model extends CI_Model
 
     public function generate_username($nombre, $paterno, $materno){ 
 
-    $name = strtolower(substr($name, 0, 2));
+    $name = strtolower(substr($nombre, 0, 2));
     $paterno = strtolower(substr($paterno, 0, 2));
     $materno = strtolower(substr($materno, 0, 2));
     $nrRand = rand(100, 1000);
@@ -339,6 +337,7 @@ class Auth_model extends CI_Model
     {
         $filtered_data = array();
         $columns = $this->db->list_fields($table);
+        //var_dump($columns);
 
         if(is_array($data))
         {
@@ -356,6 +355,49 @@ class Auth_model extends CI_Model
     protected function _regenerate_session()
     {
         $this->session->sess_regenerate(FALSE);
+    }
+
+    public function set_message($message)
+    {
+        $this->messages[] = $message;
+        return $message;
+    }
+
+    public function messages()
+    {
+        $_output = '';
+        foreach($this->messages as $message)
+        {
+            $_output .= '<li>' . $message . '</li>';
+        }
+        return $_output;
+    }
+
+    public function clear_messages()
+    {
+        $this->messages = array();
+        return TRUE;
+    }
+
+    public function set_error($error)
+    {
+        $this->errors[] = $error;
+        return $error;
+    }
+
+    public function errors()
+    {
+        $_output = '';
+        foreach($this->errors as $error)
+        {
+            $_output .= '<li>' . $error . '</li>';
+        }
+        return $_output;
+    }
+
+    public function clear_errors(){
+        $this->errors = array();
+        return TRUE;
     }
 
 }

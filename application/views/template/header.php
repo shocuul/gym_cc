@@ -58,8 +58,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             </li>
                                             <li> <a href="#">Usuarios <span class="caret"></span></a>
                                                 <ul class="sub-menu">
-                                                    <li><a href="events.html">Ver Usuarios</a></li>
-                                                    <li><a href="single-event.html">Añadir Usuario</a></li>
+                                                    <li>
+                                                        <?php echo anchor('usuarios', 'Ver Usuarios'); ?>
+                                                    </li>
+                                                    <li>
+                                                        <?php echo anchor('usuarios/nuevo', 'Añadir Usuario'); ?>
+                                                    </li>
                                                 </ul>
                                             </li>
                                             <li> <a href="#">Socios <span class="caret"></span></a>

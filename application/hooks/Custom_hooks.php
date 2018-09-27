@@ -17,7 +17,7 @@ class Custom_hooks
         //echo 'Estoy en check for admin';   
         //echo $this->CI->db->count_all('usuarios');
         if($this->CI->db->count_all('usuarios') === 0 )
-            
+        
         {
             $adminData = array(
                 'nombre' => 'Admin',
@@ -27,7 +27,7 @@ class Custom_hooks
                 'clave' => password_hash("online", PASSWORD_DEFAULT),
                 'usuario' => 'root',
                 'grupo' => '9',
-                'fecha_creacion' => date("Y/m/d")
+                'fecha_creacion' => time()
             );
             $this->CI->db->insert('usuarios', $adminData);
             //redirect(base_url(''));
