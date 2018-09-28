@@ -57,6 +57,7 @@ class Member_model extends My_Model
 
 		$this->response = $this->db-get('socios');
 	}
+	
 
 	public function member($id)
 	{
@@ -68,8 +69,10 @@ class Member_model extends My_Model
 
 	}
 
-	public funtion delete_member($id)
+	public function delete_member($id)
 	{
-		
+
 	}
+
+	public function 
 }
