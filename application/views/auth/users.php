@@ -83,6 +83,7 @@
                                 </tbody>
                             </table>
                             <div class="techlinqs-pagination text-center">
+                                <?php echo $this->pagination->create_links(); ?>
                                 <ul class="pagination">
                                     <li>
                                         <span class="page-numbers current" aria-current="page">1</span>

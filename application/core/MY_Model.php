@@ -13,6 +13,8 @@ class My_Model extends CI_Model
 
     protected $response = NULL;
 
+    protected $tables = array();
+
 
     // Table Where
     public $_where = array();
@@ -37,6 +39,8 @@ class My_Model extends CI_Model
 
 
 
+
+
     public function __construct()
     {
         parent::__construct();
@@ -46,8 +50,17 @@ class My_Model extends CI_Model
         $this->messages = array();
 
         $this->errors = array();
+
+        $this->tables = array(
+            'members' => 'socios',
+            'users' => 'usuarios'
+        );
     }
 
+    public function hash_password($password)
+    {
+        return password_hash($password,PASSWORD_DEFAULT);
+    }
 
     public function limit($limit)
     {

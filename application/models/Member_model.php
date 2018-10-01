@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Member_model extends My_Model
 {
+
 	public function members()
 	{
 		if(isset($this->_select) && !empty($this->_select))
@@ -55,7 +56,12 @@ class Member_model extends My_Model
 			$this->_order = NULL;
 		}
 
-		$this->response = $this->db-get('socios');
+		$this->db->from($this->tables['users']);
+		$this->db->join($this->tables['members'], $this->tables['members'] . '.id = ' . $this->tables['users' . '.id']);
+
+		$this->response = $this->db->get();
+
+		return $this;
 	}
 	
 

@@ -10,6 +10,16 @@ class Auth extends MY_Controller{
 
     public function create_user(){
 
+        
+
+        $config['base_url'] = '/usuarios/';
+        $config['total_rows'] = 100;
+        $config['per_page'] = 10;
+
+        $this->pagination->initialize($config);
+
+
+
         //validate form input 
         $this->form_validation->set_rules('nombre','Nombre','trim|required');
         $this->form_validation->set_rules('paterno','Apellido Paterno','trim|required');

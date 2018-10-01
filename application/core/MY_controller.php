@@ -7,7 +7,7 @@ class MY_Controller extends CI_Controller{
         parent::__construct();
         $this->load->helper(array('url','form'));
         $this->load->model('auth_model');
-        $this->load->library('form_validation');
+        $this->load->library(array('form_validation','pagination'));
 
     }
 

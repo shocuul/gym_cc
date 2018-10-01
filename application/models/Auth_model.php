@@ -17,6 +17,8 @@ class Auth_model extends CI_Model
 
     protected $response = NULL;
 
+    protected $tables;
+
 
     public function __construct()
     {
@@ -28,6 +30,10 @@ class Auth_model extends CI_Model
         $this->messages = array();
 
         $this->errors = array();
+
+        $this->tables = array(
+            'users' => 'usuarios'
+        );
 
         // Poner los delimitadores de errores xd
 
@@ -144,6 +150,7 @@ class Auth_model extends CI_Model
         {
             return FALSE;
         }
+
         $password = $this->hash_password($password);
 
         $data = array(
@@ -154,7 +161,7 @@ class Auth_model extends CI_Model
             'fecha_creacion' => time()
         );
 
-        $user_data = array_merge($this->_filter_data('usuarios', $additional_data), $data);
+        $user_data = array_merge($this->_filter_data($this->tables['users'], $additional_data), $data);
 
         $this->db->insert('usuarios', $user_data);
 
