@@ -13,7 +13,9 @@ class My_Model extends CI_Model
 
     protected $response = NULL;
 
-    protected $tables = array();
+    public $tables = array();
+
+    public $join = array();
 
 
     // Table Where
@@ -53,8 +55,45 @@ class My_Model extends CI_Model
 
         $this->tables = array(
             'members' => 'socios',
-            'users' => 'usuarios'
+            'users' => 'usuarios',
+            'users_groups' => 'usuarios_grupos',
+            'groups' => 'grupos'
         );
+
+        $this->join = array(
+            'users' => 'usuarios_id',
+            'groups' => 'grupos_id'
+        );
+
+    }
+
+    protected function _filter_data($table, $data)
+    {
+        $filtered_data = array();
+        $columns = $this->db->list_fields($table);
+        //var_dump($columns);
+
+        if(is_array($data))
+        {
+            foreach($columns as $column)
+            {
+                if(array_key_exists($column, $data))
+                    $filtered_data[$column] = $data[$column];
+            }
+        }
+
+        return $filtered_data;
+
+    }
+
+    public function generate_username($nombre, $paterno, $materno){ 
+
+        $name = strtolower(substr($nombre, 0, 2));
+        $paterno = strtolower(substr($paterno, 0, 2));
+        $materno = strtolower(substr($materno, 0, 2));
+        $nrRand = rand(100, 1000);
+        return $name . $paterno . $materno . $nrRand;
+
     }
 
     public function hash_password($password)
@@ -114,6 +153,19 @@ class My_Model extends CI_Model
         return $this;
     }
 
+    public function row()
+    {
+        $row = $this->response->row();
+        return $row;
+    }
+
+    public function row_array()
+    {
+        $row = $this->response->row_array();
+
+        return $row;
+    }
+
     public function result()
     {
         $result = $this->response->result();
@@ -121,6 +173,22 @@ class My_Model extends CI_Model
         return $result;
     }
 
+    public function result_array()
+    {
+        $result = $this->response->result_array();
+
+        return $result;
+    }
+
+    public function has_dropdown()
+    {
+        // $groups = $this->auth_model->groups()->result();
+        $groups_array = array();
+        foreach ($this->result() as $group) {
+            $groups_array[$group->id] = $group->descripcion;
+        }
+        return $groups_array;
+    }
     public function num_rows()
     {
         $result = $this->response->num_rows();

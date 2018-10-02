@@ -63,6 +63,10 @@ class Member_model extends My_Model
 
 		return $this;
 	}
+
+	public function add_member(){
+		
+	}
 	
 
 	public function member($id)

@@ -3,48 +3,8 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 
-class Auth_model extends CI_Model
+class Auth_model extends MY_Model
 {
-
-    protected $messages;
-
-
-    protected $errors;
-
-
-    protected $db;
-
-
-    protected $response = NULL;
-
-    protected $tables;
-
-
-    public function __construct()
-    {
-        //Helpers pendientes
-
-        $CI =& get_instance();
-        $this->db = $CI->db;
-
-        $this->messages = array();
-
-        $this->errors = array();
-
-        $this->tables = array(
-            'users' => 'usuarios'
-        );
-
-        // Poner los delimitadores de errores xd
-
-
-
-    }
-
-    public function hash_password($password)
-    {
-        return password_hash($password,PASSWORD_DEFAULT);
-    }
 
     public function verify_password_db($id, $password){
         if(empty($id) || empty($password))
@@ -157,7 +117,6 @@ class Auth_model extends CI_Model
             'email' => $email,
             'clave' => $password,
             'usuario' => $username,
-            'grupo' => $group,
             'fecha_creacion' => time()
         );
 
@@ -167,8 +126,48 @@ class Auth_model extends CI_Model
 
         $id = $this->db->insert_id('usuarios' . '_id_seq');
 
+        $this->add_to_group($group, $id);
+
+        $this->set_message('Usuario ' . $username . ' agregado con exito');
+
         return (isset($id)) ? $id : FALSE;
         
+    }
+
+    public function add_to_group($group_id, $user_id = FALSE)
+    {
+        $user_id || $user_id = $this->session->userdata('user_id');
+
+        return $this->db->insert($this->tables['users_groups'],
+                                 array(
+                                    $this->join['users'] => (float) $user_id,
+                                    $this->join['groups'] => (float) $group_id
+                                ));
+    }
+
+    public function get_user_group($id = FALSE)
+    {
+        $id || $id = $this->session-userdata('user_id');
+        return $this->db->select($this->tables['groups'].'.id, ' . $this->tables['groups'].'.nombre, '.$this->tables['groups'].'.descripcion')
+            ->where($this->tables['users_groups'].'.'.$this->join['users'],$id)
+            ->join($this->tables['groups'], $this->tables['users_groups'].'.'.$this->join['groups'].'='.$this->tables['groups'].'.id')
+            ->get($this->tables['users_groups']);
+    }
+
+    public function groups()
+    {
+        if(isset($this->_where) && !empty($this->_where))
+        {
+            foreach($this->_where as $where)
+            {
+                $this->db->where($where);
+            }
+            $this->_where = array();
+        }
+
+        $this->response = $this->db->get($this->tables['groups']);
+
+        return $this;
     }
 
     public function login($username, $password)
@@ -261,150 +260,48 @@ class Auth_model extends CI_Model
     //         'direction' => 'DESC'
     // // )
 
-    protected function set_filters($filters){
+    // protected function set_filters($filters){
 
-        if(array_key_exists('select',$filters))
-        {
-            $this->db->select($filters['select']);
-        }
+    //     if(array_key_exists('select',$filters))
+    //     {
+    //         $this->db->select($filters['select']);
+    //     }
 
-        if(array_key_exists('where', $filters)){
-            foreach($filters['where'] as $key => $value){
-                $this->db->where($key, $value);
-            }
-        }
+    //     if(array_key_exists('where', $filters)){
+    //         foreach($filters['where'] as $key => $value){
+    //             $this->db->where($key, $value);
+    //         }
+    //     }
 
-        if(array_key_exists('like', $filters)){
-            foreach($filters['like'] as $key => $value){
-                $this->db->or_like($key, $value);
-            }
-        }
+    //     if(array_key_exists('like', $filters)){
+    //         foreach($filters['like'] as $key => $value){
+    //             $this->db->or_like($key, $value);
+    //         }
+    //     }
 
-        if(array_key_exists('limit', $filters) && array_key_exists('offset')){
-            $this->db->limit($filters['limit'], $filters['offset']);
-        }
+    //     if(array_key_exists('limit', $filters) && array_key_exists('offset')){
+    //         $this->db->limit($filters['limit'], $filters['offset']);
+    //     }
 
-        if(array_key_exists('limit', $filters)){
-            $this->db->limit($filters['limit']);
-        }
+    //     if(array_key_exists('limit', $filters)){
+    //         $this->db->limit($filters['limit']);
+    //     }
 
-        if(array_key_exists('order_by', $filters) && array_key_exists('direction')){
-            $this->db->order_by($filters['order_by'],$filters['direction']);
-        }
-    }
+    //     if(array_key_exists('order_by', $filters) && array_key_exists('direction')){
+    //         $this->db->order_by($filters['order_by'],$filters['direction']);
+    //     }
+    // }
 
-    public function row()
-    {
-        $row = $this->response->row();
-        return $row;
-    }
 
-    public function row_array()
-    {
-        $row = $this->response->row_array();
-
-        return $row;
-    }
-
-    public function result()
-    {
-        $result = $this->response->result();
-
-        return $result;
-    }
-
-    public function result_array()
-    {
-        $result = $this->response->result_array();
-
-        return $result;
-    }
-
-    public function num_rows()
-    {
-        $result = $this->response->num_rows();
-
-        return $result;
-    }
-
-    public function generate_username($nombre, $paterno, $materno){ 
-
-    $name = strtolower(substr($nombre, 0, 2));
-    $paterno = strtolower(substr($paterno, 0, 2));
-    $materno = strtolower(substr($materno, 0, 2));
-    $nrRand = rand(100, 1000);
-    return $name . $paterno . $materno . $nrRand;
-
-    }
+    
 
 
 
-
-    protected function _filter_data($table, $data)
-    {
-        $filtered_data = array();
-        $columns = $this->db->list_fields($table);
-        //var_dump($columns);
-
-        if(is_array($data))
-        {
-            foreach($columns as $column)
-            {
-                if(array_key_exists($column, $data))
-                    $filtered_data[$column] = $data[$column];
-            }
-        }
-
-        return $filtered_data;
-
-    }
 
     protected function _regenerate_session()
     {
         $this->session->sess_regenerate(FALSE);
     }
 
-    public function set_message($message)
-    {
-        $this->messages[] = $message;
-        return $message;
-    }
-
-    public function messages()
-    {
-        $_output = '';
-        foreach($this->messages as $message)
-        {
-            $_output .= '<li>' . $message . '</li>';
-        }
-        return $_output;
-    }
-
-    public function clear_messages()
-    {
-        $this->messages = array();
-        return TRUE;
-    }
-
-    public function set_error($error)
-    {
-        $this->errors[] = $error;
-        return $error;
-    }
-
-    public function errors()
-    {
-        $_output = '';
-        foreach($this->errors as $error)
-        {
-            $_output .= '<li>' . $error . '</li>';
-        }
-        return $_output;
-    }
-
-    public function clear_errors(){
-        $this->errors = array();
-        return TRUE;
-    }
 
 }

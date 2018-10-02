@@ -25,7 +25,13 @@
                     
 
                     <div class="col-md-12">
-                        
+                        <?php if (isset($message)): ?>
+                        <div class="alert alert-success" role="alert">
+                          <ul>
+                            <?php echo $message; ?>
+                          </ul>
+                        </div>
+                        <?php endif; ?>
 
                         <div class="sp-table-wrapper">
                             <table class="points-listing">
@@ -49,17 +55,18 @@
                                         <td><?php echo htmlspecialchars($user->email, ENT_QUOTES, 'UTF-8'); ?></td>
                                         <td>
                                             <?php 
-                                            switch($user->grupo) :
-                                                case 9:
-                                                    echo 'Administrador';
-                                                    break;
-                                                case 4:
-                                                    echo 'Entrenador';
-                                                    break;
-                                                default:
-                                                    echo 'Sin grupo';
-                                                    break;
-                                            endswitch;
+                                            echo $user->grupo->descripcion;
+                                            // switch($user->grupo) :
+                                            //     case 9:
+                                            //         echo 'Administrador';
+                                            //         break;
+                                            //     case 4:
+                                            //         echo 'Entrenador';
+                                            //         break;
+                                            //     default:
+                                            //         echo 'Sin grupo';
+                                            //         break;
+                                            // endswitch;
                                             ?>
                                         </td>
                                         <td>

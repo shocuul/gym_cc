@@ -88,10 +88,18 @@ class Auth extends MY_Controller{
                 'class' => 'form-control'
             );
 
-            $this->data['rol_data'] = array(
-                '9' => 'Administrador',
-                '4' => 'Entrenador',
-                '1' => 'Empleado');
+            // $this->data['rol_data'] = array(
+            //     '9' => 'Administrador',
+            //     '4' => 'Entrenador',
+            //     '1' => 'Empleado');
+            // $groups = $this->auth_model->groups()->result();
+            // $groups_array = array();
+            // foreach ($groups as $group) {
+            //     $groups_array[$group->id] = $group->descripcion;
+            // }
+            //
+
+            $this->data['rol_data'] = $this->auth_model->groups()->has_dropdown();
 
             $this->data['rol'] = $this->form_validation->set_value('rol');
 
@@ -103,7 +111,12 @@ class Auth extends MY_Controller{
     }
 
     public function users(){
+        $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
         $this->data['users'] = $this->auth_model->users()->result();
+        foreach($this->data['users'] as $k => $user)
+        {
+            $this->data['users'][$k]->grupo = $this->auth_model->get_user_group($user->id)->row();
+        }
         $this->_render('auth/users', $this->data);
     }
 
