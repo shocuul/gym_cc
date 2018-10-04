@@ -40,6 +40,7 @@ class My_Model extends CI_Model
     public $_order = NULL;
 
 
+    public $member_group_id = NULL;
 
 
 
@@ -64,6 +65,9 @@ class My_Model extends CI_Model
             'users' => 'usuarios_id',
             'groups' => 'grupos_id'
         );
+
+        //para tener en storage el ide del grupo de los miembros.
+        $this->member_group_id = $this->db->get_where('grupos',array('nombre' => 'member'), 1)->row()->id;
 
     }
 
