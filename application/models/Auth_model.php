@@ -134,16 +134,7 @@ class Auth_model extends MY_Model
         
     }
 
-    public function add_to_group($group_id, $user_id = FALSE)
-    {
-        $user_id || $user_id = $this->session->userdata('user_id');
-
-        return $this->db->insert($this->tables['users_groups'],
-                                 array(
-                                    $this->join['users'] => (float) $user_id,
-                                    $this->join['groups'] => (float) $group_id
-                                ));
-    }
+    
 
     public function get_user_group($id = FALSE)
     {

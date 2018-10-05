@@ -27,7 +27,7 @@ class Member extends MY_Controller
         $this->form_validation->set_rules('password','Contraseña','required');
         $this->form_validation->set_rules('usuario','Usuario','trim|required');
 
-        if(this->form_validation->run() === TRUE)
+        if($this->form_validation->run() === TRUE)
         {
 
         }else
@@ -39,7 +39,8 @@ class Member extends MY_Controller
                 'id' => 'nombre',
                 'type' => 'text',
                 'value' => $this->form_validation->set_value('nombre'),
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'onblur' => 'check_for_userdata()'
             );
     
             $this->data['paterno'] = array(
@@ -47,7 +48,8 @@ class Member extends MY_Controller
                 'id' => 'paterno',
                 'type' => 'text',
                 'value' => $this->form_validation->set_value('paterno'),
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'onblur' => 'check_for_userdata()'
             );
     
             $this->data['materno'] = array(
@@ -55,13 +57,14 @@ class Member extends MY_Controller
                 'id' => 'materno',
                 'type' => 'text',
                 'value' => $this->form_validation->set_value('materno'),
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'onblur' => 'check_for_userdata()'
             );
 
             $this->data['genero_data'] = array(
+                'femenino' => 'Femenino',
                 'masculino' => 'Masculino',
-                'femenino' => 'Femenino'
-            )
+            );
 
             $this->data['genero'] = $this->form_validation->set_value('genero');
             
@@ -146,7 +149,7 @@ class Member extends MY_Controller
                 'value' => $this->form_validation->set_value('usuario'),
                 'class' => 'form-control',
                 'disabled' => TRUE
-            )
+            );
 
 
             $this->data['password'] = array(
@@ -156,7 +159,7 @@ class Member extends MY_Controller
                 'value' => $this->form_validation->set_value('password'),
                 'class' => 'form-control',
                 'disabled' => TRUE
-            )
+            );
 
             
             $this->data['email'] = array(
@@ -167,8 +170,23 @@ class Member extends MY_Controller
                 'class' => 'form-control'
             );
 
+            $this->_render('members/create_member', $this->data);
 
         }
 
+    }
+
+    function generate_login_info()
+    {
+        $nombre = $this->input->post('nombre');
+        $materno = $this->input->post('materno');
+        $paterno = $this->input->post('paterno');
+        $usuario = $this->member_model->generate_username($nombre, $paterno, $materno);
+        $password = $this->member_model->random_password();
+        $response = array('usuario' => $usuario, 'password' => $password);
+
+        return $this->output
+                    ->set_content_type('application/json')
+                    ->set_output(json_encode($response));
     }
 }

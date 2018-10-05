@@ -53,7 +53,7 @@
                             <?php echo form_input($email); ?>
                           </div>
                           <div class="col-md-4">
-                            <label for="inputPassword3" class="control-label">Contraseña</label>
+                            <label for="password" class="control-label">Contraseña</label>
                             <!-- <input type="password" class="form-control" id="inputPassword3" placeholder="Contraseña"> -->
                             <?php echo form_input($password); ?>
 

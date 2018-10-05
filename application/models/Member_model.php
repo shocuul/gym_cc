@@ -64,8 +64,32 @@ class Member_model extends My_Model
 		return $this;
 	}
 
-	public function add_member(){
-		
+	public function add_member($password, $user_info = array(), $members_info = array(), $reading_member = array())
+	{
+		$password = $this->hash_password($password);
+		$data = array(
+			'clave' => $password,
+			'fecha_creacion' => time()
+		);
+		$user_data = array_merge($this->_filter_data($this->tables['users'], $user_info), $data);
+		$this->db->insert($this->tables['users'], $user_data);
+		$id = $this->db->insert_id('usuarios' . '_id_seq');
+
+		$this->add_to_group($this->member_group_id, $id);
+
+		$members_info[$this->join['users']] = $id;
+
+		$this->db->insert($this->tables['members'], $this->_filter_data($this->tables['members'],$members_info));
+
+		$reading_member[$this->join[users]] = $id;
+
+		$this->db->insert($this->tables['reading'], $this->_filter_data($this->tables['reading'],$reading_member));
+
+		$this->set_message('Socio' . $user_info['nombre'] . ' agregado con exito');
+
+
+		return (isset($id)) ? $id : FALSE;
+
 	}
 	
 

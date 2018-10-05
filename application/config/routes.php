@@ -51,7 +51,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 
 $route['usuarios']['get'] = 'auth/users';
+$route['ajax/generate_login_info']['post'] = 'member/generate_login_info';
 $route['usuarios/nuevo'] = 'auth/create_user';
+$route['socios/nuevo'] = 'member/create_member';
 $route['default_controller'] = 'auth/users';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

@@ -58,12 +58,13 @@ class My_Model extends CI_Model
             'members' => 'socios',
             'users' => 'usuarios',
             'users_groups' => 'usuarios_grupos',
-            'groups' => 'grupos'
+            'groups' => 'grupos',
+            'reading' => 'mediciones'
         );
 
         $this->join = array(
-            'users' => 'usuarios_id',
-            'groups' => 'grupos_id'
+            'users' => 'usuario_id',
+            'groups' => 'grupo_id'
         );
 
         //para tener en storage el ide del grupo de los miembros.
@@ -91,7 +92,7 @@ class My_Model extends CI_Model
     }
 
     function random_password( $length = 8 ) {
-        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-=+;:,.?";
+        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         $password = substr( str_shuffle( $chars ), 0, $length );
         return $password;
     }
@@ -247,6 +248,17 @@ class My_Model extends CI_Model
     public function clear_errors(){
         $this->errors = array();
         return TRUE;
+    }
+
+    public function add_to_group($group_id, $user_id = FALSE)
+    {
+        $user_id || $user_id = $this->session->userdata('user_id');
+
+        return $this->db->insert($this->tables['users_groups'],
+                                 array(
+                                    $this->join['users'] => (float) $user_id,
+                                    $this->join['groups'] => (float) $group_id
+                                ));
     }
 
 

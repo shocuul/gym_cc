@@ -8,7 +8,7 @@
                     <div class="col-xs-6 col-md-2">
                         <div class="pull-right">
                         <?php echo anchor('members','Cancelar','class=detail-btn'); ?>
-                        <a href="" class="detail-btn">Cancelar</a>
+                        <!-- <a href="" class="detail-btn">Cancelar</a> -->
                         </div>
                         
                     </div>
@@ -22,7 +22,7 @@
                         <?php endif; ?>
                         <!-- <form class="review-form contact-form"> -->
                         <?php $form_attributes = array('class' => 'review-form contact-form'); 
-                        echo form_open('miembros/nuevo', $form_attributes); ?>
+                        echo form_open('socios/nuevo', $form_attributes); ?>
                         <div class="row">
                            <h4 class="section-title">Información basica</h4>
                        </div>
@@ -45,7 +45,7 @@
                           </div>
                           <div class="col-md-4">
                               <label for="genero" class="control-label">Seleccione el genero</label>
-                              <?php echo form_dropdown('genero', $genero_data, $genero, 'class="form-control'); ?>
+                              <?php echo form_dropdown('genero', $genero_data, $genero, 'class="form-control"'); ?>
                               <!-- <select class="form-control">
                                   <option>Hombre</option>
                                   <option>Mujer</option>
@@ -92,11 +92,13 @@
                                 </div>
 
                                 <div class="col-md-3">
-                                    <?php 
-                                    $js = 'onClick="test()"';
-                                    echo echo form_button('generate_button', 'Generar Claves', $js); ?>
+                                    <?php
+                                    echo form_button('generate_button', 'Generar Claves','id="generate_button" class="submit" disabled onClick="generate_login_info()" style="margin-top:1.4em;"'); ?>
                                 </div>
                             </div>
+                            <span id="mensaje_generate">
+                              
+                            </span>
                         </div>
                     </div>
                     <div class="row">
@@ -107,61 +109,69 @@
                         </div>
                         <div class="row">
                             <div class="col-md-4">
-                            <label for="inputEmail3" class="control-label">Masa Muscular Esquelética</label>
+                            <label for="mme" class="control-label">Masa Muscular Esquelética</label>
                             <div class="input-group">
                                 <div class="input-group-addon">MME</div>
-                                 <input type="email" class="form-control" id="inputEmail3" placeholder="Masa Muscular Esquelética">
+                                 <!-- <input type="email" class="form-control" id="inputEmail3" placeholder="Masa Muscular Esquelética"> -->
+                                 <?php echo form_input($mme); ?>
                                  
                              </div>
                           </div>
                           <div class="col-md-4">
-                            <label for="inputEmail3" class="control-label">Masa Grasa Corporal</label>
+                            <label for="mgc" class="control-label">Masa Grasa Corporal</label>
                             <div class="input-group">
                                 <div class="input-group-addon">MGC</div>
-                                 <input type="email" class="form-control" id="inputEmail3" placeholder="Masa Grasa Corporal">
+                                 <!-- <input type="email" class="form-control" id="inputEmail3" placeholder="Masa Grasa Corporal"> -->
+                                 <?php echo form_input($mgc); ?>
                                  
                              </div>
                           </div>
                           <div class="col-md-4">
-                            <label for="inputEmail3" class="control-label">Agua Corporal Total</label>
+                            <label for="act" class="control-label">Agua Corporal Total</label>
                             <div class="input-group">
                                 <div class="input-group-addon">ACT</div>
-                                 <input type="email" class="form-control" id="inputEmail3" placeholder="Agua Corporal Total">
+                                 <!-- <input type="email" class="form-control" id="inputEmail3" placeholder="Agua Corporal Total"> -->
+                                 <?php echo form_input($act); ?>
                                  
                              </div>
                           </div>
                           <div class="col-md-4">
-                            <label for="inputEmail3" class="control-label">Índice de Masa Corporal</label>
+                            <label for="imc" class="control-label">Índice de Masa Corporal</label>
                             <div class="input-group">
                                 <div class="input-group-addon">IMC</div>
-                                 <input type="email" class="form-control" id="inputEmail3" placeholder="Índice de Masa Corporal">
+                                 <!-- <input type="email" class="form-control" id="inputEmail3" placeholder="Índice de Masa Corporal"> -->
+                                 <?php echo form_input($imc); ?>
                                 <div class="input-group-addon">kg/m2</div>
                              </div>
                           </div>
                           <div class="col-md-4">
-                            <label for="inputEmail3" class="control-label">Porcentaje de Masa Corporal</label>
+                            <label for="pmc" class="control-label">Porcentaje de Masa Corporal</label>
                             <div class="input-group">
                                 <div class="input-group-addon">PMC</div>
-                                 <input type="email" class="form-control" id="inputEmail3" placeholder="Porcentaje de Masa Corporal"> 
+                                 <!-- <input type="email" class="form-control" id="inputEmail3" placeholder="Porcentaje de Masa Corporal">  -->
+                                 <?php echo form_input($pmc); ?>
                              </div>
                           </div>
                           <div class="col-md-4">
-                            <label for="inputEmail3" class="control-label">Relación Cintura-Cadera</label>
+                            <label for="rcc" class="control-label">Relación Cintura-Cadera</label>
                             <div class="input-group">
                                 <div class="input-group-addon">RCC</div>
-                                 <input type="email" class="form-control" id="inputEmail3" placeholder="Relación Cintura-Cadera"> 
+                                 <!-- <input type="email" class="form-control" id="inputEmail3" placeholder="Relación Cintura-Cadera">  -->
+                                 <?php echo form_input($rcc); ?>
                              </div>
                           </div>
                           <div class="col-md-4">
-                            <label for="inputEmail3" class="control-label">Metabolismo Basal</label>
+                            <label for="mb" class="control-label">Metabolismo Basal</label>
                             <div class="input-group">
                                 <div class="input-group-addon">MB</div>
-                                 <input type="email" class="form-control" id="inputEmail3" placeholder="Metabolismo Basal"> 
+                                 <!-- <input type="email" class="form-control" id="inputEmail3" placeholder="Metabolismo Basal">  -->
+                                 <?php echo form_input($mb); ?>
                              </div>
                           </div>
                           <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10" style="margin-top: 1em;">
-                              <button type="submit" class="submit">Agregar Socio</button>
+                              <!-- <button type="submit" class="submit">Agregar Socio</button> -->
+                              <?php echo form_submit('submit', 'Agregar Socio', 'class="submit" style="max-width:15em;"'); ?>
                             </div>
                           </div>
                           
@@ -173,8 +183,50 @@
             </div>
         </section>
         <!--League Schedule Slider End-->
-<script>
-function test(){
+<script type="application/javascript">
+
+  function check_for_userdata()
+  {
+    var nombre = document.getElementById('nombre').value;
+    var paterno = document.getElementById('paterno').value;
+    var materno = document.getElementById('materno').value;
+
+    console.log(nombre + paterno + materno);
+
+    if(nombre == "" && paterno == "" && materno == "")
+    {
+      document.getElementById('generate_button').disabled = true;
+    }else{
+      document.getElementById('generate_button').disabled = false;
+    }
+  }    
+
+
+function generate_login_info(){
     console.log('esta es una prueba');
-}    
+    var nombre = document.getElementById('nombre').value;
+    var paterno = document.getElementById('paterno').value;
+    var materno = document.getElementById('materno').value;
+    $.ajax(
+    {
+      type:"post",
+      url:"index.php?/ajax/generate_login_info",
+      data:{nombre:nombre, paterno:paterno, materno:materno},
+      success:function(response)
+      {
+        //var response = JSON.parse(response)
+        console.log(response.usuario);
+        $('#usuario').val(response.usuario);
+        $('#password').val(response.password);
+        $('#mensaje_generate').html('<div class="alert alert-warning">Favor de anotar la informacion de inicio de sesion antes de agregar al socio</div>');
+      },
+      error:function()
+      {
+        console.log("Error Interno");
+      }
+
+    });
+  } 
+
+   
 </script>
