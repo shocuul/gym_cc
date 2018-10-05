@@ -54,6 +54,7 @@ class Auth extends MY_Controller{
             'type' => 'text',
             'value' => $this->form_validation->set_value('nombre'),
             'class' => 'form-control'
+            
             );
 
             $this->data['paterno'] = array(

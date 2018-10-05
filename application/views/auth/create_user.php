@@ -24,9 +24,9 @@
                           </ol>
                         </div>
                         <?php endif; ?>
-                        <?php $form_attributes = array('class' => 'contact-form review-form');
+                        <?php $form_attributes = array('class' => 'contact-form review-form','id'=>'add_user_form');
                         echo form_open('usuarios/nuevo', $form_attributes); ?>
-                        <form class="contact-form review-form">
+                        <!-- <form class="contact-form review-form"> -->
                         <div class="row">
                         <h4 class="section-title">Información Basica</h4>
                         </div>

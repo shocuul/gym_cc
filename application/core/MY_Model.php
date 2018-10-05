@@ -90,6 +90,12 @@ class My_Model extends CI_Model
 
     }
 
+    function random_password( $length = 8 ) {
+        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-=+;:,.?";
+        $password = substr( str_shuffle( $chars ), 0, $length );
+        return $password;
+    }
+
     public function generate_username($nombre, $paterno, $materno){ 
 
         $name = strtolower(substr($nombre, 0, 2));
