@@ -18,9 +18,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <!--Wrapper Div End-->
 
     <!--Js Files Start-->
-    <script src="<?= base_url(); ?>js/jquery.min.js"></script>
-    <script src="<?= base_url(); ?>js/jquery-migrate-1.4.1.min.js"></script>
-    <script src="<?= base_url(); ?>js/jquery.prettyPhoto.js"></script>
+    
     <script src="<?= base_url(); ?>js/bootstrap.min.js"></script>
     <script src="<?= base_url(); ?>js/jquery.ticker.js"></script>
     <script src="<?= base_url(); ?>js/owl.carousel.min.js"></script>

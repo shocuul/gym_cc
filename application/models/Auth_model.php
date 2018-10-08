@@ -106,6 +106,7 @@ class Auth_model extends MY_Model
     /* Function para registrar nuevos usuarios */
     public function register($password, $username, $email, $additional_data = array(), $group = NULL )
     {
+        $this->load->helper('date');
         if(empty($group))
         {
             return FALSE;
@@ -117,7 +118,7 @@ class Auth_model extends MY_Model
             'email' => $email,
             'clave' => $password,
             'usuario' => $username,
-            'fecha_creacion' => time()
+            'fecha_creacion' => mdate('%Y-%m-%d %H:%i:%s', now())
         );
 
         $user_data = array_merge($this->_filter_data($this->tables['users'], $additional_data), $data);
@@ -132,6 +133,28 @@ class Auth_model extends MY_Model
 
         return (isset($id)) ? $id : FALSE;
         
+    }
+
+    public function delete_user($id)
+    {
+        $this->db->trans_begin();
+
+        $this->remove_from_group(NULL, $id);
+
+        $this->db->delete($this->tables['users'],array('id' => $id));
+
+        if($this->db->trans_status() === FALSE)
+        {
+            $this->db->trans_rollback();
+            $this->set_error('No se ha podido eliminar el usuario');
+            return FALSE;
+        }
+
+        $this->db->trans_commit();
+
+        $this->set_message('Usuario eliminado');
+
+        return TRUE;
     }
 
     
@@ -155,6 +178,8 @@ class Auth_model extends MY_Model
             }
             $this->_where = array();
         }
+
+        $this->db->not_like('nombre','member');
 
         $this->response = $this->db->get($this->tables['groups']);
 
@@ -210,14 +235,59 @@ class Auth_model extends MY_Model
         return TRUE;
     }
 
-    public function users($filters = NULL, $group =NULL)
+    public function users($group = NULL)
     {
 
-        if(isset($filters)){
-            $this->set_filters($filters);
-        }
+        if(isset($this->_select) && !empty($this->_select))
+		{
+			foreach($this->_select as $select)
+			{
+				$this->db->select($select);
+			}
 
-        $this->response = $this->db->get('usuarios');
+			$this->_select = array();
+		}
+
+		if(isset($this->_where) && !empty($this->_where))
+		{
+			foreach($this->_where as $where)
+			{
+				$this->db->where($where);
+			}
+
+			$this->_where = array();
+		}
+
+		if(isset($this->_like) && !empty($this->_like))
+		{
+			foreach ($this->_like as $like) {
+				$this->db->or_like($like['like'], $like['value'], $like['position']);
+			}
+
+			$this->_like = array();
+		}
+
+		if(isset($this->_limit) && isset($this->_offset))
+		{
+			$this->db->limit($this->_limit, $this->_offset);
+			$this->_limit = NULL;
+			$this->_offset = NULL;
+		}
+		else if(isset($this->_limit))
+		{
+			$this->db->limit($this->_limit);
+			$this->_limit = NULL;
+		}
+
+		if(isset($this->_order_by) && isset($this->_order))
+		{
+			$this->db->order_by($this->_order_by, $this->_order);
+
+			$this->_order_by = NULL;
+			$this->_order = NULL;
+        }
+        
+        $this->response = $this->db->get($this->tables['users']);
 
         return $this;
         
@@ -226,16 +296,64 @@ class Auth_model extends MY_Model
     public function user($id = NULL)
     {
         $id = isset($id) ? $id : $this->session->userdata('user_id');
-        $filters = array(
-            'limit' => 1,
-            'order_by' => 'usuarios.id',
-            'direction' => 'desc',
-            'where' => array(
-                'id' => $id
-            )
-        );
-        $this->users($filters);
+        $this->limit(1);
+        $this->order_by($this->tables['users'].'.id', 'desc');
+        $this->where($this->tables['users'].'.id', $id);
+
+        $this->users();
+
         return $this;
+    }
+
+    public function update($id, array $data)
+    {
+        $user = $this->user($id)->row();
+
+        $this->db->trans_begin();
+
+        if(array_key_exists('email',$data) && $this->email_check($data['email']) && $user->email !== $data['email'])
+        {
+            //Email Duplicado inicia el rollback
+            $this->db->trans_rollback();
+            $this->set_error('Email en uso o inválido');
+            $this->set_error('No se ha podido actualizar la información de la cuenta');
+
+            return FALSE;
+
+        }
+
+        $data = $this->_filter_data($this->tables['users'], $data);
+
+        if(array_key_exists('password', $data))
+        {
+            if(! empty($data['password']))
+            {
+                $data['password'] = $this->hash_password($data['password']);
+            }
+            else
+            {
+                unset($data['password']);
+            }
+        }
+
+        $this->db->update($this->tables['users'], $data, array('id' => $user->id));
+
+        if($this->db->trans_status() === FALSE)
+        {
+            $this->db->trans_rollback();
+
+            $this->set_error('No se ha podido actualizar la información de la cuenta');
+
+            return FALSE;
+        }
+
+        $this->db->trans_commit();
+
+        $this->set_message('Información de la cuenta actualizada con éxito');
+
+        return TRUE;
+        
+        
     }
 
     // // $filters = array(

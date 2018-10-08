@@ -59,7 +59,8 @@ class My_Model extends CI_Model
             'users' => 'usuarios',
             'users_groups' => 'usuarios_grupos',
             'groups' => 'grupos',
-            'reading' => 'mediciones'
+            'reading' => 'mediciones',
+            'plans' => 'planes'
         );
 
         $this->join = array(
@@ -215,12 +216,22 @@ class My_Model extends CI_Model
 
     public function messages()
     {
-        $_output = '';
-        foreach($this->messages as $message)
+        if(!empty($this->messages))
         {
-            $_output .= '<li>' . $message . '</li>';
+            $_output = '<div class="alert alert-success" role="alert"><ul>';
+            foreach($this->messages as $message)
+            {
+                $_output .= '<li>' . $message . '</li>';
+            }
+            $_output .= '</ul></div>';
+            return $_output;
         }
-        return $_output;
+        else
+        {
+            return '';
+        }        
+        
+
     }
 
     public function clear_messages()
@@ -237,12 +248,19 @@ class My_Model extends CI_Model
 
     public function errors()
     {
-        $_output = '';
-        foreach($this->errors as $error)
+        if(!empty($this->errors))
         {
-            $_output .= '<li>' . $error . '</li>';
+            $_output = '<div class="alert alert-danger" role="alert"><ul>';
+            foreach($this->errors as $error)
+            {
+                $_output .= '<li>' . $error . '</li>';
+            }
+            $_output .= '</ul></div>';
+            return $_output;
+        }else
+        {
+            return '';
         }
-        return $_output;
     }
 
     public function clear_errors(){
@@ -259,6 +277,30 @@ class My_Model extends CI_Model
                                     $this->join['users'] => (float) $user_id,
                                     $this->join['groups'] => (float) $group_id
                                 ));
+    }
+
+    public function remove_from_group($group_id = FALSE, $user_id = FALSE)
+    {
+        if(empty($user_id))
+        {
+            return FALSE;
+        }
+
+        if(!empty($group_id))
+        {
+            $this->db->delete($this->tables['users_groups'],
+                                array($this->join['groups'] => (float) $user_id,
+                                      $this->join['users'] => (float) $group_id
+                              ));
+            $return = TRUE;
+        }else
+        {
+            $return = $this->db->delete($this->tables['users_groups'], array(
+                                        $this->join['users'] => (float) $user_id
+            ));
+        }
+
+        return $return;
     }
 
 

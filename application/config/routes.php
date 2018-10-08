@@ -52,8 +52,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 $route['usuarios']['get'] = 'auth/users';
 $route['ajax/generate_login_info']['post'] = 'member/generate_login_info';
+$route['ajax/generate_chart_data/(:num)']['get'] = 'member/generate_chart_data/$1';
 $route['usuarios/nuevo'] = 'auth/create_user';
+$route['usuarios/editar_usuario/(:num)'] = 'auth/edit_user/$1';
+$route['usuarios/eliminar']['post'] = 'auth/delete_user';
+$route['socios/eliminar']['post'] = 'member/delete_member';
 $route['socios/nuevo'] = 'member/create_member';
+$route['socios/editar_socio/(:num)'] = 'member/edit_member/$1';
+$route['socio/detalles/(:num)'] = 'member/detail/$1';
+$route['configuracion/planes'] = 'configuration/plans';
+$route['configuracion/plan/editar'] = 'configuration/edit_plan';
+$route['socio/detalles/(:num)/medidas']['post'] = 'member/add_metric/$1';
+$route['socios']['get'] = 'member';
 $route['default_controller'] = 'auth/users';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

@@ -7,7 +7,7 @@
                     </div>        
                     <div class="col-xs-6 col-md-2">
                         <div class="pull-right">
-                        <?php echo anchor('members','Cancelar','class=detail-btn'); ?>
+                        <?php echo anchor('socios','Cancelar','class=detail-btn'); ?>
                         <!-- <a href="" class="detail-btn">Cancelar</a> -->
                         </div>
                         
@@ -43,7 +43,7 @@
                             <?php echo form_input($materno); ?>
 
                           </div>
-                          <div class="col-md-4">
+                          <div class="col-md-3">
                               <label for="genero" class="control-label">Seleccione el genero</label>
                               <?php echo form_dropdown('genero', $genero_data, $genero, 'class="form-control"'); ?>
                               <!-- <select class="form-control">
@@ -51,7 +51,14 @@
                                   <option>Mujer</option>
                                 </select> -->
                           </div>
-                          <div class="col-md-4">
+                          <div class="col-md-3">
+                                <label for="edad" class="control-label">Edad</label>
+                                <div class="input-group">
+                                    <?php echo form_input($edad); ?>
+                                    <div class="input-group-addon">años.</div>
+                                </div>
+                            </div>
+                          <div class="col-md-3">
                             <label for="peso" class="control-label">Peso</label>
                              <div class="input-group">
                                  <!-- <input type="text" class="form-control" id="inputEmail3" placeholder="Peso"> -->
@@ -59,7 +66,7 @@
                                 <div class="input-group-addon">kg.</div>
                              </div>
                           </div>
-                          <div class="col-md-4">
+                          <div class="col-md-3">
                             <label for="estatura" class="control-label">Estatura</label>
                              <div class="input-group">
                                  <!-- <input type="text" class="form-control" id="inputEmail3" placeholder="Estatura"> -->
@@ -68,6 +75,7 @@
                              </div>
 
                             </div>
+                            
                         <!-- </form> -->
                     </div>
                     <div class="row">
@@ -216,8 +224,16 @@ function generate_login_info(){
       {
         //var response = JSON.parse(response)
         console.log(response.usuario);
-        $('#usuario').val(response.usuario);
-        $('#password').val(response.password);
+        
+        document.getElementById('usuario').setAttribute('value', response.usuario);
+        document.getElementById('password').setAttribute('value', response.password);
+        document.getElementById('password').disabled = false
+        document.getElementById('usuario').disabled = false
+
+        // $('#usuario').val(response.usuario);
+        // $('#usuario').disabled = false;
+        // $('#password').val(response.password);
+        // $('#usuario').disabled = false;
         $('#mensaje_generate').html('<div class="alert alert-warning">Favor de anotar la informacion de inicio de sesion antes de agregar al socio</div>');
       },
       error:function()

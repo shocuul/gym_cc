@@ -55,9 +55,9 @@ class Member_model extends My_Model
 			$this->_order_by = NULL;
 			$this->_order = NULL;
 		}
-
+		
 		$this->db->from($this->tables['users']);
-		$this->db->join($this->tables['members'], $this->tables['members'] . '.id = ' . $this->tables['users' . '.id']);
+		$this->db->join($this->tables['members'], $this->tables['members'] . '.id = ' . $this->tables['users'] . '.id');
 
 		$this->response = $this->db->get();
 
@@ -66,10 +66,11 @@ class Member_model extends My_Model
 
 	public function add_member($password, $user_info = array(), $members_info = array(), $reading_member = array())
 	{
+		$this->load->helper('date');
 		$password = $this->hash_password($password);
 		$data = array(
 			'clave' => $password,
-			'fecha_creacion' => time()
+			'fecha_creacion' => mdate('%Y-%m-%d %H:%i:%s', now())
 		);
 		$user_data = array_merge($this->_filter_data($this->tables['users'], $user_info), $data);
 		$this->db->insert($this->tables['users'], $user_data);
@@ -81,7 +82,8 @@ class Member_model extends My_Model
 
 		$this->db->insert($this->tables['members'], $this->_filter_data($this->tables['members'],$members_info));
 
-		$reading_member[$this->join[users]] = $id;
+		$reading_member[$this->join['users']] = $id;
+		$reading_member['fecha_creacion'] = mdate('%Y-%m-%d %H:%i:%s', now());
 
 		$this->db->insert($this->tables['reading'], $this->_filter_data($this->tables['reading'],$reading_member));
 
@@ -91,20 +93,94 @@ class Member_model extends My_Model
 		return (isset($id)) ? $id : FALSE;
 
 	}
+
+	public function add_metric($user_id, $metric_data)
+	{
+		$this->load->helper('date');
+
+		$this->db->trans_begin();
+		$metric_data[$this->join['users']] = $user_id;
+		$metric_data['fecha_creacion'] = mdate('%Y-%m-%d %H:%i:%s', now());
+		$this->db->insert($this->tables['reading'], $this->_filter_data($this->tables['reading'],$metric_data));
+		if($this->db->trans_status() === FALSE)
+		{
+			$this->db->trans_rollback();
+			$this->set_error('No se ha podido actualizar la información del socio');
+			return FALSE;
+		}
+
+		$this->db->trans_commit();
+
+		$this->set_message('Mediciones agregadas con exito.');
+
+        return TRUE;
+	}
 	
 
 	public function member($id)
 	{
+		$id = isset($id) ? $id : $this->session->userdata('user_id');
 
+		$this->limit(1);
+		$this->order_by($this->tables['members'].'.id','desc');
+		$this->where($this->tables['users'].'.id', $id);
+
+		$this->members();
+
+		return $this;
 	}
 
-	public function update_member($id, array $data)
+	public function update($id, array $data)
 	{
+		$this->db->trans_begin();
 
+		$data = $this->_filter_data($this->tables['members'], $data);
+
+		$this->db->update($this->tables['members'], $data, array('usuario_id' => $id));
+
+		if($this->db->trans_status() === FALSE)
+		{
+			$this->db->trans_rollback();
+
+            $this->set_error('No se ha podido actualizar la información del socio');
+
+            return FALSE;
+		}
+
+		$this->db->trans_commit();
+
+        $this->set_message('Información del socio actualizada con éxito');
+
+        return TRUE;
+	}
+
+	public function get_user_metrics($id)
+	{
+		$id = isset($id) ? $id : $this->session->userdata('user_id');
+		$this->db->order_by('fecha_creacion','DESC');
+		return $this->db->get_where($this->tables['reading'],array($this->join['users'] => $id),'3')->result();
 	}
 
 	public function delete_member($id)
 	{
+		$this->db->trans_begin();
+
+		$this->remove_from_group(NULL, $id);
+
+		$this->db->delete($this->tables['users'], array('id' => $id));
+
+		if($this->db->trans_status() === FALSE)
+		{
+			$this->db->trans_rollback();
+            $this->set_error('No se ha podido eliminar el socio');
+            return FALSE;
+		}
+
+		$this->db->trans_commit();
+
+        $this->set_message('Socio eliminado');
+
+        return TRUE;
 
 	}
 

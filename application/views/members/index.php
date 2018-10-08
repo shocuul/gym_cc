@@ -3,11 +3,10 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-2">
-                    <h2 class="section-title"> Usuarios </h2>
+                    <h2 class="section-title"> Socios </h2>
                     </div>        
                     <div class="col-md-6">
-                        <?php echo anchor('usuarios/nuevo', 'Agregar Nuevo Usuario','class=detail-btn'); ?>
-                        <!-- <a class="detail-btn">Agregar Nuevo Usuario</a> -->
+                        <?php echo anchor('socios/nuevo','Agregar Nuevo Socio', 'class="detail-btn"'); ?>
                     </div>
 
                     <div class="col-md-4">
@@ -25,70 +24,60 @@
                     
 
                     <div class="col-md-12">
-                        <?php echo $message; ?>
+
+                    <?php echo $message; ?>
+
+                        
+
                         <div class="sp-table-wrapper">
                             <table class="points-listing">
                                 <thead>
                                     <tr class="first">
                                         <th>#</th>
                                         <th>Nombre</th>
-                                        <th>Usuario</th>
-                                        <th>Email</th>
-                                        <th>Rol</th>
+                                        <th>Edad</th>
+                                        <th>Genero</th>
+                                        <th>Peso</th>
+                                        <th>Estatura</th>
                                         <th>Acciones</th>
                                     
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach($users as $user): ?>
+                                    <?php foreach($members as $member):  ?>
                                     <tr>
-                                        <td><?php echo htmlspecialchars($user->id, ENT_QUOTES, 'UTF-8'); ?></td>
-                                        <td><?php echo htmlspecialchars($user->nombre .' '. $user->paterno .' '. $user->materno, ENT_QUOTES, 'UTF-8'); ?></td>
-                                        <td><?php echo htmlspecialchars($user->usuario, ENT_QUOTES, 'UTF-8'); ?></td>
-                                        <td><?php echo htmlspecialchars($user->email, ENT_QUOTES, 'UTF-8'); ?></td>
-                                        <td>
-                                            <?php 
-                                            echo $user->grupo->descripcion;
-                                            // switch($user->grupo) :
-                                            //     case 9:
-                                            //         echo 'Administrador';
-                                            //         break;
-                                            //     case 4:
-                                            //         echo 'Entrenador';
-                                            //         break;
-                                            //     default:
-                                            //         echo 'Sin grupo';
-                                            //         break;
-                                            // endswitch;
-                                            ?>
-                                        </td>
+                                        <td><?php echo htmlspecialchars($member->id, ENT_QUOTES, 'UTF-8'); ?></td>
+                                        <td><?php echo htmlspecialchars($member->nombre .' '. $member->paterno .' '. $member->materno, ENT_QUOTES, 'UTF-8'); ?></td>
+                                        <td><?php echo htmlspecialchars($member->edad, ENT_QUOTES, 'UTF-8'); ?></td>
+                                        <td><?php echo htmlspecialchars(ucfirst($member->genero), ENT_QUOTES, 'UTF-8'); ?></td>
+                                        <td><?php echo htmlspecialchars($member->peso, ENT_QUOTES, 'UTF-8'); ?> kg.</td>
+                                        <td><?php echo htmlspecialchars($member->estatura, ENT_QUOTES, 'UTF-8'); ?> m.</td>
                                         <td>
                                             <div class="pro-share" style="margin:0;">
                                                 <a href="">
-                                                    <i class="fa fa-user-circle"></i>
+                                                    <i class="fa fa-key"></i>
                                                 </a>
-                                                <?php echo anchor("usuarios/editar_usuario/" . $user->id, '<i class="fa fa-edit"></i>'); ?>
+                                                <?php  echo anchor("socio/detalles/" . $member->id,'<i class="fa fa-user-circle"></i>');?> 
                                                 <!-- <a href="">
-                                                    <i class="fa fa-trash"></i>
+                                                    <i class="fa fa-user-circle"></i>
                                                 </a> -->
-                                                <button type="button" class="btn" data-toggle="modal" data-target="#deleteModal" onClick="fillModal('<?php echo $user->id ?>','<?php echo $user->nombre .' '. $user->paterno .' '. $user->materno ?>')">
+                                                <?php echo anchor("socios/editar_socio/" . $member->id, '<i class="fa fa-edit"></i>'); ?>
+                                                <button type="button" class="btn" data-toggle="modal" data-target="#deleteModal" onClick="fillModal('<?php echo $member->id ?>','<?php echo $member->nombre .' '. $member->paterno .' '. $member->materno ?>')">
                                                 <i class="fa fa-trash"></i>
-</button>
+                                                
                                             </div>
                                         </td>
                                         
                                     </tr>
                                     <?php endforeach; ?>
-                                    
                                 </tbody>
                             </table>
                             <div class="techlinqs-pagination text-center">
-                                <?php echo $this->pagination->create_links(); ?>
                                 <ul class="pagination">
                                     <li>
                                         <span class="page-numbers current" aria-current="page">1</span>
                                         <a href="" class="page-numbers">2</a>
-                                        <a href="" class="next page-numbers">Next <i class="fa fa-angle-right"></i></a>
+                                        <a href="" class="next page-numbers">Siguiente <i class="fa fa-angle-right"></i></a>
                                     </li>
                                 </ul>
                             </div>
@@ -99,9 +88,8 @@
         </section>
         <!--League Schedule Slider End-->
 
-
         <!-- Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -114,11 +102,11 @@
         <h4 id="modalName"></h4>
       </div>
       <div class="modal-footer">
-        <?php echo form_open('usuarios/eliminar'); ?>
+        <?php echo form_open('socios/eliminar'); ?>
         <input type="hidden" name="user_id" id="user_id" value="" />
         <?php echo form_hidden($csrf); ?>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <?php echo form_submit('submit', 'Eliminar usuario','class="btn btn-danger"'); ?>
+        <?php echo form_submit('submit', 'Eliminar socio','class="btn btn-danger"'); ?>
         <!-- <button type="button" class="btn btn-danger">Eliminar</button> -->
         <?php echo form_close(); ?>
       </div>
@@ -129,7 +117,7 @@
 <script>
     function fillModal(id, nombre)
     {   
-        $("#modalName").html('Desea eliminar al usuario ' + nombre);
+        $("#modalName").html('Desea eliminar al socio ' + nombre);
         document.getElementById('user_id').setAttribute('value', id);
         console.log(id + nombre);
     }

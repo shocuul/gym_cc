@@ -24,6 +24,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script src="<?= base_url(); ?>js/jquery.min.js"></script>
+    <script src="<?= base_url(); ?>js/jquery-migrate-1.4.1.min.js"></script>
+    <script src="<?= base_url(); ?>js/jquery.prettyPhoto.js"></script>
 </head>
 
 <body>
@@ -68,8 +71,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             </li>
                                             <li> <a href="#">Socios <span class="caret"></span></a>
                                                 <ul class="sub-menu">
-                                                    <li><a href="events.html">Ver Miembros</a></li>
-                                                    <li><a href="single-event.html">Añadir Miembro</a></li>
+                                                    <li>
+                                                    <?php echo anchor('socios', 'Ver Socios'); ?>
+                                                    </li>
+                                                    <li>
+                                                    <?php echo anchor('socios/nuevo', 'Añadir Socio'); ?> 
+                                                    </li>
                                                 </ul>
                                             </li>
                                             <li> <a href="#">Estadisticas <span class="caret"></span></a>
@@ -83,7 +90,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             </li>
                                             <li> <a href="#">Configuracion <span class="caret"></span></a>
                                                 <ul class="sub-menu">
-                                                    <li><a href="shop.html">Planes y Propositos</a></li>
+                                                    <li>
+                                                    <?php echo anchor('configuracion/planes','Planes y Propositos') ?></li>
                                                     <li><a href="shop-list.html">Shop List</a></li>
                                                     <li><a href="pro-details.html">Shop Details</a></li>
                                                 </ul>
