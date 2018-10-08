@@ -20,7 +20,7 @@ class Auth_model extends MY_Model
 
         $hash_password_db = $query->row();
 
-        if($query->num_row() !== 1)
+        if($query->num_rows() !== 1)
         {
             //No encontro nungun resultado
             return FALSE;
@@ -103,6 +103,16 @@ class Auth_model extends MY_Model
                         ->count_all_results('usuarios') > 0;
     }
 
+    public function group_check($group_name, $user_id = FALSE)
+    {
+        
+        $user_id || $user_id = $this->session->userdata('user_id');
+        $group_id = $this->db->get_where('grupos', array('nombre' => $group_name), 1)->row()->id;
+        return $this->db->where($this->join['users'],$user_id)
+                        ->where($this->join['groups'],$group_id)
+                        ->limit(1)
+                        ->count_all_results($this->tables['users_groups']) > 0;
+    }
     /* Function para registrar nuevos usuarios */
     public function register($password, $username, $email, $additional_data = array(), $group = NULL )
     {
@@ -194,11 +204,11 @@ class Auth_model extends MY_Model
             return FALSE;
         }
 
-        $query = $this->db->select('username, email, id, password')
-                          ->where('username',$username)
+        $query = $this->db->select('usuario, email, id, clave')
+                          ->where('usuario',$username)
                           ->limit(1)
                           ->order_by('id','desc')
-                          ->get('usuarios');
+                          ->get($this->tables['users']);
 
         if($query->num_rows() === 1)
         {
@@ -221,17 +231,48 @@ class Auth_model extends MY_Model
         
     }
 
+    protected function _regenerate_sessions()
+    {
+        $this->session->sess_regenerate(FALSE);
+    }
+
+
+    public function is_admin($id = FALSE)
+    {
+        $admin_group = 'admin';
+
+        return $this->group_check($admin_group, $id);
+    }
+
     public function set_session($user)
     {
         $session_data = array(
             'usuario' => $user->usuario,
-            'email' => $user-email,
+            'email' => $user->email,
             'user_id' => $user->id,
             'last_check' => time(),
         );
 
         $this->session->set_userdata($session_data);
 
+        return TRUE;
+    }
+
+    public function logged_in()
+    {
+        return (bool) $this->session->userdata('usuario');
+    }
+
+    public function logout()
+    {
+        $this->session->unset_userdata(array('usuario','id','user_id'));
+        $this->session->sess_destroy();
+        if (version_compare(PHP_VERSION, '7.0.0') >= 0)
+        {
+            session_start();
+        }
+        $this->session->sess_regenerate(TRUE);
+        $this->set_message('Sesión finalizada con éxito');
         return TRUE;
     }
 
@@ -407,10 +448,6 @@ class Auth_model extends MY_Model
 
 
 
-    protected function _regenerate_session()
-    {
-        $this->session->sess_regenerate(FALSE);
-    }
-
+    
 
 }

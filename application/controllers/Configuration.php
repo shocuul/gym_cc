@@ -87,7 +87,17 @@ class Configuration extends MY_Controller{
             show_error('Este formulario no pasó nuestras pruebas de seguridad.');
         }
 
-        $plan_id = $this->input->post('plan_id');
+        $plan_id = $this->input->post('delete_plan_id');
+
+        if($this->plan_model->delete($plan_id))
+        {
+            $this->session->set_flashdata('message', $this->plan_model->messages());
+            redirect('configuracion/planes','refresh');
+        }else
+        {
+            $this->session->set_flashdata('message', $this->auth_model->messages());
+            redirect('configuracion/planes','refresh');
+        }
     }
 
 }

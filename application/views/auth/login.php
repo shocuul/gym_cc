@@ -21,19 +21,20 @@
     <![endif]-->
 </head>
 <body class="text-center">
-    <form action="" class="form-signin">
+    <?php echo $message; ?>
+    
         <img src="images/logo_login.jpg" alt="" class="mb-4">
         <h2 class="section-title">
             Iniciar Sesion
-            <?= $password ?>
         </h2>
-
-        <label for="inputEmail" class="sr-only">Nombre de usuario</label>
-        <input type="text" class="form-control" placeholder="Nombre de usuario">
+        <?php echo form_open('iniciar_sesion','class="form-signin"'); ?>
+        <label for="inputUsuario" class="sr-only">Nombre de usuario</label>
+        <?php echo form_input($usuario); ?>
         <label for="inputPassword" class="sr-only">Contraseña</label>
-        <input type="password" class="form-control" placeholder="Contraseña">
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Iniciar Sesion</button>
-    </form>
+        <?php echo form_input($password); ?>
+
+        <?php echo form_submit('submit','Iniciar Sesion','class="btn btn-lg btn-primary btn-block"'); ?>
+    <?php echo form_close(); ?>
 </body>
 
 

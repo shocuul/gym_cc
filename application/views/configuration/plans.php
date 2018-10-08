@@ -25,7 +25,6 @@
                     
 
                     <div class="col-md-12">
-                        <?php var_dump($plans); ?>
                         <?php echo $message; ?>
                         <div class="sp-table-wrapper">
                             <table class="points-listing">
@@ -52,7 +51,7 @@
                                                 <!-- <a href="">
                                                     <i class="fa fa-trash"></i>
                                                 </a> -->
-                                                <a data-toggle="modal" href="#plansDelete"><i class="fa fa-trash"></i></a>
+                                                <a data-toggle="modal" href="#plansDelete" onClick="fillDeleteModal('<?php echo $plan->id ?>','<?php echo $plan->nombre ?>')"><i class="fa fa-trash"></i></a>
                                             
                                                 </button>
                                             </div>
@@ -151,7 +150,38 @@
     </div>
 </div>
 
+<div class="modal fade" id="plansDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Eliminar Plan | Confirmacion</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h4 id="modalName"></h4>
+      </div>
+      <div class="modal-footer">
+        <?php echo form_open('plan/eliminar'); ?>
+        <input type="hidden" name="delete_plan_id" id="delete_plan_id" value="" />
+        <?php echo form_hidden($csrf); ?>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <?php echo form_submit('submit', 'Eliminar Plan','class="btn btn-danger"'); ?>
+        <!-- <button type="button" class="btn btn-danger">Eliminar</button> -->
+        <?php echo form_close(); ?>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
+
+    function fillDeleteModal(id, nombre)
+    {
+        $('#modalName').html('¿Desea eliminar el plan ' + nombre + '?.');
+        document.getElementById('delete_plan_id').setAttribute('value', id);
+    }
     function fillEditModal(id, nombre, descripcion)
     {
         document.getElementById('edit_nombre').setAttribute('value', nombre);

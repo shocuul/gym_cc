@@ -8,6 +8,60 @@ class Auth extends MY_Controller{
 
     }
 
+    public function login()
+    {
+        $this->form_validation->set_rules('usuario','Usuario','required');
+        $this->form_validation->set_rules('password','Contraseña','required');
+
+        if($this->form_validation->run() === TRUE)
+        {
+            if($this->auth_model->login($this->input->post('usuario'),$this->input->post('password')))
+            {
+                $this->session->set_flashdata('message', $this->auth_model->messages());
+                redirect('/', 'refresh');
+            }
+            else
+            {
+                $this->session->set_flashdata('message', $this->auth_model->errors());
+                redirect('iniciar_sesion', 'refresh');
+            }
+        }
+        else
+        {
+            $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+
+            $this->data['usuario'] = array(
+                'id' => 'usuario',
+                'name' => 'usuario',
+                'type' => 'text',
+                'value' => $this->form_validation->set_value('usuario'),
+                'class' => 'form-control',
+                'placeholder' => 'Usuario'
+            );
+
+            $this->data['password'] = array(
+                'name' => 'password',
+                'id' => 'password',
+                'type' => 'password',
+                'class' => 'form-control',
+                'placeholder' => 'Contraseña'
+            );
+
+            $this->load->view('auth/login', $this->data);
+        }
+    }
+
+    public function logout()
+    {
+
+        // log the user out
+        $logout = $this->auth_model->logout();
+
+        // redirect them to the login page
+        $this->session->set_flashdata('message', $this->auth_model->messages());
+        redirect('auth/login', 'refresh');
+    }
+
     public function create_user(){
         //validate form input 
         $this->form_validation->set_rules('nombre','Nombre','trim|required');
@@ -101,6 +155,16 @@ class Auth extends MY_Controller{
     }
 
     public function users(){
+
+        if (!$this->auth_model->logged_in())
+        {
+            // redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }else if (!$this->auth_model->is_admin()) // remove this elseif if you want to enable this for non-admins
+        {
+            // redirect them to the home page because they must be an administrator to view this
+            return show_error('You must be an administrator to view this page.');
+        }
         $config['base_url'] = '/usuarios/';
         $config['total_rows'] = 100;
         $config['per_page'] = 10;

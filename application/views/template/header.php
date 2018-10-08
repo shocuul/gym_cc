@@ -93,7 +93,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                     <li>
                                                     <?php echo anchor('configuracion/planes','Planes y Propositos') ?></li>
                                                     <li><a href="shop-list.html">Shop List</a></li>
-                                                    <li><a href="pro-details.html">Shop Details</a></li>
+                                                    <li>
+                                                        <?php echo anchor('cerrar_sesion','Cerrar Sesion'); ?>
+                                                    </li>
                                                 </ul>
                                             </li>
                                             

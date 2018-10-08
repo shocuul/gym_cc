@@ -43,6 +43,7 @@ class My_Model extends CI_Model
     public $member_group_id = NULL;
 
 
+    public $admin_group_id = NULL;
 
     public function __construct()
     {
@@ -70,6 +71,8 @@ class My_Model extends CI_Model
 
         //para tener en storage el ide del grupo de los miembros.
         $this->member_group_id = $this->db->get_where('grupos',array('nombre' => 'member'), 1)->row()->id;
+
+        $this->admin_group_id = $this->db->get_where('grupos', array('nombre' => 'admin'), 1)->row()->id;
 
     }
 

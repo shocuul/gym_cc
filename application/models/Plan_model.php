@@ -39,6 +39,28 @@ class Plan_model extends My_Model
         return TRUE;
     }
 
+    public function delete($id)
+    {
+    	$this->db->trans_begin();
+    	//puede haber configuraciones que se deben borrar
+        //$this->remove_from_group(NULL, $id);
+
+        $this->db->delete($this->tables['plans'],array('id' => $id));
+
+        if($this->db->trans_status() === FALSE)
+        {
+            $this->db->trans_rollback();
+            $this->set_error('No se ha podido eliminar el plan');
+            return FALSE;
+        }
+
+        $this->db->trans_commit();
+
+        $this->set_message('Plan eliminado');
+
+        return TRUE;
+    }
+
 
     public function plans()
     {
