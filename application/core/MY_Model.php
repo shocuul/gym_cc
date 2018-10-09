@@ -59,6 +59,7 @@ class My_Model extends CI_Model
             'members' => 'socios',
             'users' => 'usuarios',
             'users_groups' => 'usuarios_grupos',
+            'users_plans' => 'usuarios_planes',
             'groups' => 'grupos',
             'reading' => 'mediciones',
             'plans' => 'planes',
@@ -271,6 +272,19 @@ class My_Model extends CI_Model
     public function clear_errors(){
         $this->errors = array();
         return TRUE;
+    }
+
+    public function subscribe_to_plan($plan_id, $member_id)
+    {
+        $this->load->helper('date');
+        
+        return $this->db->insert($this->tables['users_plans'],
+                                array(
+                                    $this->join['users'] => (float) $member_id,
+                                    $this->join['groups'] => (float) $plan_id,
+                                    'fecha_inicio' => mdate('%Y-%m-%d %H:%i:%s', now())
+                                ));
+
     }
 
     public function add_to_group($group_id, $user_id = FALSE)

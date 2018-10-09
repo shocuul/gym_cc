@@ -56,8 +56,9 @@ class Member_model extends My_Model
 			$this->_order = NULL;
 		}
 		
-		$this->db->from($this->tables['users']);
-		$this->db->join($this->tables['members'], $this->tables['members'] . '.id = ' . $this->tables['users'] . '.id');
+		$this->db->from('usuarios');
+		$this->db->join('socios', $this->tables['members'] . '.usuario_id = ' . $this->tables['users'] . '.id');
+
 
 		$this->response = $this->db->get();
 

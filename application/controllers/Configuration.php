@@ -5,6 +5,7 @@ class Configuration extends MY_Controller{
 
     public function plans()
     {
+        $this->data['members'] = $this->member_model->members()->result();
         $this->form_validation->set_rules('nombre','Nombre','trim|required');
         $this->form_validation->set_rules('descripcion','Descripcion','trim|required');
         if(isset($_POST) && !empty($_POST))
@@ -65,7 +66,7 @@ class Configuration extends MY_Controller{
         $image_path = realpath(APPPATH . '../images');
         $config['upload_path']          = $image_path;
         $config['allowed_types']        = 'gif|jpg|png';
-        $config['max_size']             = 100;
+        $config['max_size']             = 3000;
         $config['max_width']            = 1024;
         $config['max_height']           = 768;
         $this->load->library('upload',$config);

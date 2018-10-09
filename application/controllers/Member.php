@@ -6,6 +6,7 @@ class Member extends MY_Controller
     public function index(){
         //admin check
         $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+        
         $select = array(
             'usuarios.id',
             'usuarios.nombre',
@@ -405,6 +406,12 @@ class Member extends MY_Controller
 
     }
 
+    public function add_plan($member_id, $plan_id)
+    {
+        echo $member_id;
+        echo $plan_id;
+    }
+
     public function add_metric($id)
     {
         // $metric_data = array(
@@ -462,6 +469,8 @@ class Member extends MY_Controller
     public function detail($id)
     {
         $this->data['member'] = $this->member_model->member($id)->row();
+
+        $this->data['plans'] = $this->plan_model->plans()->result();
 
         $this->data['csrf'] = $this->_get_csrf_nonce();
 

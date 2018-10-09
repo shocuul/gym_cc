@@ -26,9 +26,7 @@
                     <div class="col-md-12">
 
                     <?php echo $message; ?>
-
-                        
-
+                        <?php if(!empty($members)): ?>
                         <div class="sp-table-wrapper">
                             <table class="points-listing">
                                 <thead>
@@ -81,7 +79,12 @@
                                     </li>
                                 </ul>
                             </div>
-                        </div>
+                        </div>  <!-- End -->
+                        <?php else: ?>
+                            <div class="alert alert-info" role="alert">
+                              No hay socios registrados aun da click en <strong>Agregar Nuevo Socio</strong> para comenzar.
+                            </div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>

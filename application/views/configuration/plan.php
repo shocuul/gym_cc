@@ -20,19 +20,19 @@
                         <div class="col-md-9">
                             <div class="events-posts">
                                 <?php echo $message; ?>
-                                <?php var_dump($routines); ?>
                                 <!--Event Post Start-->
+                                <?php foreach ($routines as $routine): ?> 
                                 <div class="event-post">
                                     <div class="event-date">
-                                        <h5><span>Jan</span> 01, 2018</h5>
-                                        <strong>6:00 pm - 8:00 pm</strong> </div>
+                                        <h5><span><?php echo $routine->orden ?></span></h5>
+                                    </div>
                                     <div class="event-content">
                                         <div class="event-txt-wrap">
-                                            <div class="event-thumb"><img src="images/event-small-1.jpg" alt=""></div>
+                                            <div class="event-thumb"><img src="images/<?php echo $routine->imagen; ?>" alt="<?php echo $routine->imagen; ?>" style="width:100%;"></div>
                                             <div class="event-txt">
-                                                <h4><a href="#">NBA Finals Cleveland Cavaliers</a></h4>
-                                                <p class="loc"><i class="fa fa-map-marker"></i> 71 Pilgrim Avenue Chevy Chase, MD 20815</p>
-                                                <div class="event-box-footer"> <span class="map-icon"><i class="fa fa-map"></i></span> <a class="detail-btn" href="#">Buy Tickets</a> <a class="view-map map-toggle" href="#collapse1">View Map</a>
+                                                <h4><a href="#"><?php echo $routine->instruccion; ?></a></h4>
+                                                <p class="loc"><i class="fa fa-dumbbell"></i> <?php echo $routine->ejercicio; ?></p>
+                                                <div class="event-box-footer"> <span class="map-icon"><i class="fa fa-times"></i></span> <a class="detail-btn" href="#">Buy Tickets</a> <a class="view-map map-toggle" href="#collapse1">Eliminar</a>
 
                                                 </div>
                                             </div>
@@ -45,120 +45,7 @@
 
                                     </div>
                                 </div>
-                                <!--Event Post End-->
-
-                                <!--Event Post Start-->
-                                <div class="event-post">
-                                    <div class="event-date">
-                                        <h5><span>June</span> 01, 2018</h5>
-                                        <strong>6:00 pm - 8:00 pm</strong> </div>
-                                    <div class="event-content">
-                                        <div class="event-txt-wrap">
-                                            <div class="event-thumb"><img src="images/event-small-2.jpg" alt=""></div>
-                                            <div class="event-txt">
-                                                <h4><a href="#">Cras eu arcu vitae enim lacinia</a></h4>
-                                                <p class="loc"><i class="fa fa-map-marker"></i> 71 Pilgrim Avenue Chevy Chase, MD 20815</p>
-                                                <div class="event-box-footer"> <span class="map-icon"><i class="fa fa-map"></i></span> <a class="detail-btn" href="#">Buy Tickets</a> <a class="view-map" href="#">View Map</a> </div>
-                                            </div>
-                                        </div>
-                                        <div class="event-map"> </div>
-                                    </div>
-                                </div>
-                                <!--Event Post End-->
-
-                                <!--Event Post Start-->
-                                <div class="event-post">
-                                    <div class="event-date">
-                                        <h5><span>Jan</span> 01, 2018</h5>
-                                        <strong>6:00 pm - 8:00 pm</strong> </div>
-                                    <div class="event-content">
-                                        <div class="event-txt-wrap">
-                                            <div class="event-thumb"><img src="images/event-small-3.jpg" alt=""></div>
-                                            <div class="event-txt">
-                                                <h4><a href="#">Nunc suscipit diam volutpat dui </a></h4>
-                                                <p class="loc"><i class="fa fa-map-marker"></i> 71 Pilgrim Avenue Chevy Chase, MD 20815</p>
-                                                <div class="event-box-footer"> <span class="map-icon"><i class="fa fa-map"></i></span> <a class="detail-btn" href="#">Buy Tickets</a> <a class="view-map" href="#">View Map</a> </div>
-                                            </div>
-                                        </div>
-                                        <div class="event-map"> </div>
-                                    </div>
-                                </div>
-                                <!--Event Post End-->
-
-                                <!--Event Post Start-->
-                                <div class="event-post">
-                                    <div class="event-date">
-                                        <h5><span>Jan</span> 01, 2018</h5>
-                                        <strong>6:00 pm - 8:00 pm</strong> </div>
-                                    <div class="event-content">
-                                        <div class="event-txt-wrap">
-                                            <div class="event-thumb"><img src="images/event-small-4.jpg" alt=""></div>
-                                            <div class="event-txt">
-                                                <h4><a href="#">Maecenas pretium eros in posuere</a></h4>
-                                                <p class="loc"><i class="fa fa-map-marker"></i> 71 Pilgrim Avenue Chevy Chase, MD 20815</p>
-                                                <div class="event-box-footer"> <span class="map-icon"><i class="fa fa-map"></i></span> <a class="detail-btn" href="#">Buy Tickets</a> <a class="view-map" href="#">View Map</a> </div>
-                                            </div>
-                                        </div>
-                                        <div class="event-map"> </div>
-                                    </div>
-                                </div>
-                                <!--Event Post End-->
-
-                                <!--Event Post Start-->
-                                <div class="event-post">
-                                    <div class="event-date">
-                                        <h5><span>Jan</span> 01, 2018</h5>
-                                        <strong>6:00 pm - 8:00 pm</strong> </div>
-                                    <div class="event-content">
-                                        <div class="event-txt-wrap">
-                                            <div class="event-thumb"><img src="images/event-small-5.jpg" alt=""></div>
-                                            <div class="event-txt">
-                                                <h4><a href="#">Cras euismod sem ac laoreet posuere</a></h4>
-                                                <p class="loc"><i class="fa fa-map-marker"></i> 71 Pilgrim Avenue Chevy Chase, MD 20815</p>
-                                                <div class="event-box-footer"> <span class="map-icon"><i class="fa fa-map"></i></span> <a class="detail-btn" href="#">Buy Tickets</a> <a class="view-map" href="#">View Map</a> </div>
-                                            </div>
-                                        </div>
-                                        <div class="event-map"> </div>
-                                    </div>
-                                </div>
-                                <!--Event Post End-->
-
-                                <!--Event Post Start-->
-                                <div class="event-post">
-                                    <div class="event-date">
-                                        <h5><span>Jan</span> 01, 2018</h5>
-                                        <strong>6:00 pm - 8:00 pm</strong> </div>
-                                    <div class="event-content">
-                                        <div class="event-txt-wrap">
-                                            <div class="event-thumb"><img src="images/event-small-6.jpg" alt=""></div>
-                                            <div class="event-txt">
-                                                <h4><a href="#">Nulla elementum tortor a dui </a></h4>
-                                                <p class="loc"><i class="fa fa-map-marker"></i> 71 Pilgrim Avenue Chevy Chase, MD 20815</p>
-                                                <div class="event-box-footer"> <span class="map-icon"><i class="fa fa-map"></i></span> <a class="detail-btn" href="#">Buy Tickets</a> <a class="view-map" href="#">View Map</a> </div>
-                                            </div>
-                                        </div>
-                                        <div class="event-map"> </div>
-                                    </div>
-                                </div>
-                                <!--Event Post End-->
-
-                                <!--Event Post Start-->
-                                <div class="event-post">
-                                    <div class="event-date">
-                                        <h5><span>Jan</span> 01, 2018</h5>
-                                        <strong>6:00 pm - 8:00 pm</strong> </div>
-                                    <div class="event-content">
-                                        <div class="event-txt-wrap">
-                                            <div class="event-thumb"><img src="images/event-small-7.jpg" alt=""></div>
-                                            <div class="event-txt">
-                                                <h4><a href="#">NBA Finals Cleveland Cavaliers</a></h4>
-                                                <p class="loc"><i class="fa fa-map-marker"></i> 71 Pilgrim Avenue Chevy Chase, MD 20815</p>
-                                                <div class="event-box-footer"> <span class="map-icon"><i class="fa fa-map"></i></span> <a class="detail-btn" href="#">Buy Tickets</a> <a class="view-map" href="#">View Map</a> </div>
-                                            </div>
-                                        </div>
-                                        <div class="event-map"> </div>
-                                    </div>
-                                </div>
+                                <?php endforeach ?>
                                 <!--Event Post End-->
 
                             </div>

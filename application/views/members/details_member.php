@@ -2,8 +2,11 @@
 <section class="news-section-wrapper">
             <div class="container">
                 <div class="row">
-                    <div class="col-xs-12 col-md-10">
+                    <div class="col-xs-12 col-md-4">
                     <h2 class="section-title"> Detalles del Socio </h2>
+                    </div>
+                    <div class="col-md-6">
+                        <a data-toggle="modal" href="#plansAll" class="detail-btn">Inscribir a un plan</a>
                     </div>        
                     <div class="col-xs-6 col-md-2">
                         <div class="pull-right">
@@ -178,6 +181,45 @@
       </div>
     </div>
   </div>
+</div>
+
+<div class="modal fade" id="plansAll" tabindex="-1" role="dialog" aria-labelledby="plansFormModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Seleccionar un plan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+              <!-- <div class="widget"> -->
+              <ul class="category" style="list-style: none; padding: 0;">
+                <?php if(isset($plans) && !empty($plans)): ?>
+                <?php foreach ($plans as $plan ): ?>
+                  <li>
+                    <?php echo anchor(uri_string().'/plan/'. $plan->id,'<i class="far fa-dot-circle"></i>
+                    Fortaleza Fisica'); ?>
+                </li>
+                <?php endforeach ?>
+              </ul>
+              <?php else: ?>
+                <div class="alert alert-info" role="alert">
+                  No hay ningun plan registrado en el sistema.
+                  <?php echo anchor('configuracion/planes','<strong>Registra uno primero</strong>'); ?>
+                </div>
+              <?php endif; ?>
+             <!--  </div> -->
+            </div>
+            <div class="modal-footer">
+                <?php echo form_hidden($csrf); ?>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <?php echo form_submit('submit', 'Añadir Plan','class="btn btn-info"'); ?>
+
+            </div>
+        </div>
+        
+    </div>
 </div>
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
