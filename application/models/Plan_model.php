@@ -88,7 +88,6 @@ class Plan_model extends My_Model
 	public function routines($plan_id)
     {
 		
-		
 		$this->response = $this->db->get_where($this->tables['routines'], array($this->join['plans'] => $plan_id));
 
         return $this;
