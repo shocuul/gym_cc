@@ -9,7 +9,7 @@ class Plan_model extends My_Model
     {
         $this->db->insert($this->tables['plans'],$this->_filter_data($this->tables['plans'],$data));
         
-        $this->set_message('Plan ' . $user_info['nombre'] . ' agregado con exito');
+        $this->set_message('Plan ' . $data['nombre'] . ' agregado con exito');
 
         $id = $this->db->insert_id('planes' . '_id_seq');
 
@@ -59,7 +59,62 @@ class Plan_model extends My_Model
         $this->set_message('Plan eliminado');
 
         return TRUE;
+	}
+	
+	public function plan($id)
+	{
+		$this->limit(1);
+		$this->order_by($this->tables['plans'].'.id','desc');
+		$this->where($this->tables['plans'].'.id', $id);
+		$this->plans();
+
+		return $this;
+	}
+
+	protected function get_plan_order($plan_id)
+	{
+		$query = $this->db->select_max('orden')
+				 	->where('plan_id',$plan_id)
+					->get($this->tables['routines']);
+		$order = $query->row();
+		if($order->orden !== NULL){
+			return ((int) $order->orden) + 1;
+		}else
+		{
+			return 1;
+		}
+	}
+
+	public function routines($plan_id)
+    {
+		
+		
+		$this->response = $this->db->get_where($this->tables['routines'], array($this->join['plans'] => $plan_id));
+
+        return $this;
     }
+
+	public function add_routine($plan_id, $routine_data)
+	{
+		$this->load->helper('date');
+		$this->db->trans_begin();
+		$routine_data[$this->join['plans']] = $plan_id;
+		$routine_data['orden'] = $this->get_plan_order($plan_id);
+		$routine_data['fecha_creacion'] = mdate('%Y-%m-%d %H:%i:%s', now());
+		$this->db->insert($this->tables['routines'], $this->_filter_data($this->tables['routines'], $routine_data));
+		if($this->db->trans_status() === FALSE)
+		{
+			$this->db->trans_rollback();
+			$this->set_error('Error al insertar datos de la rutina');
+			return FALSE;
+		}
+
+		$this->db->trans_commit();
+
+		$this->set_message('Rutina agregada con exito.');
+
+        return TRUE;
+	}
 
 
     public function plans()

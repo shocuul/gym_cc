@@ -61,12 +61,14 @@ class My_Model extends CI_Model
             'users_groups' => 'usuarios_grupos',
             'groups' => 'grupos',
             'reading' => 'mediciones',
-            'plans' => 'planes'
+            'plans' => 'planes',
+            'routines' => 'rutinas'
         );
 
         $this->join = array(
             'users' => 'usuario_id',
-            'groups' => 'grupo_id'
+            'groups' => 'grupo_id',
+            'plans' => 'plan_id'
         );
 
         //para tener en storage el ide del grupo de los miembros.
