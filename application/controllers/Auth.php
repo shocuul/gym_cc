@@ -191,6 +191,77 @@ class Auth extends MY_Controller{
         $this->_render('auth/users', $this->data);
     }
 
+    public function ajax_users()
+    {
+        $output = '';
+        $query = '';
+        if($this->input->post('query'))
+        {
+            $query = $this->input->post('query');
+            $this->auth_model->like('nombre',$query);
+            $this->auth_model->like('paterno', $query);
+            $this->auth_model->like('materno', $query);
+            $this->auth_model->like('email', $query);
+            $this->auth_model->like('usuario', $query);
+            $this->auth_model->order_by('id');
+        }
+
+        $users = $this->auth_model->users()->result();
+        foreach($users as $k => $user)
+        {
+            $users[$k]->grupo = $this->auth_model->get_user_group($user->id)->row();
+        }
+        if($this->auth_model->num_rows() > 0)
+        {
+            $output .= '
+            <table class="points-listing">
+                <thead>
+                    <tr class="first">
+                        <th>#</th>
+                        <th>Nombre</th>
+                        <th>Usuario</th>
+                        <th>Email</th>
+                        <th>Rol</th>
+                        <th>Acciones</th>     
+                    </tr>
+                </thead>
+                <tbody> ';
+                foreach($users as $user)
+                {
+                    $output .= '
+                       <tr> 
+                       <td>'. htmlspecialchars($user->id, ENT_QUOTES, 'UTF-8') .'</td>
+                       <td>'. htmlspecialchars($user->nombre .' '. $user->paterno .' '. $user->materno, ENT_QUOTES, 'UTF-8') .'</td>
+                       <td>'. htmlspecialchars($user->usuario, ENT_QUOTES, 'UTF-8').'</td>
+                       <td>'. htmlspecialchars($user->email, ENT_QUOTES, 'UTF-8') .'</td>
+                       <td>'. $user->grupo->descripcion .' </td>
+                       <td><div class="pro-share" style="margin:0;">'.
+                       anchor("usuarios/editar_usuario". $user->id, '<i class="fa fa-edit"></i>').
+                       '<button type="button" class="btn" data-toggle="modal" data-target="#deleteModal" onClick="fillModal("'.$user->id.'","'.$user->nombre.' '.$user->paterno.' '.$user->materno.'")><i class="fa fa-trash"></i></button>
+                            </div>
+                        </td>
+                        </tr>
+                    ';
+                }        
+            $output .= '
+            </tbody>
+            </table>
+            <div class="techlinqs-pagination text-center">
+            <ul class="pagination">
+            </ul>
+            </div>
+            ';
+        }else{
+            $output .= '
+            <div class="alert alert-light" role="alert">
+                No se encontraron usuarios.
+            </div>
+            ';
+        }
+
+        $this->output->set_output($output);
+    }
+
     public function delete_user()
     {
         if($this->_valid_csrf_nonce() === FALSE)

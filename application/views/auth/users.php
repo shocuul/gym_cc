@@ -13,7 +13,7 @@
                     <div class="col-md-4">
                         <div class="side-search">
                          <form>
-                            <input type="search" class="search" placeholder="Buscar aqui...">
+                            <input type="search" class="search" id="search" placeholder="Buscar aqui...">
                             <button>
                                 <i class="fa fa-search"></i>
                             </button>
@@ -27,7 +27,7 @@
                     <div class="col-md-12">
                         <?php echo $message; ?>
                         <div class="sp-table-wrapper">
-                            <table class="points-listing">
+                            <table class="points-listing" id="points-listing">
                                 <thead>
                                     <tr class="first">
                                         <th>#</th>
@@ -128,6 +128,31 @@
 </div>
 
 <script>
+
+    function load_users(query)
+    {
+        $.ajax({
+            url:"<?php echo base_url(); ?>index.php?ajax/usuarios",
+            method:"post",
+            data:{query:query},
+            success:function(data){
+                console.log(data);
+                $('#points-listing').html("");
+                //$('#points-listing').html(data);
+            }
+        })
+    }
+
+    $('#search').keyup(function(){
+        var search = $(this).val();
+        if(search != '')
+        {
+            load_users(search);
+        }else{
+            load_users();
+        }
+    })
+
     function fillModal(id, nombre)
     {   
         $("#modalName").html('Desea eliminar al usuario ' + nombre);
