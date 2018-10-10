@@ -154,7 +154,7 @@ class Auth extends MY_Controller{
         
     }
 
-    public function users(){
+    public function users($offset = NULL){
 
         if (!$this->auth_model->logged_in())
         {
@@ -165,14 +165,24 @@ class Auth extends MY_Controller{
             // redirect them to the home page because they must be an administrator to view this
             return show_error('You must be an administrator to view this page.');
         }
-        $config['base_url'] = '/usuarios/';
-        $config['total_rows'] = 100;
-        $config['per_page'] = 10;
 
+        $limit_per_page = 10;
+        $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+        $total_record = $this->auth_model->get_total();
+        $this->auth_model->limit($limit_per_page);
+        $this->auth_model->offset($offset);
+        $this->data['users'] = $this->auth_model->users()->result();
+        $config['base_url'] = base_url() .'index.php?/usuarios';
+        $config['total_rows'] = $total_record;
+        $config['per_page'] =  $limit_per_page;
+        $config['cur_tag_open'] = '<span class="page-numbers current" aria-current="page">';
+        $config['cur_tag_close'] = '</span>';
+        $config['next_link'] = 'Siguiente <i class="fa fa-angle-right"></i>';
+        $config['prev_link'] = '<i class="fa fa-angle-left"></i> Anterior';
         $this->pagination->initialize($config);
 
         $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-        $this->data['users'] = $this->auth_model->users()->result();
+        
         $this->data['csrf'] = $this->_get_csrf_nonce();
         foreach($this->data['users'] as $k => $user)
         {

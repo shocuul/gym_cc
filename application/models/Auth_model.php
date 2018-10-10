@@ -397,6 +397,11 @@ class Auth_model extends MY_Model
         
     }
 
+    public function get_total()
+    {
+        return $this->db->count_all($this->tables['users']);
+    }
+
     // // $filters = array(
     // //     'select' => 'title, content, date',
     //         'where' => array(

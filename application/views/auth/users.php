@@ -83,12 +83,13 @@
                                 </tbody>
                             </table>
                             <div class="techlinqs-pagination text-center">
-                                <?php echo $this->pagination->create_links(); ?>
+                                
                                 <ul class="pagination">
                                     <li>
-                                        <span class="page-numbers current" aria-current="page">1</span>
+                                        <?php echo $this->pagination->create_links(); ?>
+                                        <!-- <span class="page-numbers current" aria-current="page">1</span>
                                         <a href="" class="page-numbers">2</a>
-                                        <a href="" class="next page-numbers">Next <i class="fa fa-angle-right"></i></a>
+                                        <a href="" class="next page-numbers">Next <i class="fa fa-angle-right"></i></a> -->
                                     </li>
                                 </ul>
                             </div>
