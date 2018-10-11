@@ -198,12 +198,12 @@ class My_Model extends CI_Model
         return $result;
     }
 
-    public function has_dropdown()
+    public function has_dropdown($dropdown_text)
     {
         // $groups = $this->auth_model->groups()->result();
         $groups_array = array();
-        foreach ($this->result() as $group) {
-            $groups_array[$group->id] = $group->descripcion;
+        foreach ($this->result_array() as $group) {
+            $groups_array[$group['id']] = $group[$dropdown_text];
         }
         return $groups_array;
     }

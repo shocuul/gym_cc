@@ -5,7 +5,11 @@
         <div class="fl-breadcrumps">
             <div class="container">
                 <ul class="pull-left">
-                    <li> <?php echo anchor('#rutinaAdd','Agregar Rutina','data-toggle="modal" class="detail-btn"'); ?> </li>
+                    <li>
+                        <?php echo anchor('#rutinaAdd','Agregar Rutina','data-toggle="modal" class="detail-btn"'); ?> </li>
+                </ul>
+                <ul class="pull-right">
+                    <li><?php echo anchor('configuracion/planes','Volver','class="detail-btn"'); ?></li>
                 </ul>
              </div>
         </div>
@@ -23,24 +27,21 @@
                                 <!--Event Post Start-->
                                 <?php foreach ($routines as $routine): ?> 
                                 <div class="event-post">
-                                    <div class="event-date">
-                                        <h5><span><?php echo $routine->orden ?></span></h5>
+                                    <div class="event-date" style="width:10%;">
+                                        <h5><span><?php //echo $routine->orden ?></span></h5>
                                     </div>
-                                    <div class="event-content">
+                                    <div class="event-content" style="width:90%;">
                                         <div class="event-txt-wrap">
                                             <div class="event-thumb"><img src="images/<?php echo $routine->imagen; ?>" alt="<?php echo $routine->imagen; ?>" style="width:100%;"></div>
                                             <div class="event-txt">
                                                 <h4><a href="#"><?php echo $routine->instruccion; ?></a></h4>
                                                 <p class="loc"><i class="fa fa-dumbbell"></i> <?php echo $routine->ejercicio; ?></p>
-                                                <div class="event-box-footer"> <span class="map-icon"><i class="fa fa-times"></i></span> <a class="detail-btn" href="#">Buy Tickets</a> <a class="view-map map-toggle" href="#collapse1">Eliminar</a>
+                                                <div class="event-box-footer">  
+
+                                                    <a class="detail-btn" href="#"><i class="fas fa-trash-alt"></i></a> 
 
                                                 </div>
                                             </div>
-                                        </div>
-
-                                        <div class="event-map" id="collapse1">
-                                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193595.91476775007!2d-74.11976241555821!3d40.69740344311313!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew+York%2C+NY!5e0!3m2!1sen!2s!4v1522218677770"></iframe>
-
                                         </div>
 
                                     </div>
@@ -168,8 +169,7 @@
 
                 <div class="form-group">
                     <?php echo form_label('Instruccion', 'instruccion'); ?>
-                   
-                        <?php echo form_textarea($instruccion); ?>
+                    <?php echo form_textarea($instruccion); ?>
 
                 </div>
 

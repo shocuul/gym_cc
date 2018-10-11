@@ -26,6 +26,7 @@
 
                     <div class="col-md-12">
                         <?php echo $message; ?>
+                        <?php if(!empty($plans)): ?>
                         <div class="sp-table-wrapper">
                             <table class="points-listing">
                                 <thead>
@@ -45,7 +46,7 @@
                                         <td><?php echo htmlspecialchars($plan->descripcion, ENT_QUOTES, 'UTF-8'); ?></td>
                                         <td>
                                             <div class="pro-share" style="margin:0;">
-                                                <?php echo anchor("configuracion/plan/" . $plan->id, '<i class="fa fa-user-circle"></i>'); ?>
+                                                <?php echo anchor("configuracion/plan/" . $plan->id, '<i class="fas fa-clipboard-list"></i>'); ?>
                                                 <a data-toggle="modal" href="#plansEdit" onClick="fillEditModal('<?php echo $plan->id ?>','<?php echo $plan->nombre ?>','<?php echo $plan->descripcion ?>')"><i class="fa fa-edit"></i></a>
                                                
                                                 <!-- <a href="">
@@ -72,7 +73,12 @@
                                     </li>
                                 </ul>
                             </div>
+                        </div><!-- END -->
+                        <?php else: ?>
+                        <div class="alert alert-info" role="alert">
+                              No hay planes registrados aun, da click en <strong>Agregar Nuevo Plan</strong> para comenzar.
                         </div>
+                    <?php endif ?>
                     </div>
                 </div>
             </div>

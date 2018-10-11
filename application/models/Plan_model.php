@@ -98,7 +98,7 @@ class Plan_model extends My_Model
 		$this->load->helper('date');
 		$this->db->trans_begin();
 		$routine_data[$this->join['plans']] = $plan_id;
-		$routine_data['orden'] = $this->get_plan_order($plan_id);
+		//$routine_data['orden'] = $this->get_plan_order($plan_id);
 		$routine_data['fecha_creacion'] = mdate('%Y-%m-%d %H:%i:%s', now());
 		$this->db->insert($this->tables['routines'], $this->_filter_data($this->tables['routines'], $routine_data));
 		if($this->db->trans_status() === FALSE)

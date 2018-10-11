@@ -56,7 +56,7 @@ class Configuration extends MY_Controller{
     public function add_routine($id)
     {
         $this->form_validation->set_rules('ejercicio','Ejercicio','trim|required');
-        $this->form_validation->set_rules('instruccion','Ejercicio','trim|required');
+        $this->form_validation->set_rules('instruccion','Instruccion','trim|required');
 
         if($id != $this->input->post('id'))
         {
@@ -67,8 +67,8 @@ class Configuration extends MY_Controller{
         $config['upload_path']          = $image_path;
         $config['allowed_types']        = 'gif|jpg|png';
         $config['max_size']             = 3000;
-        $config['max_width']            = 1024;
-        $config['max_height']           = 768;
+        // $config['max_width']            = 2000;
+        // $config['max_height']           = 768;
         $this->load->library('upload',$config);
         if ( ! $this->upload->do_upload('imagen'))
         {

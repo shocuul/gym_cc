@@ -85,7 +85,7 @@ class Auth extends MY_Controller{
         if($this->form_validation->run() === TRUE && $this->auth_model->register($password, $username, $email, $additional_data, $grupo))
         {
             $this->session->set_flashdata('message', $this->auth_model->messages());
-            redirect("usuarios", 'refresh');
+            //redirect("usuarios", 'refresh');
         }
         else
         {
@@ -143,7 +143,7 @@ class Auth extends MY_Controller{
             // }
             //
 
-            $this->data['rol_data'] = $this->auth_model->groups()->has_dropdown();
+            $this->data['rol_data'] = $this->auth_model->groups()->has_dropdown('descripcion');
 
             $this->data['rol'] = $this->form_validation->set_value('rol');
 
@@ -239,8 +239,8 @@ class Auth extends MY_Controller{
                        <td>'. htmlspecialchars($user->email, ENT_QUOTES, 'UTF-8') .'</td>
                        <td>'. $user->grupo->descripcion .' </td>
                        <td><div class="pro-share" style="margin:0;">'.
-                       anchor("usuarios/editar_usuario". $user->id, '<i class="fa fa-edit"></i>').
-                       '<button type="button" class="btn" data-toggle="modal" data-target="#deleteModal" onClick="fillModal("'.$user->id.'","'.$user->nombre.' '.$user->paterno.' '.$user->materno.'")><i class="fa fa-trash"></i></button>
+                       anchor("usuarios/editar_usuario/". $user->id, '<i class="fa fa-edit"></i>').
+                       '<button type="button" class="btn" data-toggle="modal" data-target="#deleteModal" onClick="fillModal(\''.$user->id.'\',\''.$user->nombre.' '.$user->paterno.' '.$user->materno.'\')"><i class="fa fa-trash"></i></button>
                             </div>
                         </td>
                         </tr>
@@ -252,7 +252,7 @@ class Auth extends MY_Controller{
             ';
         }else{
             $output .= '
-            <div class="alert alert-light" role="alert">
+            <div class="alert alert-warning" role="alert">
                 No se encontraron usuarios.
             </div>
             ';
@@ -388,7 +388,7 @@ class Auth extends MY_Controller{
             'class' => 'form-control'
         );
 
-        $this->data['rol_data'] = $this->auth_model->groups()->has_dropdown();
+        $this->data['rol_data'] = $this->auth_model->groups()->has_dropdown('descripcion');
 
         $this->data['rol'] = $this->form_validation->set_value('rol', $group->id);
 
