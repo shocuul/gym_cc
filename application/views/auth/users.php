@@ -132,13 +132,13 @@
     function load_users(query)
     {
         $.ajax({
-            url:"<?php echo base_url(); ?>index.php?ajax/usuarios",
-            method:"post",
+            type:"post",
+            url:"index.php?/ajax/usuarios",
             data:{query:query},
             success:function(data){
                 console.log(data);
-                $('#points-listing').html("");
-                //$('#points-listing').html(data);
+                // $('#points-listing').html("");
+                $('#points-listing').html(data);
             }
         })
     }

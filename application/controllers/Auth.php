@@ -156,15 +156,15 @@ class Auth extends MY_Controller{
 
     public function users($offset = NULL){
 
-        if (!$this->auth_model->logged_in())
-        {
-            // redirect them to the login page
-            redirect('auth/login', 'refresh');
-        }else if (!$this->auth_model->is_admin()) // remove this elseif if you want to enable this for non-admins
-        {
-            // redirect them to the home page because they must be an administrator to view this
-            return show_error('You must be an administrator to view this page.');
-        }
+        // if (!$this->auth_model->logged_in())
+        // {
+        //     // redirect them to the login page
+        //     redirect('auth/login', 'refresh');
+        // }else if (!$this->auth_model->is_admin()) // remove this elseif if you want to enable this for non-admins
+        // {
+        //     // redirect them to the home page because they must be an administrator to view this
+        //     return show_error('You must be an administrator to view this page.');
+        // }
 
         $limit_per_page = 10;
         $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
@@ -203,10 +203,13 @@ class Auth extends MY_Controller{
             $this->auth_model->like('materno', $query);
             $this->auth_model->like('email', $query);
             $this->auth_model->like('usuario', $query);
-            $this->auth_model->order_by('id');
+            //$this->auth_model->order_by('id');
         }
 
         $users = $this->auth_model->users()->result();
+        // return $this->output
+        //             ->set_content_type('application/json')
+        //             ->set_output(json_encode($users));
         foreach($users as $k => $user)
         {
             $users[$k]->grupo = $this->auth_model->get_user_group($user->id)->row();
@@ -246,10 +249,6 @@ class Auth extends MY_Controller{
             $output .= '
             </tbody>
             </table>
-            <div class="techlinqs-pagination text-center">
-            <ul class="pagination">
-            </ul>
-            </div>
             ';
         }else{
             $output .= '
@@ -260,6 +259,7 @@ class Auth extends MY_Controller{
         }
 
         $this->output->set_output($output);
+        //echo "Soy AJAX";
     }
 
     public function delete_user()
