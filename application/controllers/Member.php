@@ -406,10 +406,12 @@ class Member extends MY_Controller
 
     }
 
-    public function add_plan($member_id, $plan_id)
+    public function add_plan($member_id)
     {
-        echo $member_id;
-        echo $plan_id;
+
+        $plan_id = $this->input->post('plan');
+        $this->member_model->subscribe_to_plan($plan_id, $member_id);
+        redirect('socio/detalles/'.$member_id,'refresh');
     }
 
     public function add_metric($id)
@@ -476,7 +478,7 @@ class Member extends MY_Controller
 
         $this->data['message'] = (validation_errors() ? validation_errors() : ($this->member_model->errors() ? $this->member_model->errors() : $this->session->flashdata('message')));
        
-
+        $this->data['subscribe_plans'] = $this->member_model->get_member_plans($id)->result();
         $this->data['mme'] = array(
             'name' => 'mme',
             'id' => 'mme',
@@ -532,6 +534,8 @@ class Member extends MY_Controller
             'value' => '',
             'class' => 'form-control'
         );
+
+        $this->data['plan_data'] =  $this->plan_model->plans()->has_dropdown('nombre');
 
         $this->_render('members/details_member', $this->data);
     }

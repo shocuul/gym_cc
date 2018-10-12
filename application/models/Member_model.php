@@ -5,6 +5,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Member_model extends My_Model
 {
 
+
+	public function get_member_plans($id)
+	{
+		return $this->db->select($this->tables['users_plans'].'.id, '.$this->tables['plans'].'.id as plan_id, '.$this->tables['plans'].'.nombre')
+				->where($this->tables['users_plans'].'.'.$this->join['users'],$id)
+				->join($this->tables['plans'], $this->tables['users_plans'].'.'.$this->join['plans'].'='.$this->tables['plans'].'.id')
+				->get($this->tables['users_plans']);
+	}
 	public function members()
 	{
 		if(isset($this->_select) && !empty($this->_select))

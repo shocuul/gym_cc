@@ -19,12 +19,13 @@
                     
                     </div>
                     
-                                <div class="col-md-8 pull-left">
+                                <div class="col-md-9 pull-left">
                                     <!-- <?php // var_dump($member); ?> -->
                                     <?php echo $message; ?>
+                                    <?php var_dump($subscribe_plans); ?>
                                    <div class="row">
-                                       <div class="col-md-5">
-                                           <div class="pro-large-img">
+                                       <div class="col-md-4">
+                                           <div class="pro-large-img" style="max-width:250px;">
                                                <?php if(isset($avatar)): ?>
                                                <img src="images/member1.jpg" class="pro-large-img" alt="Member1">
                                                 <?php else: ?>
@@ -86,19 +87,44 @@
                                     </div>
                                     </div><!-- row -->
                                 </div>
-                                <div class="col-md-4 pull-right">
+                                <div class="col-md-3 pull-right">
+                                    <?php if(!empty($plan_data)): ?>
                                     <div class="sidebar">
-                                        <div class="widget">
+                                    <div class="widget">
+                                    <div class="text-widget">
+                                    <h3>Planes disponibles</h3>
+                                    <?php echo form_open(uri_string().'/plan','class="contact-form" style="padding:0;"'); ?>
+                                        <?php echo form_label('Planes','plan','class="control-label"')?>
+                                        <?php echo form_dropdown('plan',$plan_data,'1','class="form-control"'); ?>
+                                        <div class="form-group">
+                                        <?php echo form_submit('submit','Inscribir','class="btn-block submit"');?>
+                                        </div>
+                                    <?php echo form_close();?>
+                                    </div>
+                                    </div>
+                                    <?php else: ?>
+                                    <div class="alert alert-info" role="alert">
+                                    No hay ningun plan registrado en el sistema.
+                                    <?php echo anchor('configuracion/planes','<strong>Registra uno primero</strong>'); ?>
+                                    </div>
+                                    <?php endif?>
+                                        <?php if(!empty($subscribe_plans)): ?>
+                                        <div class="widget" style="margin-bottom:1em;">
                                         <h3>Planes Registrados</h3>
+                                        <?php foreach($subscribe_plans as $plan) : ?>
+                                        <a href="<?php 'index.php?' .'/plan/' . $plan->plan_id ?>">
                                         <figure class="pl-banner">
                                             <div class="image-min">
                                                 <img src="images/fitness.jpg" alt="fitness">
                                             </div>
                                             <figcaption>
-                                                <h3>Fortaleza física</h3>
+                                                <h3><?php echo $plan->nombre; ?></h3>
                                             </figcaption>
                                         </figure>
                                         </div>
+                                        </a>
+                                        <?php endforeach ?>
+                                        <?php endif ?>
                                     </div>
                                 </div>
                             </div>
@@ -199,7 +225,7 @@
                 <?php foreach ($plans as $plan ): ?>
                   <li>
                     <?php echo anchor(uri_string().'/plan/'. $plan->id,'<i class="far fa-dot-circle"></i>
-                    Fortaleza Fisica'); ?>
+                    '. $plan->nombre); ?>
                 </li>
                 <?php endforeach ?>
               </ul>
@@ -230,9 +256,9 @@
     function drawVisualization() {
         $.ajax({
             type:"get",
-            url:"index.php?/ajax/generate_chart_data/<?php echo $member->id ?>",
+            url:"index.php?ajax/generate_chart_data/<?php echo $member->id ?>",
             success:function(response){
-                console.log(response);
+                //console.log(response);
                 var data = google.visualization.arrayToDataTable(response);
                 var options = {
                     vAxis: {title: 'Medidas'},

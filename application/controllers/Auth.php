@@ -5,7 +5,6 @@ class Auth extends MY_Controller{
 
 
     public function index(){
-
     }
 
     public function login()
@@ -85,7 +84,7 @@ class Auth extends MY_Controller{
         if($this->form_validation->run() === TRUE && $this->auth_model->register($password, $username, $email, $additional_data, $grupo))
         {
             $this->session->set_flashdata('message', $this->auth_model->messages());
-            //redirect("usuarios", 'refresh');
+            redirect("usuarios", 'refresh');
         }
         else
         {

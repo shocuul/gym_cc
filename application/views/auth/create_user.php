@@ -15,7 +15,7 @@
                     <div class="col-md-12">
                         <?php echo $message; ?>
                         <?php $form_attributes = array('class' => 'contact-form review-form','id'=>'add_user_form');
-                        echo form_open('usuarios/nuevo', $form_attributes); ?>
+                        echo form_open(uri_string(), $form_attributes); ?>
                         <!-- <form class="contact-form review-form"> -->
                         <div class="row">
                         <h4 class="section-title">Información Basica</h4>

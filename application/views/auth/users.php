@@ -6,7 +6,7 @@
                     <h2 class="section-title"> Usuarios </h2>
                     </div>        
                     <div class="col-md-6">
-                        <?php echo anchor('usuarios/nuevo', 'Agregar Nuevo Usuario','class=detail-btn'); ?>
+                        <?php echo anchor('auth/create_user', 'Agregar Nuevo Usuario','class=detail-btn'); ?>
                         <!-- <a class="detail-btn">Agregar Nuevo Usuario</a> -->
                     </div>
 

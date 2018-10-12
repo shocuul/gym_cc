@@ -281,7 +281,7 @@ class My_Model extends CI_Model
         return $this->db->insert($this->tables['users_plans'],
                                 array(
                                     $this->join['users'] => (float) $member_id,
-                                    $this->join['groups'] => (float) $plan_id,
+                                    $this->join['plans'] => (float) $plan_id,
                                     'fecha_inicio' => mdate('%Y-%m-%d %H:%i:%s', now())
                                 ));
 

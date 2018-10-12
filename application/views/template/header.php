@@ -65,7 +65,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                         <?php echo anchor('usuarios', 'Ver Usuarios'); ?>
                                                     </li>
                                                     <li>
-                                                        <?php echo anchor('usuarios/nuevo', 'Añadir Usuario'); ?>
+                                                        <?php echo anchor('auth/create_user', 'Añadir Usuario'); ?>
                                                     </li>
                                                 </ul>
                                             </li>
