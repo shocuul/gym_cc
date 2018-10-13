@@ -3,8 +3,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Member extends MY_Controller
 {
-    public function index(){
+    public function index($offset = NULL){
         //admin check
+
+        
+
         $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
         
         $select = array(
@@ -18,11 +21,87 @@ class Member extends MY_Controller
             'socios.genero'
         );
         $this->member_model->select($select);
+
+        //pagination stuff
+        $limit_per_page = 10;
+        $total_record = $this->member_model->members()->num_rows();
+        $this->member_model->limit($limit_per_page);
+        $this->member_model->offset($offset);
         $this->data['members'] = $this->member_model->members()->result();
+        $config['base_url'] = base_url() . 'index.php?/socios';
+        $config['total_rows'] = $total_record;
+        $config['per_page'] = $limit_per_page;
+        $config['cur_tag_open'] = '<span class="page-numbers current" aria-current="page">';
+        $config['cur_tag_close'] = '</span>';
+        $config['next_link'] = 'Siguiente <i class="fa fa-angle-right"></i>';
+        $config['prev_link'] = '<i class="fa fa-angle-left"></i> Anterior';
+        $this->pagination->initialize($config);
+
         $this->data['csrf'] = $this->_get_csrf_nonce();
         $this->_render('members/index', $this->data);
 
     }
+    public function ajax_members()
+    {
+        $output = '';
+        $query = '';
+        if($this->input->post('query'))
+        {
+            $query = $this->input->post('query');
+            $this->member_model->search($query);
+        }
+        $members = $this->member_model->members()->result();
+        if($this->member_model->num_rows() > 0)
+        {
+        $output .= '
+        <table class="points-listing">
+            <thead>
+                <tr class="first">
+                    <th>#</th>
+                    <th>Nombre</th>
+                    <th>Edad</th>
+                    <th>Genero</th>
+                    <th>Peso</th>
+                    <th>Estatura</th>
+                    <th>Acciones</th>
+                </tr>
+            <thead>
+            <tbody>';
+        foreach($members as $member)
+        {
+            $output .= '
+            <tr>
+            <td>'. htmlspecialchars($member->id, ENT_QUOTES, 'UTF-8') .'</td>
+            <td>'. htmlspecialchars($member->nombre .' '. $member->paterno .' '. $member->materno, ENT_QUOTES, 'UTF-8') .'</td>
+            <td>'. htmlspecialchars($member->edad, ENT_QUOTES, 'UTF-8').'</td>
+            <td>'. htmlspecialchars(ucfirst($member->genero), ENT_QUOTES, 'UTF-8').'</td>
+            <td>'. htmlspecialchars($member->peso, ENT_QUOTES, 'UTF-8').'kg.</td>
+            <td>'. htmlspecialchars($member->estatura, ENT_QUOTES, 'UTF-8').'m.</td>
+            <td>
+            <div class="pro-share" style="margin:0;">
+                '. anchor("socio/detalles". $member->id, '<i class="fa fa-user-circle"></i>').
+                anchor("socios/editar_socio" .$member->id,'<i class="fa fa-edit"></i>')
+            .'
+            <a data-toggle="modal" href="#deleteModal" onClick="fillModal(\''.$member->id.'\',\''.$member->nombre.' '.$member->paterno.' '.$member->materno.'\')"><i class="fa fa-trash"></i></a>
+            </div>
+            </td>
+            </tr>
+            ';
+        }
+        $output .= '
+        <tbody></table>
+        ';
+    }else{  
+        $output .= '
+            <div class="alert alert-warning" role="alert">
+                No se encontraron socios.
+            </div>
+        ';
+    }
+    $this->output->set_output($output);   
+    }
+
+    
 
     public function edit_member($id)
     {

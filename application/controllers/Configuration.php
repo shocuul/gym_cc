@@ -3,9 +3,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Configuration extends MY_Controller{
 
-    public function plans()
+    public function plans($offset = NULL)
     {
-        $this->data['members'] = $this->member_model->members()->result();
+        $limit_per_page = 10;
+        $total_record = $this->plan_model->get_total();
+
+        $this->plan_model->limit($limit_per_page);
+        $this->plan_model->offset($offset);
+        $this->data['plans'] = $this->plan_model->plans()->result();
+        $config['base_url'] = base_url() .'index.php?/configuracion/planes';
+        $config['total_rows'] = $total_record;
+        $config['per_page'] =  $limit_per_page;
+        $config['cur_tag_open'] = '<span class="page-numbers current" aria-current="page">';
+        $config['cur_tag_close'] = '</span>';
+        $config['next_link'] = 'Siguiente <i class="fa fa-angle-right"></i>';
+        $config['prev_link'] = '<i class="fa fa-angle-left"></i> Anterior';
+        $this->pagination->initialize($config);
         $this->form_validation->set_rules('nombre','Nombre','trim|required');
         $this->form_validation->set_rules('descripcion','Descripcion','trim|required');
         if(isset($_POST) && !empty($_POST))
@@ -34,7 +47,8 @@ class Configuration extends MY_Controller{
    
         }
         $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-        $this->data['plans'] = $this->plan_model->plans()->result();
+
+        
         $this->data['csrf'] = $this->_get_csrf_nonce();
         $this->data['nombre'] = array(
             'name' => 'nombre',
@@ -52,6 +66,38 @@ class Configuration extends MY_Controller{
         $this->_render('configuration/plans',$this->data);
     }
 
+    public function ajax_plans(){
+        $output = '';
+        $query = '';
+        if($this->input->post('query'))
+        {
+            $query = $this->input->post('query');
+            $this->plan_model->like('nombre',$query);
+            $this->plan_model->like('descripcion', $query);
+        }
+
+        $plans = $this->plan_model->plans()->result();
+        if($this->plan_model->num_rows() > 0)
+        {
+            $output .= '
+            <table class="points-listing">
+                <thead>
+                    <tr class="first">
+                        <th>#</th>
+                        <th>Nombre</th>
+                        <th>Descripcion</th>
+                        <th>Acciones</th>     
+                    </tr>
+                </thead>
+                <tbody> 
+            ';
+            foreach ($plans as $plan) {
+                $output .= '
+                
+                ';
+            }
+        }
+    }
 
     public function add_routine($id)
     {

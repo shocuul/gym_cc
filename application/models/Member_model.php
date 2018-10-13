@@ -13,6 +13,7 @@ class Member_model extends My_Model
 				->join($this->tables['plans'], $this->tables['users_plans'].'.'.$this->join['plans'].'='.$this->tables['plans'].'.id')
 				->get($this->tables['users_plans']);
 	}
+
 	public function members()
 	{
 		if(isset($this->_select) && !empty($this->_select))
@@ -71,6 +72,17 @@ class Member_model extends My_Model
 		$this->response = $this->db->get();
 
 		return $this;
+	}
+
+	public function search($query)
+	{
+		$this->like($this->tables['users'].'.nombre',$query);
+		$this->like($this->tables['users'].'.paterno',$query);
+		$this->like($this->tables['users'].'.materno', $query);
+		$this->like($this->tables['members'].'.edad', $query);
+		$this->like($this->tables['members'].'.genero', $query);
+		$this->like($this->tables['members'].'.peso', $query);
+		$this->like($this->tables['members'].'.estatura', $query);
 	}
 
 	public function add_member($password, $user_info = array(), $members_info = array(), $reading_member = array())

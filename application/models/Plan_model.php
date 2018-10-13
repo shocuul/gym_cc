@@ -85,6 +85,11 @@ class Plan_model extends My_Model
 		}
 	}
 
+	public function get_total()
+    {
+        return $this->db->count_all($this->tables['plans']);
+    }
+
 	public function routines($plan_id)
     {
 		

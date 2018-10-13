@@ -12,7 +12,7 @@
                     <div class="col-md-4">
                         <div class="side-search">
                          <form>
-                            <input type="search" class="search" placeholder="Buscar aqui...">
+                            <input type="search" class="search" id="memberSearch" placeholder="Buscar aqui...">
                             <button>
                                 <i class="fa fa-search"></i>
                             </button>
@@ -28,7 +28,7 @@
                     <?php echo $message; ?>
                         <?php if(!empty($members)): ?>
                         <div class="sp-table-wrapper">
-                            <table class="points-listing">
+                            <table class="points-listing" id="points-listing">
                                 <thead>
                                     <tr class="first">
                                         <th>#</th>
@@ -73,9 +73,7 @@
                             <div class="techlinqs-pagination text-center">
                                 <ul class="pagination">
                                     <li>
-                                        <span class="page-numbers current" aria-current="page">1</span>
-                                        <a href="" class="page-numbers">2</a>
-                                        <a href="" class="next page-numbers">Siguiente <i class="fa fa-angle-right"></i></a>
+                                        <?php echo $this->pagination->create_links(); ?>
                                     </li>
                                 </ul>
                             </div>
@@ -118,6 +116,28 @@
 </div>
 
 <script>
+    function load_members(query)
+    {
+        $.ajax({
+            type:"post",
+            url:"index.php?/ajax/socios",
+            data:{query:query},
+            success:function(data){
+                console.log(data);
+                $('#points-listing').html(data);
+            }
+        })
+    }
+    $('#memberSearch').keyup(function(){
+            var search = $(this).val();
+            console.log(search)
+            if(search != '')
+            {
+                load_members(search);
+            }else{
+                load_members();
+            }
+    })
     function fillModal(id, nombre)
     {   
         $("#modalName").html('Desea eliminar al socio ' + nombre);

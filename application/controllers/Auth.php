@@ -166,7 +166,7 @@ class Auth extends MY_Controller{
         // }
 
         $limit_per_page = 10;
-        $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+        //$start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
         $total_record = $this->auth_model->get_total();
         $this->auth_model->limit($limit_per_page);
         $this->auth_model->offset($offset);
