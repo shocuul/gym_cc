@@ -52,9 +52,9 @@
                                         <td><?php echo htmlspecialchars($member->estatura, ENT_QUOTES, 'UTF-8'); ?> m.</td>
                                         <td>
                                             <div class="pro-share" style="margin:0;">
-                                                <a href="">
+                                                <!-- <a href="">
                                                     <i class="fa fa-key"></i>
-                                                </a>
+                                                </a> -->
                                                 <?php  echo anchor("socio/detalles/" . $member->id,'<i class="fa fa-user-circle"></i>');?> 
                                                 <!-- <a href="">
                                                     <i class="fa fa-user-circle"></i>

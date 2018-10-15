@@ -64,9 +64,6 @@
                                         </td>
                                         <td>
                                             <div class="pro-share" style="margin:0;">
-                                                <a href="">
-                                                    <i class="fa fa-user-circle"></i>
-                                                </a>
                                                 <?php echo anchor("usuarios/editar_usuario/" . $user->id, '<i class="fa fa-edit"></i>'); ?>
                                                 <!-- <a href="">
                                                     <i class="fa fa-trash"></i>

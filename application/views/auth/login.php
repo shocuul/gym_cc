@@ -12,29 +12,46 @@
     <link href="css/color.css" rel="stylesheet">
     <link href="css/responsive.css" rel="stylesheet">
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/owl.carousel.min.css" rel="stylesheet">
     <link href="css/font-awesome.min.css" rel="stylesheet">
-    <link href="css/prettyPhoto.css" rel="stylesheet">
+    <link href="css/gym.css" rel="stylesheet">
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body class="text-center">
+<body class="align">
     <?php echo $message; ?>
-    
-        <img src="images/logo_login.jpg" alt="" class="mb-4">
-        <h2 class="section-title">
-            Iniciar Sesion
-        </h2>
-        <?php echo form_open('iniciar_sesion','class="form-signin"'); ?>
-        <label for="inputUsuario" class="sr-only">Nombre de usuario</label>
-        <?php echo form_input($usuario); ?>
-        <label for="inputPassword" class="sr-only">Contraseña</label>
-        <?php echo form_input($password); ?>
-
-        <?php echo form_submit('submit','Iniciar Sesion','class="btn btn-lg btn-primary btn-block"'); ?>
+    <div class="grid">
+    <?php echo form_open('iniciar_sesion','class="form login"'); ?>
+    <header class="login__header">
+        <h3 class="login__title">Iniciar Sesion</h3>
+    </header>
+    <div class="login__body">
+        <div class="form_field">
+            <?php echo form_input($usuario); ?>
+        </div>
+        <div class="form__field">
+            <?php echo form_input($password); ?>
+        </div>
+    </div>
+    <footer class="login__footer">
+    <?php echo form_submit('submit','Iniciar Sesion','class=""'); ?>
+    </footer>
     <?php echo form_close(); ?>
+    </div>
+    
+        <!-- <img src="images/logo_login.jpg" alt="" class="mb-4">
+        <h2 class="section-title">
+            
+        </h2>
+        
+        <label for="inputUsuario" class="sr-only">Nombre de usuario</label>
+        
+        <label for="inputPassword" class="sr-only">Contraseña</label>
+         -->
+
+       
+    
 </body>
 
 

@@ -7,7 +7,7 @@
                     </div>        
                     <div class="col-xs-6 col-md-2">
                         <div class="pull-right">
-                        <?php echo anchor('members','Cancelar','class=detail-btn'); ?>
+                        <?php echo anchor('socios','Cancelar','class=detail-btn'); ?>
                         <!-- <a href="" class="detail-btn">Cancelar</a> -->
                         </div>
                         

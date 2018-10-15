@@ -79,8 +79,8 @@ class Member extends MY_Controller
             <td>'. htmlspecialchars($member->estatura, ENT_QUOTES, 'UTF-8').'m.</td>
             <td>
             <div class="pro-share" style="margin:0;">
-                '. anchor("socio/detalles". $member->id, '<i class="fa fa-user-circle"></i>').
-                anchor("socios/editar_socio" .$member->id,'<i class="fa fa-edit"></i>')
+                '. anchor("socio/detalles/". $member->id, '<i class="fa fa-user-circle"></i>').
+                anchor("socios/editar_socio/" .$member->id,'<i class="fa fa-edit"></i>')
             .'
             <a data-toggle="modal" href="#deleteModal" onClick="fillModal(\''.$member->id.'\',\''.$member->nombre.' '.$member->paterno.' '.$member->materno.'\')"><i class="fa fa-trash"></i></a>
             </div>
@@ -106,8 +106,6 @@ class Member extends MY_Controller
     public function edit_member($id)
     {
         $member = $this->member_model->member($id)->row();
-
-        var_dump($member);
 
         $this->form_validation->set_rules('nombre','Nombre','trim|required');
         $this->form_validation->set_rules('paterno','Apellido Paterno','trim|required');
@@ -493,8 +491,9 @@ class Member extends MY_Controller
         redirect('socio/detalles/'.$member_id,'refresh');
     }
 
-    public function add_metric($id)
+    public function add_metric($member_id, $current_id)
     {
+
         // $metric_data = array(
         //     'mme' => (float) $this->input->post('mme'),
         //     'mgc' => (float) $this->input->post('mgc'),
@@ -515,49 +514,200 @@ class Member extends MY_Controller
         $this->form_validation->set_rules('rcc','Relación Cintura-Cadera','trim|required');
         $this->form_validation->set_rules('mb','Metabolismo Basal','trim|required');
 
-        if($id != $this->input->post('id'))
+        if($member_id != $this->input->post('member_id') && $current_id != $this->input->post('current_id'))
         {
             show_error('Este formulario no pasó nuestras pruebas de seguridad.');
         }
 
         if($this->form_validation->run() === TRUE)
         {
-            $user_id = $this->input->post('id');
+            //$user_id = $this->input->post('id');
+            $image_path = realpath(APPPATH . '../images');
+            $config['upload_path']          = $image_path;
+            $config['allowed_types']        = 'gif|jpg|png';
+            $config['max_size']             = 3000;
+            // $config['max_width']            = 2000;
+            // $config['max_height']           = 768;
+            $this->load->library('upload',$config);
 
-            $metric_data = array(
-                'mme' => (float) $this->input->post('mme'),
-                'mgc' => (float) $this->input->post('mgc'),
-                'act' => (float) $this->input->post('act'),
-                'imc' => (float) $this->input->post('imc'),
-                'pmc' => (float) $this->input->post('pmc'),
-                'rcc' => (float) $this->input->post('rcc'),
-                'mb' => (float) $this->input->post('mb'),
-            );
+            if(! $this->upload->do_upload('imagen')){
+                $this->session->set_flashdata('message', $this->upload->display_errors());
+                redirect('socio/detalles/'.$member_id.'/plan/'.$current_id,'refresh');
+            }
+            else
+            {
+                $file_data = $this->upload->data();
+                $imagen = $file_data['file_name'];
+                $metric_data = array(
+                    'mme' => (float) $this->input->post('mme'),
+                    'mgc' => (float) $this->input->post('mgc'),
+                    'act' => (float) $this->input->post('act'),
+                    'imc' => (float) $this->input->post('imc'),
+                    'pmc' => (float) $this->input->post('pmc'),
+                    'rcc' => (float) $this->input->post('rcc'),
+                    'mb' => (float) $this->input->post('mb'),
+                );
+            }
+           
         }
 
-        if($this->form_validation->run() === TRUE && $this->member_model->add_metric($user_id , $metric_data))
+        if($this->form_validation->run() === TRUE && $this->member_model->add_metric($member_id, $current_id , $metric_data, $imagen))
         {
             $this->session->set_flashdata('message', $this->member_model->messages());
-            redirect('socio/detalles/'.$id,'refresh');
+            redirect('socio/detalles/'.$member_id.'/plan/'.$current_id,'refresh');
         }else
         {
             $this->session->set_flashdata('message',(validation_errors() ? validation_errors('<div class="alert alert-danger" role="alert">','</div>') : ($this->auth_model->errors() ? $this->auth_model->errors() : $this->session->flashdata('message'))));
-            redirect('socio/detalles/'.$id,'refresh');
+            redirect('socio/detalles/'.$member_id.'/plan/'.$current_id,'refresh');
         }
         
     }
 
-    public function detail($id)
+    public function profile($member_id)
     {
-        $this->data['member'] = $this->member_model->member($id)->row();
 
-        $this->data['plans'] = $this->plan_model->plans()->result();
+        $this->data['member'] = $this->member_model->member($member_id)->row();
+        if(isset($_POST) && !empty($_POST))
+        {
+            $image_path = realpath(APPPATH . '../images');
+            $config['upload_path']          = $image_path;
+            $config['allowed_types']        = 'gif|jpg|png';
+            $config['max_size']             = 3000;
+            $config['encrypt_name'] = TRUE;
+            // $config['max_width']            = 2000;
+            // $config['max_height']           = 768;
+            $this->load->library('upload',$config);
+            if(! $this->upload->do_upload('imagen')){
+                $this->session->set_flashdata('message', $this->upload->display_errors('<div class="alert alert-danger" role="alert"><ul><li>','</li></ul></div>'));
+                redirect(uri_string(),'refresh');
+            }
+            else{
+                $file_data = $this->upload->data();
+                $imagen = $file_data['file_name'];
+                $data = array(
+                    'path' => $imagen,
+                    'avatar' => ($this->input->post('avatar')) ? 1 : 0
+                );
+                if($this->member_model->add_image($member_id, $data))
+                {
+                    $this->session->set_flashdata('message', $this->member_model->messages());
+                    redirect(uri_string(),'refresh');
+                }else
+                {
+                    $this->session->set_flashdata('message', $this->member_model->errors());
+                    redirect(uri_string(),'refresh');
+                }
 
+            }
+            
+
+        }
         $this->data['csrf'] = $this->_get_csrf_nonce();
+        //$this->member_model->routines($current_plan->id)->result();
+        $this->data['subscribe_plans'] = $this->member_model->get_member_plans($member_id)->result();
+        
+        foreach($this->data['subscribe_plans'] as $k => $plan){
+            $this->data['subscribe_plans'][$k]->current_routines = $this->member_model->routines($plan->id, FALSE)->result();
+        }
 
+        foreach($this->data['subscribe_plans'] as $k => $plan){
+            $this->data['subscribe_plans'][$k]->completed_routines = $this->member_model->routines($plan->id, TRUE)->result();
+        }
+
+        $this->data['imagen'] = array(
+            'name' => 'imagen',
+            'id' => 'imagen',
+            'class' => 'form-control-file'
+        );
+
+        $this->data['avatar'] = array(
+            'name' => 'avatar',
+            'id' => 'avatar',
+            'value' => 'avatar',
+            'checked' => FALSE,
+            'class' => 'form-check-input'
+        );
+
+        $this->data['gallery'] = $this->member_model->gallery($member_id)->result();
+        $this->data['assists'] = $this->db->get_where('asistencias',array('usuario_id'=>$member_id))->result();
+        //echo $this->db->last_query();
+        //var_dump($this->data['subscribe_plans']);
+        $this->data['message'] = ($this->member_model->errors() ? $this->member_model->errors() : $this->session->flashdata('message'));
+        $this->_render('members/profile', $this->data);
+
+    }
+
+    public function gallery($member_id)
+    {
+
+    }
+
+    public function register_assists($member_id)
+    {
+        if($this->member_model->register_assists($member_id))
+        {
+            $this->session->set_flashdata('message', $this->member_model->messages());
+            redirect('perfil/'.$member_id, 'refresh');
+        }else
+        {
+            $this->session->set_flashdata('message', $this->member_model->errors());
+            redirect('perfil/'.$member_id, 'refresh');
+        }
+    }
+
+    public function routine_complete($member_id, $routine_id)
+    {
+        if($this->member_model->routine_completed($routine_id))
+        {
+            $this->session->set_flashdata('message', $this->member_model->messages());
+            redirect('perfil/'.$member_id, 'refresh');
+        }else
+        {
+            $this->session->set_flashdata('message', $this->member_model->errors());
+            redirect('perfil/'.$member_id, 'refresh');
+        }
+    }
+
+    public function manage_plan($member_id, $plan_id)
+    {
+        // echo $member_id;
+        // echo $plan_id;
+        $current_plan = $this->member_model->get_plan_users_id($member_id, $plan_id)->row();
+        $this->form_validation->set_rules('instruccion','Instruccion','required');
+        if(isset($_POST) && !empty($_POST))
+        {
+            if($this->_valid_csrf_nonce() === FALSE)
+            {
+                show_error('Este formulario no pasó nuestras pruebas de seguridad.');
+            }
+            if($this->form_validation->run() === TRUE)
+            {
+                $rutine_id = $this->input->post('rutine_id');
+                $instruccion = $this->input->post('instruccion');
+
+                if($this->member_model->add_routine($current_plan->id, $rutine_id, $instruccion))
+                {
+                    $this->session->set_flashdata('message', $this->member_model->messages());
+                    redirect(uri_string(),'refresh');
+                }else
+                {
+                    $this->session->set_flashdata('message', $this->member_model->errors());
+                    redirect(uri_string(),'refresh');
+                }
+            }
+            //echo $this->input->post('ejercicio');
+            //var_dump($this->plan_model->routine($this->input->post('rutine_id'))->row());
+            //echo $this->input->post('instruccion');
+            //echo $this->input->post('rutine_id');
+        }
+
+        $this->data['current_plan'] = $current_plan;
+        $this->data['member_id'] = $member_id;
+        $this->data['routines'] = $this->plan_model->routines($plan_id)->result();
+        $this->data['sub_rutines'] = $this->member_model->routines($current_plan->id)->result();
+        $this->data['sub_rutines_completed'] = $this->member_model->routines($current_plan->id, TRUE)->result();
+        $this->data['csrf'] = $this->_get_csrf_nonce();
         $this->data['message'] = (validation_errors() ? validation_errors() : ($this->member_model->errors() ? $this->member_model->errors() : $this->session->flashdata('message')));
-       
-        $this->data['subscribe_plans'] = $this->member_model->get_member_plans($id)->result();
         $this->data['mme'] = array(
             'name' => 'mme',
             'id' => 'mme',
@@ -614,9 +764,111 @@ class Member extends MY_Controller
             'class' => 'form-control'
         );
 
-        $this->data['plan_data'] =  $this->plan_model->plans()->has_dropdown('nombre');
+        $this->data['imagen'] = array(
+            'name' => 'imagen',
+            'id' => 'imagen',
+            'class' => 'form-control-file'
+        );
+
+        
+        $this->_render('members/manage_plan', $this->data);
+        
+    }
+
+    public function detail($id)
+    {
+        $this->data['member'] = $this->member_model->member($id)->row();
+
+        $this->data['subscribe_plans'] = $this->member_model->get_member_plans($id)->result();
+
+        //$this->data['avalible_plans'] = $this->plan_model->avalible_plans($this->data['subscribe_plans'])->result();
+
+        $this->data['plan_data'] =  $this->plan_model->available_plans($this->data['subscribe_plans'])->has_dropdown('nombre');
+
+        $this->data['csrf'] = $this->_get_csrf_nonce();
+
+        $this->data['message'] = (validation_errors() ? validation_errors() : ($this->member_model->errors() ? $this->member_model->errors() : $this->session->flashdata('message')));
+       
+        
+        $this->data['mme'] = array(
+            'name' => 'mme',
+            'id' => 'mme',
+            'type' => 'text',
+            'value' =>'',
+            'class' => 'form-control'
+        );
+
+        $this->data['mgc'] = array(
+            'name' => 'mgc',
+            'id' => 'mgc',
+            'type' => 'text',
+            'value' => '',
+            'class' => 'form-control'
+        );
+
+        $this->data['act'] = array(
+            'name' => 'act',
+            'id' => 'act',
+            'type' => 'text',
+            'value' => '',
+            'class' => 'form-control'
+        );
+
+        $this->data['imc'] = array(
+            'name' => 'imc',
+            'id' => 'imc',
+            'type' => 'text',
+            'value' => '',
+            'class' => 'form-control'
+        );
+
+        $this->data['pmc'] = array(
+            'name' => 'pmc',
+            'id' => 'pmc',
+            'type' => 'text',
+            'value' => '',
+            'class' => 'form-control'
+        );
+
+        $this->data['rcc'] = array(
+            'name' => 'rcc',
+            'id' => 'rcc',
+            'type' => 'text',
+            'value' =>'',
+            'class' => 'form-control'
+        );
+
+        $this->data['mb'] = array(
+            'name' => 'mb',
+            'id' => 'mb',
+            'type' => 'text',
+            'value' => '',
+            'class' => 'form-control'
+        );
+
+        
 
         $this->_render('members/details_member', $this->data);
+    }
+
+    public function delete_plan(){
+        if($this->_valid_csrf_nonce() === FALSE)
+        {
+            show_error('Este formulario no pasó nuestras pruebas de seguridad.');
+        }
+
+        $current_id = $this->input->post('current_id');
+
+        if($this->member_model->delete_subscribe($current_id))
+        {
+            $this->session->set_flashdata('message', $this->member_model->messages());
+			$this->redirectUser();
+        }
+        else
+        {
+            $this->session->set_flashdata('message', $this->member_model->errors());
+			$this->redirectUser();
+        }
     }
 
     public function delete_member()
@@ -630,17 +882,17 @@ class Member extends MY_Controller
 
         if($this->member_model->delete_user($user_id))
         {
-            $this->session->set_flashdata('message', $this->auth_model->messages());
+            $this->session->set_flashdata('message', $this->member_model->messages());
 			$this->redirectUser();
         }
         else
         {
-            $this->session->set_flashdata('message', $this->auth_model->errors());
+            $this->session->set_flashdata('message', $this->member_model->errors());
 			$this->redirectUser();
         }
     }
 
-    function generate_chart_data($id)
+    public function generate_chart_data($id)
     {   
         $metrics = $this->member_model->get_user_metrics($id);
         $newData = array();
@@ -660,7 +912,7 @@ class Member extends MY_Controller
                     ->set_output(json_encode($newData));
     }
 
-    function generate_login_info()
+    public function generate_login_info()
     {
         $nombre = $this->input->post('nombre');
         $materno = $this->input->post('materno');

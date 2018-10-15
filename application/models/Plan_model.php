@@ -96,7 +96,13 @@ class Plan_model extends My_Model
 		$this->response = $this->db->get_where($this->tables['routines'], array($this->join['plans'] => $plan_id));
 
         return $this;
-    }
+	}
+	
+	public function routine($id)
+	{
+		$this->response = $this->db->get_where($this->tables['routines'], array('id'=>$id));
+		return $this;
+	}
 
 	public function add_routine($plan_id, $routine_data)
 	{
@@ -120,6 +126,13 @@ class Plan_model extends My_Model
         return TRUE;
 	}
 
+	public function available_plans($subscribed_plans){
+		foreach($subscribed_plans as $plan){
+			$this->db->not_like('id',$plan->id);
+		}
+		$this->plans();
+		return $this;
+	}
 
     public function plans()
     {

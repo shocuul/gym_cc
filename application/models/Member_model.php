@@ -14,6 +14,129 @@ class Member_model extends My_Model
 				->get($this->tables['users_plans']);
 	}
 
+	
+
+	public function add_routine($current, $rutina_id, $instruccion){
+		$this->load->helper('date');
+		$this->db->trans_begin();
+		$data = array(
+			'realizado' => 0,
+			'fecha_realizacion' => NULL,
+			'fecha_creacion' => mdate('%Y-%m-%d %H:%i:%s', now()),
+			'instruccion' => $instruccion,
+			$this->join['rutines'] => $rutina_id,
+			$this->join['users_plans'] => $current
+		);
+		$this->db->insert($this->tables['users_routines'], $this->_filter_data($this->tables['users_routines'],$data));
+
+		//echo $this->db->last_query();
+		if($this->db->trans_status() === FALSE)
+		{
+			$this->db->trans_rollback();
+			$this->set_error('Error al registrar la rutina');
+			return FALSE;
+		}
+
+		$this->db->trans_commit();
+
+		$this->set_message('Rutina registrada con exito.');
+
+        return TRUE;
+
+
+	}
+	public function get_plan_users_id($member_id, $plan_id){
+		return $this->db->select($this->tables['users_plans'].'.id, '.$this->tables['users'].'.nombre, '.$this->tables['users'].'.paterno, '.$this->tables['users'].'.materno, '.$this->tables['plans'].'.nombre as nombre_plan')
+					   ->where($this->join['users'],$member_id)
+					   ->where($this->join['plans'],$plan_id)
+					   ->join($this->tables['users'], $this->tables['users_plans'].'.'.$this->join['users'].'='.$this->tables['users'].'.id')
+					   ->join($this->tables['plans'], $this->tables['users_plans'].'.'.$this->join['plans'].'='.$this->tables['plans'].'.id')
+					   ->get($this->tables['users_plans']);
+	}
+
+	public function routines($current,$completed = FALSE)
+	{
+		return $this->db->select($this->tables['users_routines'].'.id, '.$this->tables['users_routines'].'.*, '.$this->tables['routines'].'.ejercicio, '.$this->tables['routines'].'.imagen')
+						->where($this->join['users_plans'],$current)
+						->where('realizado',($completed) ? 1 : 0)
+						->join($this->tables['routines'],$this->tables['users_routines'].'.'.$this->join['rutines'].'='.$this->tables['routines'].'.id')
+						->get($this->tables['users_routines']);
+	}
+
+	public function gallery($member_id){
+		return $this->db->get_where($this->tables['images'], array($this->join['users'] => $member_id));
+	}
+
+	public function add_image($member_id, $data)
+	{
+		$this->db->trans_begin();
+		$data[$this->join['users']] = $member_id;
+		$data = $this->_filter_data($this->tables['images'], $data);
+		$this->db->insert($this->tables['images'], $data);
+
+		if($this->db->trans_status() === FALSE){
+			$this->db->trans_rollback();
+			$this->set_error('No se ha podido guardar la imagen');
+            return FALSE;
+		}
+		$this->db->trans_commit();
+		$this->set_message('Imagen guardada con exito.');
+        return TRUE;
+	}
+
+	public function register_assists($member_id)
+	{
+		$this->load->helper('date');
+		$this->db->trans_begin();
+		$data = array(
+			'fecha' => mdate('%Y-%m-%d %H:%i:%s', now()),
+			$this->join['users'] => $member_id
+		);
+
+		$data = $this->_filter_data($this->tables['assists'], $data);
+
+		$this->db->insert($this->tables['assists'], $data);
+
+		if($this->db->trans_status() === FALSE){
+			$this->db->trans_rollback();
+			$this->set_error('No se ha podido completar la rutina');
+            return FALSE;
+		}
+		$this->db->trans_commit();
+		$this->set_message('Asistencia registrada con exito.');
+        return TRUE;
+        
+	}
+	public function routine_completed($routine_id)
+	{
+		$this->load->helper('date');
+		$this->db->trans_begin();
+
+		$data = array(
+			'fecha_realizacion' => mdate('%Y-%m-%d %H:%i:%s', now()),
+			'realizado' => 1
+		);
+
+		$data = $this->_filter_data($this->tables['users_routines'], $data);
+
+		$this->db->update($this->tables['users_routines'], $data, array('id' => $routine_id));
+
+		if($this->db->trans_status() === FALSE)
+        {
+            $this->db->trans_rollback();
+
+            $this->set_error('No se ha podido completar la rutina');
+
+            return FALSE;
+        }
+
+        $this->db->trans_commit();
+
+        $this->set_message('Rutina completada con exito.');
+
+        return TRUE;
+	}
+
 	public function members()
 	{
 		if(isset($this->_select) && !empty($this->_select))
@@ -65,8 +188,10 @@ class Member_model extends My_Model
 			$this->_order = NULL;
 		}
 		
-		$this->db->from('usuarios');
-		$this->db->join('socios', $this->tables['members'] . '.usuario_id = ' . $this->tables['users'] . '.id');
+		// $this->db->from($this->tables['users']);
+		// $this->db->join($this->tables['members'], $this->tables['members'] . '.usuario_id = ' . $this->tables['users'] . '.id');
+		$this->db->from($this->tables['members']);
+		$this->db->join($this->tables['users'], $this->tables['users'].'.id = ' . $this->tables['members'].'.'.$this->join['users']);
 
 
 		$this->response = $this->db->get();
@@ -115,7 +240,7 @@ class Member_model extends My_Model
 
 	}
 
-	public function add_metric($user_id, $metric_data)
+	public function add_metric($user_id, $current_id, $metric_data, $imagen)
 	{
 		$this->load->helper('date');
 
@@ -123,6 +248,13 @@ class Member_model extends My_Model
 		$metric_data[$this->join['users']] = $user_id;
 		$metric_data['fecha_creacion'] = mdate('%Y-%m-%d %H:%i:%s', now());
 		$this->db->insert($this->tables['reading'], $this->_filter_data($this->tables['reading'],$metric_data));
+		$metric_id = $this->db->insert_id($this->tables['reading'] . '_id_seq');
+		$user_metric_data = array(
+			'imagen' => $imagen,
+			$this->join['users_plans'] => $current_id,
+			$this->join['metrics'] => $metric_id
+		);
+		$this->db->insert($this->tables['users_metrics'],$this->_filter_data($this->tables['users_metrics'],$user_metric_data));
 		if($this->db->trans_status() === FALSE)
 		{
 			$this->db->trans_rollback();
@@ -140,7 +272,7 @@ class Member_model extends My_Model
 
 	public function member($id)
 	{
-		$id = isset($id) ? $id : $this->session->userdata('user_id');
+		//$id = isset($id) ? $id : $this->session->userdata('user_id');
 
 		$this->limit(1);
 		$this->order_by($this->tables['members'].'.id','desc');
@@ -180,6 +312,23 @@ class Member_model extends My_Model
 		$id = isset($id) ? $id : $this->session->userdata('user_id');
 		$this->db->order_by('fecha_creacion','DESC');
 		return $this->db->get_where($this->tables['reading'],array($this->join['users'] => $id),'3')->result();
+	}
+
+	public function delete_subscribe($current){
+		$this->db->trans_begin();
+		$this->db->delete($this->tables['users_plans'], array('id' => $id));
+		if($this->db->trans_status() === FALSE)
+		{
+			$this->db->trans_rollback();
+            $this->set_error('No se ha podido eliminar la subscripcion');
+            return FALSE;
+		}
+
+		$this->db->trans_commit();
+
+        $this->set_message('Subscripcion eliminada');
+
+        return TRUE;
 	}
 
 	public function delete_member($id)

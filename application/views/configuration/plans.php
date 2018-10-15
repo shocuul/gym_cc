@@ -82,7 +82,7 @@
             </div>
         </section>
         <!--League Schedule Slider End-->
-<div class="modal fade" id="plansAdd" tabindex="-1" role="dialog" aria-labelledby="plansFormModalLabel" aria-hidden="true">
+<div class="modal fade" id="plansAdd" tabindex="-1" role="dialog" aria-labelledby="plansFormModalLabel" aria-hidden="true" style="z-index:200001;">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -119,7 +119,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="plansEdit" tabindex="-1" role="dialog" aria-labelledby="plansFormModalLabel" aria-hidden="true">
+<div class="modal fade" id="plansEdit" tabindex="-1" role="dialog" aria-labelledby="plansFormModalLabel" aria-hidden="true" style="z-index:200001;">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -154,7 +154,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="plansDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="plansDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index:200001;">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">

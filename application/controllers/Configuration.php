@@ -37,11 +37,11 @@ class Configuration extends MY_Controller{
 
                 if($this->plan_model->create($plan_data)){
                     $this->session->set_flashdata('message', $this->plan_model->messages());
-                    //redirect('configuracion/planes','refresh');
+                    redirect('configuracion/planes','refresh');
                 }else
                 {
                     $this->session->set_flashdata('message',(validation_errors() ? validation_errors('<div class="alert alert-danger" role="alert">','</div>') : ($this->plan_model->errors() ? $this->plan_model->errors() : $this->session->flashdata('message'))));
-                    //redirect('configuracion/planes','refresh');
+                    redirect('configuracion/planes','refresh');
                 }
             }
    

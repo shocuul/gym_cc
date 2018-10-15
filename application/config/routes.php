@@ -49,30 +49,47 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
+
+//USUARIOS
 $route['usuarios/nuevo'] = 'auth/create_user';
 $route['usuarios/editar_usuario/(:num)'] = 'auth/edit_user/$1';
 $route['usuarios/eliminar']['post'] = 'auth/delete_user';
 $route['usuarios']['get'] = 'auth/users';
 $route['usuarios/(:num)']['get'] = 'auth/users/$1';
-$route['ajax/generate_login_info']['post'] = 'member/generate_login_info';
-$route['ajax/generate_chart_data/(:num)']['get'] = 'member/generate_chart_data/$1';
-$route['ajax/usuarios'] = 'auth/ajax_users';
-$route['ajax/socios'] = 'member/ajax_members';
 $route['usuarios/nuevo'] = 'member/create_member';
 $route['usuarios/editar_usuario/(:num)'] = 'auth/edit_user/$1';
 $route['usuarios/eliminar']['post'] = 'auth/delete_user';
+
+//PERFIL
+$route['perfil/(:num)'] = 'member/profile/$1';
+$route['perfil/(:num)/realizar/(:num)'] = 'member/routine_complete/$1/$2';
+$route['perfil/(:num)/asistencia'] = 'member/register_assists/$1';
+
+//SOCIOS
+$route['socio/detalles/(:num)'] = 'member/detail/$1';
+$route['socio/detalles/(:num)/plan/(:num)'] = 'member/manage_plan/$1/$2';
+$route['socio/detalles/(:num)/plan/(:num)/medidas']['post'] = 'member/add_metric/$1/$2';
+$route['socio/detalles/(:num)/plan'] = 'member/add_plan/$1';
+$route['socios']['get'] = 'member';
 $route['socios/eliminar']['post'] = 'member/delete_member';
 $route['socios/nuevo'] = 'member/create_member';
 $route['socios/editar_socio/(:num)'] = 'member/edit_member/$1';
-$route['socio/detalles/(:num)'] = 'member/detail/$1';
+
+
+//AJAX
+$route['ajax/generate_login_info']['post'] = 'member/generate_login_info';
+$route['ajax/generate_chart_data/(:num)'] = 'member/generate_chart_data/$1';
+$route['ajax/usuarios'] = 'auth/ajax_users';
+$route['ajax/socios'] = 'member/ajax_members';
+
+//PLANES
 $route['configuracion/planes'] = 'configuration/plans';
 $route['configuracion/plan/(:num)'] = 'configuration/plan/$1';
 $route['configuracion/plan/editar'] = 'configuration/edit_plan';
 $route['configuracion/plan/(:num)/rutina']['post'] = 'configuration/add_routine/$1'; 
 $route['plan/eliminar'] = 'configuration/delete_plan';
-$route['socio/detalles/(:num)/medidas']['post'] = 'member/add_metric/$1';
-$route['socio/detalles/(:num)/plan'] = 'member/add_plan/$1';
-$route['socios']['get'] = 'member';
+
+//AUTH
 $route['iniciar_sesion'] = 'auth/login';
 $route['cerrar_sesion'] = 'auth/logout';
 $route['default_controller'] = 'auth/users';

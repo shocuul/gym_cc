@@ -2,12 +2,12 @@
 <section class="news-section-wrapper">
             <div class="container">
                 <div class="row">
-                    <div class="col-xs-12 col-md-4">
+                    <div class="col-xs-12 col-md-10">
                     <h2 class="section-title"> Detalles del Socio </h2>
                     </div>
-                    <div class="col-md-6">
+                    <!-- <div class="col-md-6">
                         <a data-toggle="modal" href="#plansAll" class="detail-btn">Inscribir a un plan</a>
-                    </div>        
+                    </div>         -->
                     <div class="col-xs-6 col-md-2">
                         <div class="pull-right">
                         <!-- <a href="" class="detail-btn">Volver</a> -->
@@ -22,14 +22,13 @@
                                 <div class="col-md-9 pull-left">
                                     <!-- <?php // var_dump($member); ?> -->
                                     <?php echo $message; ?>
-                                    <?php var_dump($subscribe_plans); ?>
                                    <div class="row">
                                        <div class="col-md-4">
                                            <div class="pro-large-img" style="max-width:250px;">
                                                <?php if(isset($avatar)): ?>
                                                <img src="images/member1.jpg" class="pro-large-img" alt="Member1">
                                                 <?php else: ?>
-                                                <img src="images/avatar.png" class="pro-large-img" alt="" style="max-width:100%;">
+                                                <img src="images/avatar-men.jpg" class="pro-large-img" alt="" style="max-width:100%;">
                                                 <?php endif; ?>
                                            </div>
                                        </div>
@@ -49,20 +48,20 @@
                                                    <strong>Estatura: <?php echo htmlspecialchars($member->estatura, ENT_QUOTES, 'UTF-8'); ?>m.</strong>
                                                </div>
                                            </div>
-                                           <?php echo form_button('add_reading','Add Mediciones','data-toggle="modal" data-target="#addreadingModal" class="submit"'); ?>
+                                           <?php //echo form_button('add_reading','Add Mediciones','data-toggle="modal" data-target="#addreadingModal" class="submit"'); ?>
                                        </div>
                                        <div class="clearfix"></div>
                                        <div class="pro-tabs col-md-12">
 
                                     <!-- Nav tabs -->
                                     <ul class="nav nav-tabs" role="tablist">
-                                        <li role="presentation" class="active"><a href="#Rutina" aria-controls="Description" role="tab" data-toggle="tab">Rutina</a></li>
-                                        <li role="presentation"><a href="#Registros" aria-controls="Reviews" role="tab" data-toggle="tab">Registros</a></li>
+                                        <!-- <li role="presentation" ><a href="#Rutina" aria-controls="Description" role="tab" data-toggle="tab">Rutina</a></li> -->
+                                        <li role="presentation" class="active"><a href="#Registros" aria-controls="Reviews" role="tab" data-toggle="tab">Registros</a></li>
                                     </ul>
 
                                     <!-- Tab panes -->
                                     <div class="tab-content">
-                                        <div role="tabpanel" class="tab-pane active" id="Rutina">
+                                        <!-- <div role="tabpanel" class="tab-pane active" id="Rutina">
                                             <p>Your Pittsburgh Penguins are hitting the ice ready to make a run for the cup this season! Show off your dedication to the rock star team you love to support in this 2017 Stanley Cup Playoffs Participant T-Shirt. This awesome top features invigorating graphics that are sure to push your Pittsburgh Penguins spirit to its full potential.</p>
 
                                             <h6>Detail:</h6>
@@ -76,8 +75,8 @@
                                                 <li> Imported</li>
                                             </ul>
 
-                                        </div>
-                                        <div role="tabpanel" class="tab-pane" id="Registros">
+                                        </div> -->
+                                        <div role="tabpanel" class="tab-pane active" id="Registros">
                                             <div id="chart_div" style="width: 900px; height: 500px;"></div>
 
                                                 
@@ -104,15 +103,15 @@
                                     </div>
                                     <?php else: ?>
                                     <div class="alert alert-info" role="alert">
-                                    No hay ningun plan registrado en el sistema.
-                                    <?php echo anchor('configuracion/planes','<strong>Registra uno primero</strong>'); ?>
+                                        No hay un plan disponible intenta
+                                    <?php echo anchor('configuracion/planes','<strong>Registrando uno.</strong>'); ?>
                                     </div>
                                     <?php endif?>
                                         <?php if(!empty($subscribe_plans)): ?>
                                         <div class="widget" style="margin-bottom:1em;">
                                         <h3>Planes Registrados</h3>
                                         <?php foreach($subscribe_plans as $plan) : ?>
-                                        <a href="<?php 'index.php?' .'/plan/' . $plan->plan_id ?>">
+                                        <a href="<?php echo base_url().'index.php?/socio/detalles/' . $member->id .'/plan/' . $plan->plan_id ?>">
                                         <figure class="pl-banner">
                                             <div class="image-min">
                                                 <img src="images/fitness.jpg" alt="fitness">
@@ -256,7 +255,7 @@
     function drawVisualization() {
         $.ajax({
             type:"get",
-            url:"index.php?ajax/generate_chart_data/<?php echo $member->id ?>",
+            url:"index.php?/ajax/generate_chart_data/<?php echo $member->id ?>",
             success:function(response){
                 //console.log(response);
                 var data = google.visualization.arrayToDataTable(response);
