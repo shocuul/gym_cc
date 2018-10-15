@@ -89,6 +89,9 @@ $route['configuracion/plan/editar'] = 'configuration/edit_plan';
 $route['configuracion/plan/(:num)/rutina']['post'] = 'configuration/add_routine/$1'; 
 $route['plan/eliminar'] = 'configuration/delete_plan';
 
+//CONFIGURACION
+$route['configuracion/permisos'] = 'configuration/permissions';
+
 //AUTH
 $route['iniciar_sesion'] = 'auth/login';
 $route['cerrar_sesion'] = 'auth/logout';

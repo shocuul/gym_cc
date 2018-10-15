@@ -228,4 +228,37 @@ class Configuration extends MY_Controller{
         }
     }
 
+    public function permissions()
+    {
+        $permissions = array(
+            'admin' => array('users' => TRUE, 'members' => TRUE, 'plans' => TRUE, 'config' => TRUE),
+            'member' => array('perfil' => TRUE)
+        );
+
+        // if($this->has_permissions('admin','users'))
+        // {
+        //     echo "tengo permisios";
+        // }else{
+        //     echo "no tengo permisos";
+        // }
+
+        $sections = array('users' => TRUE, 'profile' => TRUE, 'members' => FALSE, 'plans' => FALSE, 'config' => FALSE, 'stats' => FALSE);
+        $permissions['empleado'] = $sections;
+        //var_dump($permissions);
+        // $old = json_encode($sections);
+        // $new = json_decode($old, true);
+        $this->delete_permissions('empleado');
+        //$data = array('users' => TRUE, 'profile' => FALSE, 'members' => TRUE, 'plans' => TRUE, 'config' => TRUE, 'stats' => TRUE);
+        //$this->update_permissions('admin',$data);
+        //var_dump($permissions);
+
+
+        
+
+
+
+
+
+    }
+
 }
