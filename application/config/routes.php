@@ -81,12 +81,14 @@ $route['ajax/generate_login_info']['post'] = 'member/generate_login_info';
 $route['ajax/generate_chart_data/(:num)'] = 'member/generate_chart_data/$1';
 $route['ajax/usuarios'] = 'auth/ajax_users';
 $route['ajax/socios'] = 'member/ajax_members';
+$route['ajax/upload'] = 'member/upload';
 
 //PLANES
 $route['configuracion/planes'] = 'configuration/plans';
 $route['configuracion/plan/(:num)'] = 'configuration/plan/$1';
 $route['configuracion/plan/editar'] = 'configuration/edit_plan';
 $route['configuracion/plan/(:num)/rutina']['post'] = 'configuration/add_routine/$1'; 
+$route['configuracion/plan/(:num)/eliminar_rutina']['post'] = 'configuration/delete_rutine/$1';
 $route['plan/eliminar'] = 'configuration/delete_plan';
 
 //CONFIGURACION

@@ -7,7 +7,7 @@
                     </div>        
                     <div class="col-md-6">
                         <!-- <a class="detail-btn">Agregar Nuevo Usuario</a> -->
-                        <a data-toggle="modal" href="#plansAdd" class="detail-btn">Agregar Nuevo Plan</a>
+                        <a data-toggle="modal" href="#plansAdd" class="detail-btn"><i class="fas fa-plus-circle"></i> Agregar Nuevo Plan</a>
                     </div>
 
                     <div class="col-md-4">

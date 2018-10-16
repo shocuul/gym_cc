@@ -1,4 +1,5 @@
 <div class="inner-banner">
+            <img src="images/public/<?php echo $img_avatar->path; ?>" style="max-width: 250px; max-height: 200px;">
             <h1><?php echo htmlspecialchars($member->nombre .' '. $member->paterno .' '. $member->materno , ENT_QUOTES, 'UTF-8'); ?></h1>
             <p>
             <strong>Edad:</strong> <?php echo htmlspecialchars($member->edad , ENT_QUOTES, 'UTF-8'); ?>
@@ -52,7 +53,7 @@
                                                         <div class="event-content" style="width:90%;">
                                                             <div class="event-txt-wrap">
                                                                 <div class="event-thumb">
-                                                                    <img src="images/<?php echo $routine->imagen;?>" alt="<?php echo $routine->imagen;?>" style="width:100%;">
+                                                                    <img src="images/public/<?php echo $routine->imagen;?>" alt="<?php echo $routine->imagen;?>" style="width:100%;">
                                                                 </div>
                                                                 <div class="event-txt">
                                                                     <h4><a href=""><?php echo $routine->instruccion;?></a></h4>
@@ -91,7 +92,7 @@
                                                         <div class="event-content" style="width:90%;">
                                                             <div class="event-txt-wrap">
                                                                 <div class="event-thumb">
-                                                                    <img src="images/<?php echo $routine->imagen;?>" alt="<?php echo $routine->imagen;?>" style="width:100%;">
+                                                                    <img src="images/public/<?php echo $routine->imagen;?>" alt="<?php echo $routine->imagen;?>" style="width:100%;">
                                                                 </div>
                                                                 <div class="event-txt">
                                                                     <h4><a href=""><?php echo $routine->instruccion;?></a></h4>
@@ -148,8 +149,8 @@
                                             <div class="col-md-4 col-sm-4">
                                             <div class="gall-thumb">
                                             <div class="cap">
-                                            <a href="gallery-details.html"> <i class="fa fa-expand" aria-hidden="true"></i> </a> <strong><?php echo htmlspecialchars($member->nombre .' '. $member->paterno .' '. $member->materno , ENT_QUOTES, 'UTF-8'); ?></strong> </div>
-                                            <img src="images/<?php echo $image->path; ?>" alt=""> </div>
+                                            <a href="images/public/<?php echo $image->path; ?>" rel="prettyPhoto[pp_gal]"> <i class="fa fa-expand" aria-hidden="true"></i> </a> <strong><?php echo htmlspecialchars($member->nombre .' '. $member->paterno .' '. $member->materno , ENT_QUOTES, 'UTF-8'); ?></strong> </div>
+                                            <img src="images/public/<?php echo $image->path; ?>" alt=""> </div>
                                             </div>
                                         <?php endforeach ?>
                                         <?php else: ?>
@@ -213,7 +214,8 @@
                 <?php echo form_open_multipart(uri_string()); ?>
                 <div class="form-group">
                     <?php echo form_label('Imagen','imagen'); ?>
-                    <?php echo form_upload($imagen); ?>
+                    <input type="hidden" name="imagen" id="imagen">
+                    <div id="fileupload" class="dropzone"></div>
                 </div>
                 <div class="form-group form-check">
                     <?php echo form_checkbox($avatar); ?>
@@ -237,7 +239,24 @@
 
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function(){
+  $("a[rel^='prettyPhoto']").prettyPhoto();
+});
+</script>
 <script>
+    Dropzone.autoDiscover = false;
+    var myDropzone = new Dropzone("div#fileupload",{
+        url:'index.php?/ajax/upload',
+        acceptedFiles: 'image/*',
+        maxFilesize: 3,
+        maxFiles:1,
+        dictDefaultMessage:"Arrastra las imagenes aqui.",
+        success:function(file, response){
+            console.log(response);
+            $('#imagen').val(response.file_name);
+        }
+    });
     google.charts.load('current', {'packages':['corechart']});
     google.charts.setOnLoadCallback(drawVisualization);
 

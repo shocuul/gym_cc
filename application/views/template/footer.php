@@ -23,6 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <script src="<?= base_url(); ?>js/jquery.ticker.js"></script>
     <script src="<?= base_url(); ?>js/owl.carousel.min.js"></script>
     <script src="<?= base_url(); ?>js/custom.js"></script>
+    
 </body>
 
 </html>

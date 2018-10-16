@@ -62,6 +62,15 @@ class Auth extends MY_Controller{
     }
 
     public function create_user(){
+        if (!$this->auth_model->logged_in())
+        {
+            // redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }else if (!$this->has_permissions('users')) // remove this elseif if you want to enable this for non-admins
+        {
+            // redirect them to the home page because they must be an administrator to view this
+            return show_error('No tienes permisos para ver esta pagina');
+        }
         //validate form input 
         $this->form_validation->set_rules('nombre','Nombre','trim|required');
         $this->form_validation->set_rules('paterno','Apellido Paterno','trim|required');
@@ -155,15 +164,15 @@ class Auth extends MY_Controller{
 
     public function users($offset = NULL){
 
-        // if (!$this->auth_model->logged_in())
-        // {
-        //     // redirect them to the login page
-        //     redirect('auth/login', 'refresh');
-        // }else if (!$this->auth_model->is_admin()) // remove this elseif if you want to enable this for non-admins
-        // {
-        //     // redirect them to the home page because they must be an administrator to view this
-        //     return show_error('You must be an administrator to view this page.');
-        // }
+        if (!$this->auth_model->logged_in())
+        {
+            // redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }else if (!$this->has_permissions('users')) // remove this elseif if you want to enable this for non-admins
+        {
+            // redirect them to the home page because they must be an administrator to view this
+            return show_error('No tienes permisos para ver esta pagina');
+        }
 
         $limit_per_page = 10;
         //$start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
@@ -284,6 +293,15 @@ class Auth extends MY_Controller{
 
     public function edit_user($id)
     {
+        if (!$this->auth_model->logged_in())
+        {
+            // redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }else if (!$this->has_permissions('users')) // remove this elseif if you want to enable this for non-admins
+        {
+            // redirect them to the home page because they must be an administrator to view this
+            return show_error('No tienes permisos para ver esta pagina');
+        }
         $user = $this->auth_model->user($id)->row();
         $group = $this->auth_model->get_user_group($user->id)->row();
 

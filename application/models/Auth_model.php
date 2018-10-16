@@ -247,10 +247,12 @@ class Auth_model extends MY_Model
 
     public function set_session($user)
     {
+        $group = $this->get_user_group($user->id)->row();
         $session_data = array(
             'usuario' => $user->usuario,
             'email' => $user->email,
             'user_id' => $user->id,
+            'group_name' => $group->nombre,
             'last_check' => time(),
         );
 

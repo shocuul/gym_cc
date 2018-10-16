@@ -101,7 +101,7 @@
 
                                 <div class="col-md-3">
                                     <?php
-                                    echo form_button('generate_button', 'Generar Claves','id="generate_button" class="submit" disabled onClick="generate_login_info()" style="margin-top:1.4em;"'); ?>
+                                    echo form_button('generate_button', '<i class="fas fa-fingerprint"></i> Generar Claves','id="generate_button" class="submit" disabled onClick="generate_login_info()" style="margin-top:1.4em;"'); ?>
                                 </div>
                             </div>
                             <span id="mensaje_generate">

@@ -5,6 +5,16 @@ class Configuration extends MY_Controller{
 
     public function plans($offset = NULL)
     {
+        if (!$this->auth_model->logged_in())
+        {
+            // redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }else if (!$this->has_permissions('plans')) // remove this elseif if you want to enable this for non-admins
+        {
+            // redirect them to the home page because they must be an administrator to view this
+            return show_error('No tienes permisos para ver esta pagina');
+        }
+
         $limit_per_page = 10;
         $total_record = $this->plan_model->get_total();
 
@@ -108,50 +118,58 @@ class Configuration extends MY_Controller{
         {
             show_error('Este formulario no pasó nuestras pruebas de seguridad.');
         }
+        
+        if($this->form_validation->run() === TRUE)
+        {   
+            $plan_id = $this->input->post('id');
+            $routine_data = array(
+                'imagen' => $this->input->post('imagen'),
+                'ejercicio' => $this->input->post('ejercicio'),
+                'instruccion' => $this->input->post('instruccion')
+            );
+        }
 
-        $image_path = realpath(APPPATH . '../images');
-        $config['upload_path']          = $image_path;
-        $config['allowed_types']        = 'gif|jpg|png';
-        $config['max_size']             = 3000;
-        // $config['max_width']            = 2000;
-        // $config['max_height']           = 768;
-        $this->load->library('upload',$config);
-        if ( ! $this->upload->do_upload('imagen'))
+        if($this->form_validation->run() === TRUE && $this->plan_model->add_routine($plan_id, $routine_data))
         {
-            $this->session->set_flashdata('message', $this->upload->display_errors());
+            $this->session->set_flashdata('message', $this->plan_model->messages());
+            redirect('configuracion/plan/'.$id,'refresh');
+        }else
+        {
+            $this->session->set_flashdata('message', (validation_errors() ? validation_errors('<div class="alert alert-danger" role="alert">','</div>') : ($this->plan_model->errors() ? $this->plan_model->errors() : $this->session->flashdata('message'))));
+            redirect('configuracion/plan/'.$id,'refresh');
+        }
 
+            //$this->load->view('upload_success', $data);
+        
+        
+    }
+
+    public function delete_rutine($id)
+    {
+        $routine_id = $this->input->post('delete_rutina_id');
+        if($this->plan_model->delete_routine($routine_id))
+        {
+            $this->session->set_flashdata('message', $this->plan_model->messages());
             redirect('configuracion/plan/'.$id,'refresh');
         }
         else
         {
-            $file_data = $this->upload->data();
-            if($this->form_validation->run() === TRUE)
-            {   
-                $plan_id = $this->input->post('id');
-                $routine_data = array(
-                    'imagen' => $file_data['file_name'],
-                    'ejercicio' => $this->input->post('ejercicio'),
-                    'instruccion' => $this->input->post('instruccion')
-                );
-            }
-
-            if($this->form_validation->run() === TRUE && $this->plan_model->add_routine($plan_id, $routine_data))
-            {
-                $this->session->set_flashdata('message', $this->plan_model->messages());
-                redirect('configuracion/plan/'.$id,'refresh');
-            }else
-            {
-                $this->session->set_flashdata('message', (validation_errors() ? validation_errors('<div class="alert alert-danger" role="alert">','</div>') : ($this->plan_model->errors() ? $this->plan_model->errors() : $this->session->flashdata('message'))));
-                redirect('configuracion/plan/'.$id,'refresh');
-            }
-
-            //$this->load->view('upload_success', $data);
+            $this->session->set_flashdata('message', (validation_errors() ? validation_errors('<div class="alert alert-danger" role="alert">','</div>') : ($this->plan_model->errors() ? $this->plan_model->errors() : $this->session->flashdata('message'))));
+            redirect('configuracion/plan/'.$id,'refresh');
         }
-        
     }
 
     public function plan($id)
     {
+        if (!$this->auth_model->logged_in())
+        {
+            // redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }else if (!$this->has_permissions('plans')) // remove this elseif if you want to enable this for non-admins
+        {
+            // redirect them to the home page because they must be an administrator to view this
+            return show_error('No tienes permisos para ver esta pagina');
+        }
         $this->data['plan'] = $this->plan_model->plan($id)->row();
         $this->data['routines'] = $this->plan_model->routines($id)->result();
         $this->data['csrf'] = $this->_get_csrf_nonce();
@@ -230,6 +248,15 @@ class Configuration extends MY_Controller{
 
     public function permissions()
     {
+        if (!$this->auth_model->logged_in())
+        {
+            // redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }else if (!$this->has_permissions('config')) // remove this elseif if you want to enable this for non-admins
+        {
+            // redirect them to the home page because they must be an administrator to view this
+            return show_error('No tienes permisos para ver esta pagina');
+        }
         $this->form_validation->set_rules('nombre','Nombre','trim|required');
         $groups = $this->auth_model->groups()->result();
         if(isset($_POST) && !empty($_POST))

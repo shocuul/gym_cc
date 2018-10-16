@@ -6,7 +6,7 @@
                     <h2 class="section-title"> Socios </h2>
                     </div>        
                     <div class="col-md-6">
-                        <?php echo anchor('socios/nuevo','Agregar Nuevo Socio', 'class="detail-btn"'); ?>
+                        <?php echo anchor('socios/nuevo','<i class="fas fa-plus-circle"></i> Agregar Nuevo Socio', 'class="detail-btn"'); ?>
                     </div>
 
                     <div class="col-md-4">

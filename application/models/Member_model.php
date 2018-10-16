@@ -84,6 +84,13 @@ class Member_model extends My_Model
         return TRUE;
 	}
 
+	public function get_avatar($member_id)
+	{	
+		$this->db->order_by('id', 'DESC');
+		return $this->db->get_where($this->tables['images'],array($this->join['users'] => $member_id,'avatar' => 1),1);
+
+	}
+
 	public function register_assists($member_id)
 	{
 		$this->load->helper('date');

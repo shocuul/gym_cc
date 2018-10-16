@@ -126,6 +126,26 @@ class Plan_model extends My_Model
         return TRUE;
 	}
 
+	public function delete_routine($id)
+	{
+		$this->db->trans_begin();
+
+		$this->db->delete($this->tables['routines'],array('id' => $id));
+
+		if($this->db->trans_status() === FALSE)
+		{
+			$this->db->trans_rollback();
+			$this->set_error('Error al eliminar la rutina');
+			return FALSE;
+		}
+
+		$this->db->trans_commit();
+
+		$this->set_message('Rutina eliminada con exito.');
+
+		return TRUE;
+	}
+
 	public function available_plans($subscribed_plans){
 		foreach($subscribed_plans as $plan){
 			$this->db->not_like('id',$plan->id);

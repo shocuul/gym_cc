@@ -5,7 +5,15 @@ class Member extends MY_Controller
 {
     public function index($offset = NULL){
         //admin check
-
+        if (!$this->auth_model->logged_in())
+        {
+            // redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }else if (!$this->has_permissions('members')) // remove this elseif if you want to enable this for non-admins
+        {
+            // redirect them to the home page because they must be an administrator to view this
+            return show_error('No tienes permisos para ver esta pagina');
+        }
         
 
         $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
@@ -105,6 +113,16 @@ class Member extends MY_Controller
 
     public function edit_member($id)
     {
+        if (!$this->auth_model->logged_in())
+        {
+            // redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }else if (!$this->has_permissions('members')) // remove this elseif if you want to enable this for non-admins
+        {
+            // redirect them to the home page because they must be an administrator to view this
+            return show_error('No tienes permisos para ver esta pagina');
+        }
+
         $member = $this->member_model->member($id)->row();
 
         $this->form_validation->set_rules('nombre','Nombre','trim|required');
@@ -276,6 +294,15 @@ class Member extends MY_Controller
 
     public function create_member()
     {
+        if (!$this->auth_model->logged_in())
+        {
+            // redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }else if (!$this->has_permissions('members')) // remove this elseif if you want to enable this for non-admins
+        {
+            // redirect them to the home page because they must be an administrator to view this
+            return show_error('No tienes permisos para ver esta pagina');
+        }
         $this->form_validation->set_rules('nombre','Nombre','trim|required');
         $this->form_validation->set_rules('paterno','Apellido Paterno','trim|required');
         $this->form_validation->set_rules('materno','Apellido Materno','trim|required');
@@ -565,43 +592,37 @@ class Member extends MY_Controller
 
     public function profile($member_id)
     {
-
+        // if (!$this->auth_model->logged_in())
+        // {
+        //     // redirect them to the login page
+        //     redirect('auth/login', 'refresh');
+        // }else if (!$this->has_permissions('profile')) // remove this elseif if you want to enable this for non-admins
+        // {
+        //     // redirect them to the home page because they must be an administrator to view this
+        //     return show_error('No tienes permisos para ver esta pagina');
+        // }
         $this->data['member'] = $this->member_model->member($member_id)->row();
         if(isset($_POST) && !empty($_POST))
         {
-            $image_path = realpath(APPPATH . '../images');
-            $config['upload_path']          = $image_path;
-            $config['allowed_types']        = 'gif|jpg|png';
-            $config['max_size']             = 3000;
-            $config['encrypt_name'] = TRUE;
-            // $config['max_width']            = 2000;
-            // $config['max_height']           = 768;
-            $this->load->library('upload',$config);
-            if(! $this->upload->do_upload('imagen')){
-                $this->session->set_flashdata('message', $this->upload->display_errors('<div class="alert alert-danger" role="alert"><ul><li>','</li></ul></div>'));
+            
+            $data = array(
+                'path' => $this->input->post('imagen'),
+                'avatar' => ($this->input->post('avatar')) ? 1 : 0
+            );
+            if($this->member_model->add_image($member_id, $data))
+            {
+                $this->session->set_flashdata('message', $this->member_model->messages());
+                redirect(uri_string(),'refresh');
+            }else
+            {
+                $this->session->set_flashdata('message', $this->member_model->errors());
                 redirect(uri_string(),'refresh');
             }
-            else{
-                $file_data = $this->upload->data();
-                $imagen = $file_data['file_name'];
-                $data = array(
-                    'path' => $imagen,
-                    'avatar' => ($this->input->post('avatar')) ? 1 : 0
-                );
-                if($this->member_model->add_image($member_id, $data))
-                {
-                    $this->session->set_flashdata('message', $this->member_model->messages());
-                    redirect(uri_string(),'refresh');
-                }else
-                {
-                    $this->session->set_flashdata('message', $this->member_model->errors());
-                    redirect(uri_string(),'refresh');
-                }
-
-            }
-            
 
         }
+            
+
+        
         $this->data['csrf'] = $this->_get_csrf_nonce();
         //$this->member_model->routines($current_plan->id)->result();
         $this->data['subscribe_plans'] = $this->member_model->get_member_plans($member_id)->result();
@@ -629,12 +650,34 @@ class Member extends MY_Controller
         );
 
         $this->data['gallery'] = $this->member_model->gallery($member_id)->result();
+        $this->data['img_avatar'] = $this->member_model->get_avatar($member_id)->row();
         $this->data['assists'] = $this->db->get_where('asistencias',array('usuario_id'=>$member_id))->result();
         //echo $this->db->last_query();
         //var_dump($this->data['subscribe_plans']);
         $this->data['message'] = ($this->member_model->errors() ? $this->member_model->errors() : $this->session->flashdata('message'));
         $this->_render('members/profile', $this->data);
 
+    }
+
+    public function upload()
+    {
+        if(!empty($_FILES['file']['name']))
+        {
+            $image_path = realpath(APPPATH . '../images/public');
+            $config['upload_path']          = $image_path;
+            $config['allowed_types']        = 'gif|jpg|png|jpeg';
+            $config['max_size']             = 3000;
+            $config['encrypt_name'] = TRUE;
+            $this->load->library('upload', $config);
+            if($this->upload->do_upload('file')){
+                $data = $this->upload->data();
+            }else{
+                $data = $this->upload->display_errors();
+            }
+            return $this->output
+                    ->set_content_type('application/json')
+                    ->set_output(json_encode($data));
+        }
     }
 
     public function gallery($member_id)
@@ -670,6 +713,15 @@ class Member extends MY_Controller
 
     public function manage_plan($member_id, $plan_id)
     {
+        if (!$this->auth_model->logged_in())
+        {
+            // redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }else if (!$this->has_permissions('members')) // remove this elseif if you want to enable this for non-admins
+        {
+            // redirect them to the home page because they must be an administrator to view this
+            return show_error('No tienes permisos para ver esta pagina');
+        }
         // echo $member_id;
         // echo $plan_id;
         $current_plan = $this->member_model->get_plan_users_id($member_id, $plan_id)->row();
@@ -777,6 +829,16 @@ class Member extends MY_Controller
 
     public function detail($id)
     {
+        if (!$this->auth_model->logged_in())
+        {
+            // redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }else if (!$this->has_permissions('members')) // remove this elseif if you want to enable this for non-admins
+        {
+            // redirect them to the home page because they must be an administrator to view this
+            return show_error('No tienes permisos para ver esta pagina');
+        }
+
         $this->data['member'] = $this->member_model->member($id)->row();
 
         $this->data['subscribe_plans'] = $this->member_model->get_member_plans($id)->result();

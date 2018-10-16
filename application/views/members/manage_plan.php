@@ -42,7 +42,7 @@
                                                         <div class="event-content" style="width:90%;">
                                                             <div class="event-txt-wrap">
                                                                 <div class="event-thumb">
-                                                                    <img src="images/<?php echo $routine->imagen;?>" alt="<?php echo $routine->imagen;?>" style="width:100%;">
+                                                                    <img src="images/public/<?php echo $routine->imagen;?>" alt="<?php echo $routine->imagen;?>" style="width:100%;">
                                                                 </div>
                                                                 <div class="event-txt">
                                                                     <h4><a href=""><?php echo $routine->instruccion;?></a></h4>
@@ -74,13 +74,13 @@
                                                 </div>
                                             <div class="event-content" style="width:90%;">
                                                 <div class="event-txt-wrap">
-                                                    <div class="event-thumb"><img src="images/<?php echo $routine->imagen; ?>" alt="<?php echo $routine->imagen; ?>" style="width:100%;"></div>
+                                                    <div class="event-thumb"><img src="images/public/<?php echo $routine->imagen; ?>" alt="<?php echo $routine->imagen; ?>" style="width:100%;"></div>
                                                         <div class="event-txt">
                                                         <h4><a href="#"><?php echo $routine->instruccion; ?></a></h4>
                                                         <p class="loc"><i class="fa fa-dumbbell"></i> <?php echo $routine->ejercicio; ?></p>
                                                         <div class="event-box-footer">  
 
-                                                        <a data-toggle="modal" class="detail-btn" href="#rutineEdit" onClick="fillRoutineModal('<?php echo $routine->id ?>','<?php echo $routine->ejercicio ?>','<?php echo $routine->instruccion?>')">Asignar Rutina</a> 
+                                                        <a data-toggle="modal" class="detail-btn" href="#rutineEdit" onClick="fillRoutineModal('<?php echo $routine->id ?>','<?php echo $routine->ejercicio ?>','<?php echo $routine->instruccion?>')"><i class="fas fa-calendar-plus"></i> Asignar Rutina</a> 
 
                                                         </div>
                                                     </div>
@@ -108,7 +108,7 @@
                                                         <div class="event-content" style="width:90%;">
                                                             <div class="event-txt-wrap">
                                                                 <div class="event-thumb">
-                                                                    <img src="images/<?php echo $routine->imagen;?>" alt="<?php echo $routine->imagen;?>" style="width:100%;">
+                                                                    <img src="images/public/<?php echo $routine->imagen;?>" alt="<?php echo $routine->imagen;?>" style="width:100%;">
                                                                 </div>
                                                                 <div class="event-txt">
                                                                     <h4><a href=""><?php echo $routine->instruccion;?></a></h4>
@@ -142,11 +142,11 @@
                                 <div class="widget">
                                     <div class="text-widget">
                                         <h3>Medidas</h3>
-                                        <a data-toggle="modal" class="detail-btn btn-block" href="#addreadingModal">Registrar Medida</a> </div>
+                                        <a data-toggle="modal" class="detail-btn btn-block" href="#addreadingModal"><i class="fas fa-file-medical-alt"></i> Registrar Medida</a> </div>
                                 </div>
                                 <div class="widget">
                                     <div class="text-widget .news-txt">
-                                    <a data-toggle="modal" class="detail-btn btn-block rm" href="#addreadingModal">Quitar Plan</a>
+                                    <a data-toggle="modal" class="detail-btn btn-block rm" href="#addreadingModal"><i class="fas fa-minus-circle"></i> Quitar Plan</a>
                                     </div>
                                 </div>
                                 <!--Widget End-->

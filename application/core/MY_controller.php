@@ -27,7 +27,8 @@ class MY_Controller extends CI_Controller{
         //var_dump($this->_permissions);
     }
 
-    public function has_permissions($group,$section){
+    public function has_permissions($section, $group = NULL){
+    	$group = isset($group) ? $group : $this->session->userdata('group_name');
     	return $this->_permissions[$group][$section];
     }
 

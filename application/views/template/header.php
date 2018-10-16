@@ -21,15 +21,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <link href="<?= base_url(); ?>css/prettyPhoto.css" rel="stylesheet">
     <link href="<?= base_url(); ?>css/gym.css" rel="stylesheet">
+    <link href="<?= base_url(); ?>css/dropzone.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+
     <script src="<?= base_url(); ?>js/jquery.min.js"></script>
+    <script src="<?= base_url(); ?>js/dropzone.min.js"></script>
     <script src="<?= base_url(); ?>js/jquery-migrate-1.4.1.min.js"></script>
     <script src="<?= base_url(); ?>js/jquery.prettyPhoto.js"></script>
 </head>
-
+<script type="text/javascript">
+    Dropzone.prototype.defaultOptions.dictDefaultMessage = "Arrastra las imagenes aqui.;
+    Dropzone.prototype.defaultOptions.dictFallbackMessage = "Your browser does not support drag'n'drop file uploads.";
+    Dropzone.prototype.defaultOptions.dictFallbackText = "Please use the fallback form below to upload your files like in the olden days.";
+    Dropzone.prototype.defaultOptions.dictFileTooBig = "File is too big ({{filesize}}MiB). Max filesize: {{maxFilesize}}MiB.";
+    Dropzone.prototype.defaultOptions.dictInvalidFileType = "No puedes subir archivos de este tipo.";
+    Dropzone.prototype.defaultOptions.dictResponseError = "Server responded with {{statusCode}} code.";
+    Dropzone.prototype.defaultOptions.dictCancelUpload = "Cancel upload";
+    Dropzone.prototype.defaultOptions.dictCancelUploadConfirmation = "Are you sure you want to cancel this upload?";
+    Dropzone.prototype.defaultOptions.dictRemoveFile = "Remove file";
+    Dropzone.prototype.defaultOptions.dictMaxFilesExceeded = "No puedes subir mas archivos.";
+</script>
 <body>
 
     <!--Wrapper Start-->
