@@ -11,7 +11,6 @@ class MY_Controller extends CI_Controller{
         $this->load->model(array('auth_model','member_model','plan_model'));
         $this->load->library(array('form_validation','pagination'));
         $query = $this->db->get_where('opciones',array('key' => 'permissions'),1)->row();
-        var_dump($query);
         if(!empty($query)){
         	$this->_permissions = json_decode($query->value, TRUE);
         }
@@ -25,7 +24,7 @@ class MY_Controller extends CI_Controller{
         	);
         	$this->db->insert('opciones', $data);
         }
-        var_dump($this->_permissions);
+        //var_dump($this->_permissions);
     }
 
     public function has_permissions($group,$section){

@@ -26,58 +26,42 @@
 
                     <div class="col-md-12">
                         <?php echo $message; ?>
-                        <?php if(!empty($plans)): ?>
                         <div class="sp-table-wrapper">
                             <table class="points-listing">
                                 <thead>
                                     <tr class="first">
-                                        <th>#</th>
                                         <th>Nombre</th>
-                                        <th>Usuarios</th>
-                                        <th>Socios</th>
-                                        <th>Planes y Propositos</th>
-                                        <th>Configuraciones</th>
+                                        <th>Modulo Usuarios</th>
+                                        <th>Modulo Socios</th>
+                                        <th>Modulo Planes</th>
+                                        <th>Modulo Configuracion</th>
+                                        <th>Modulo Estadisticas</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach($plans as $plan): ?>
+                                    <?php echo form_open(uri_string(),'class="contact-form review-form"'); ?>
+                                    <?php foreach($groups as $group): ?>
                                     <tr>
-                                        <td><?php echo htmlspecialchars($plan->id, ENT_QUOTES, 'UTF-8'); ?></td>
-                                        <td><?php echo htmlspecialchars($plan->nombre, ENT_QUOTES, 'UTF-8'); ?></td>
-                                        <td><?php echo htmlspecialchars($plan->descripcion, ENT_QUOTES, 'UTF-8'); ?></td>
-                                        <td>
-                                            <div class="pro-share" style="margin:0;">
-                                                <?php echo anchor("configuracion/plan/" . $plan->id, '<i class="fas fa-clipboard-list"></i>'); ?>
-                                                <a data-toggle="modal" href="#plansEdit" onClick="fillEditModal('<?php echo $plan->id ?>','<?php echo $plan->nombre ?>','<?php echo $plan->descripcion ?>')"><i class="fa fa-edit"></i></a>
-                                               
-                                                <!-- <a href="">
-                                                    <i class="fa fa-trash"></i>
-                                                </a> -->
-                                                <a data-toggle="modal" href="#plansDelete" onClick="fillDeleteModal('<?php echo $plan->id ?>','<?php echo $plan->nombre ?>')"><i class="fa fa-trash"></i></a>
-                                            
-                                                </button>
-                                            </div>
-                                        </td>
-                                        
+                                        <td><?php echo htmlspecialchars($group->descripcion, ENT_QUOTES, 'UTF-8'); ?></td>
+                                        <td style="text-align:center;"><input class="form-check-input" type="checkbox" value="usuarios" id="<?php echo $group->nombre; ?>[]" name="<?php echo $group->nombre; ?>[]" <?php echo ($permissions[$group->nombre]['users']) ? 'checked' : ''?> <?php echo ($group->nombre === 'admin') ? 'disabled':'' ?>></td>
+                                        <td><input class="form-check-input" type="checkbox" value="socios" id="<?php echo $group->nombre; ?>[]" name="<?php echo $group->nombre; ?>[]" <?php echo ($permissions[$group->nombre]['members']) ? 'checked' : ''?> <?php echo ($group->nombre === 'admin') ? 'disabled':'' ?>></td>
+                                        <td><input class="form-check-input" type="checkbox" value="planes" id="<?php echo $group->nombre; ?>[]" name="<?php echo $group->nombre; ?>[]" <?php echo ($permissions[$group->nombre]['plans']) ? 'checked' : ''?> <?php echo ($group->nombre === 'admin') ? 'disabled':'' ?>></td>
+                                        <td><input class="form-check-input" type="checkbox" value="configuracion" id="<?php echo $group->nombre; ?>[]" name="<?php echo $group->nombre; ?>[]" <?php echo ($permissions[$group->nombre]['config']) ? 'checked' : ''?> <?php echo ($group->nombre === 'admin') ? 'disabled':'' ?>></td>
+                                        <td><input class="form-check-input" type="checkbox" value="estadisticas" id="<?php echo $group->nombre; ?>[]" name="<?php echo $group->nombre; ?>[]" <?php echo ($permissions[$group->nombre]['stats']) ? 'checked' : ''?> <?php echo ($group->nombre === 'admin') ? 'disabled':'' ?>></td>
                                     </tr>
                                     <?php endforeach; ?>
                                     
                                 </tbody>
                             </table>
-                            <div class="techlinqs-pagination text-center">
-                                <?php echo $this->pagination->create_links(); ?>
-                                <ul class="pagination">
-                                    <li>
-                                       <?php echo $this->pagination->create_links(); ?>
-                                    </li>
-                                </ul>
+                            <div class="form-group">
+                            <div class="col-sm-10" style="margin-top: 1em;">
+                              <!-- <button type="submit" class="submit">Agregar Usuario</button> -->
+                              <?php echo form_hidden('action','update_permission'); ?>
+                              <?php echo form_submit('submit', 'Actualizar Permisos', 'class="btn btn-info detail-btn" style="max-width:15em;"'); ?>
                             </div>
+                          </div>
                         </div><!-- END -->
-                        <?php else: ?>
-                        <div class="alert alert-info" role="alert">
-                              No hay planes registrados aun, da click en <strong>Agregar Nuevo Plan</strong> para comenzar.
-                        </div>
-                    <?php endif ?>
+                        <?php echo form_close(); ?>
                     </div>
                 </div>
             </div>
@@ -96,21 +80,44 @@
                 <?php echo form_open(uri_string()); ?>
                 <div class="form-group">
                     <?php echo form_label('Nombre', 'nombre'); ?>
-
-                        <?php echo form_input($nombre); ?>
-
-                </div>
-
-                <div class="form-group">
-                    <?php echo form_label('Descripcion', 'descripcion'); ?>
-                   
-                        <?php //echo form_textarea($descripcion); ?>
+                    <?php echo form_input($nombre); ?>
 
                 </div>
-                
+                <h4 style="margin-bottom:20px;">Permisos</h4>
+                <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="users" id="users" name="users">
+                <label class="form-check-label" for="usuarios">
+                    Modulo Usuarios
+                </label>
+                </div>
+                <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="members" id="members" name="members" >
+                <label class="form-check-label" for="socios">
+                    Modulo Socios
+                </label>
+                </div>
+                <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="plans" id="plans" name="plans" >
+                <label class="form-check-label" for="planes">
+                    Modulo Planes
+                </label>
+                </div>
+                <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="stats" id="stats" name="stats" >
+                <label class="form-check-label" for="estadisticas">
+                    Modulo Estadisticas
+                </label>
+                </div>
+                <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="config" id="config" name="config" >
+                <label class="form-check-label" for="configuracion">
+                    Modulo Configuracion
+                </label>
+                </div>
             </div>
             <div class="modal-footer">
                 <?php echo form_hidden($csrf); ?>
+                <?php echo form_hidden('action','add_plan'); ?>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 <?php echo form_submit('submit', 'Añadir Grupo','class="btn btn-info"'); ?>
                 <?php echo form_close(); ?>

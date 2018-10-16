@@ -178,7 +178,7 @@ class Auth_model extends MY_Model
             ->get($this->tables['users_groups']);
     }
 
-    public function groups()
+    public function groups($skip_members = TRUE)
     {
         if(isset($this->_where) && !empty($this->_where))
         {
@@ -188,8 +188,9 @@ class Auth_model extends MY_Model
             }
             $this->_where = array();
         }
-
-        $this->db->not_like('nombre','member');
+        if($skip_members){
+            $this->db->not_like('nombre','member');
+        }
 
         $this->response = $this->db->get($this->tables['groups']);
 

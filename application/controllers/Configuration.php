@@ -230,10 +230,73 @@ class Configuration extends MY_Controller{
 
     public function permissions()
     {
-        $permissions = array(
-            'admin' => array('users' => TRUE, 'members' => TRUE, 'plans' => TRUE, 'config' => TRUE),
-            'member' => array('perfil' => TRUE)
+        $this->form_validation->set_rules('nombre','Nombre','trim|required');
+        $groups = $this->auth_model->groups()->result();
+        if(isset($_POST) && !empty($_POST))
+        {
+            if($this->input->post('action') === 'add_plan')
+            {
+                //Add new Group
+                if($this->form_validation->run() === TRUE){
+                    $permission_group = array();
+                    $permission_group['users'] = ($this->input->post('users')) ? TRUE : FALSE;
+                    $permission_group['members'] = ($this->input->post('members')) ? TRUE : FALSE;
+                    $permission_group['plans'] = ($this->input->post('plans')) ? TRUE : FALSE;
+                    $permission_group['stats'] = ($this->input->post('stats')) ? TRUE : FALSE;
+                    $permission_group['config'] = ($this->input->post('config')) ? TRUE : FALSE;
+                    
+                    $data = array(
+                        'nombre' => strtolower($this->input->post('nombre')),
+                        'descripcion' => $this->input->post('nombre')
+                    );
+                    $this->db->insert('grupos',$data);
+                    $this->update_permissions(strtolower($this->input->post('nombre')),$permission_group);
+                    redirect(uri_string(),'refresh');
+                }else{
+                    $this->session->set_flashdata('message',(validation_errors() ? validation_errors('<div class="alert alert-danger" role="alert">','</div>') : ($this->auth_model->errors() ? $this->auth_model->errors() : $this->session->flashdata('message'))));
+                    redirect(uri_string(),'refresh');
+                }
+            }
+            if($this->input->post('action') === 'update_permission')
+            {
+                foreach($groups as $group)
+                {
+                    //skip admin group
+                    if($group->nombre === 'admin')
+                    {
+                        continue;
+                    }
+                    $permission_array = $this->input->post($group->nombre);
+                    $permission_group = array();
+                    $permission_group['users'] = (in_array('usuarios',$permission_array)) ? TRUE : FALSE;
+                    $permission_group['members'] = (in_array('socios',$permission_array)) ? TRUE : FALSE;
+                    $permission_group['plans'] = (in_array('planes',$permission_array)) ? TRUE : FALSE;
+                    $permission_group['stats'] = (in_array('estadisticas',$permission_array)) ? TRUE : FALSE;
+                    $permission_group['config'] = (in_array('configuracion',$permission_array)) ? TRUE : FALSE;
+                    $this->update_permissions($group->nombre,$permission_group);
+                }
+            }
+            //var_dump($this->input->post());
+        }
+
+
+        $this->data['csrf'] = $this->_get_csrf_nonce();
+        $this->data['nombre'] = array(
+            'name' => 'nombre',
+            'id' => 'nombre',
+            'type' => 'text',
+            'class' => 'form-control'
         );
+        $this->data['permissions'] = $this->_permissions;
+        $this->data['groups'] = $groups;
+        //var_dump($this->_permissions);
+        $this->data['message'] = (validation_errors() ? validation_errors() : ($this->auth_model->errors() ? $this->auth_model->errors() : $this->session->flashdata('message')));
+        $this->_render('configuration/permissions', $this->data);
+        // $permissions = array(
+        //     'admin' => array('users' => TRUE, 'members' => TRUE, 'plans' => TRUE, 'config' => TRUE),
+        //     'member' => array('perfil' => TRUE)
+        // );
+
 
         // if($this->has_permissions('admin','users'))
         // {
@@ -242,12 +305,12 @@ class Configuration extends MY_Controller{
         //     echo "no tengo permisos";
         // }
 
-        $sections = array('users' => TRUE, 'profile' => TRUE, 'members' => FALSE, 'plans' => FALSE, 'config' => FALSE, 'stats' => FALSE);
-        $permissions['empleado'] = $sections;
-        //var_dump($permissions);
-        // $old = json_encode($sections);
-        // $new = json_decode($old, true);
-        $this->delete_permissions('empleado');
+        // $sections = array('users' => TRUE, 'profile' => TRUE, 'members' => FALSE, 'plans' => FALSE, 'config' => FALSE, 'stats' => FALSE);
+        // $permissions['empleado'] = $sections;
+        // //var_dump($permissions);
+        // // $old = json_encode($sections);
+        // // $new = json_decode($old, true);
+        // $this->delete_permissions('empleado');
         //$data = array('users' => TRUE, 'profile' => FALSE, 'members' => TRUE, 'plans' => TRUE, 'config' => TRUE, 'stats' => TRUE);
         //$this->update_permissions('admin',$data);
         //var_dump($permissions);
