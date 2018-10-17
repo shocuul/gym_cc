@@ -208,5 +208,43 @@ class Plan_model extends My_Model
         $this->response = $this->db->get($this->tables['plans']);
 
         return $this;
-    }
+	}
+	
+	public function new_image(array $data){
+		$this->db->trans_begin();
+		
+		$this->db->insert($this->tables['page_images'], $this->_filter_data($this->tables['page_images'], $data));
+		if($this->db->trans_status() === FALSE)
+		{
+			$this->db->trans_rollback();
+			$this->set_error('Error al registrar la imagen');
+			return FALSE;
+		}
+
+		$this->db->trans_commit();
+
+		$this->set_message('Imagen registrada con exito.');
+
+        return TRUE;
+	}
+
+	public function delete_image($id)
+	{
+		$this->db->trans_begin();
+
+		$this->db->delete($this->tables['page_images'],array('id' => $id));
+
+		if($this->db->trans_status() === FALSE)
+		{
+			$this->db->trans_rollback();
+			$this->set_error('Error al eliminar la imagen');
+			return FALSE;
+		}
+
+		$this->db->trans_commit();
+
+		$this->set_message('Imagen eliminada con exito.');
+
+		return TRUE;
+	}
 }

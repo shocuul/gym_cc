@@ -108,6 +108,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                     <li>
                                                     <?php echo anchor('configuracion/planes','Planes y Propositos') ?></li>
                                                     <li><?php echo anchor('configuracion/permisos','Permisos') ?></li>
+                                                    <li><?php echo anchor('configuracion/imagenes','Imagenes') ?></li>
                                                     <li>
                                                         <?php echo anchor('cerrar_sesion','Cerrar Sesion'); ?>
                                                     </li>

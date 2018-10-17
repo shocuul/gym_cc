@@ -67,7 +67,8 @@ class My_Model extends CI_Model
             'users_routines' => 'rutinas_usuario',
             'users_metrics' => 'medida',
             'assists' => 'asistencias',
-            'images' => 'imagenes'
+            'images' => 'imagenes',
+            'page_images' => 'imagenes_pagina'
         );
 
         $this->join = array(

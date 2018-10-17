@@ -62,15 +62,15 @@ class Auth extends MY_Controller{
     }
 
     public function create_user(){
-        if (!$this->auth_model->logged_in())
-        {
-            // redirect them to the login page
-            redirect('auth/login', 'refresh');
-        }else if (!$this->has_permissions('users')) // remove this elseif if you want to enable this for non-admins
-        {
-            // redirect them to the home page because they must be an administrator to view this
-            return show_error('No tienes permisos para ver esta pagina');
-        }
+        // if (!$this->auth_model->logged_in())
+        // {
+        //     // redirect them to the login page
+        //     redirect('auth/login', 'refresh');
+        // }else if (!$this->has_permissions('users')) // remove this elseif if you want to enable this for non-admins
+        // {
+        //     // redirect them to the home page because they must be an administrator to view this
+        //     return show_error('No tienes permisos para ver esta pagina');
+        // }
         //validate form input 
         $this->form_validation->set_rules('nombre','Nombre','trim|required');
         $this->form_validation->set_rules('paterno','Apellido Paterno','trim|required');

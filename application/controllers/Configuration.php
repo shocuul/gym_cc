@@ -197,6 +197,49 @@ class Configuration extends MY_Controller{
         $this->_render('configuration/plan', $this->data);
     }
 
+    public function images(){
+        $this->form_validation->set_rules('imagen','Imagen','required');
+        if(isset($_POST) && !empty($_POST))
+        {   
+            if($this->input->post('action') === 'add_image'){
+                if($this->form_validation->run() === TRUE)
+                {
+                $data = array(
+                    'path' => $this->input->post('imagen'),
+                    'tipo' => $this->input->post('tipo')
+                );
+                }
+                if($this->plan_model->new_image($data))
+                {
+                    $this->session->set_flashdata('message', $this->plan_model->messages());
+                    redirect(uri_string(),'refresh');
+                }else
+                {
+                    $this->session->set_flashdata('message', $this->plan_model->messages());
+                    redirect(uri_string(),'refresh');
+                }
+            }
+            //END ADD IMAGES
+            if($this->input->post('action') === 'delete_image')
+            {
+                if($this->plan_model->delete_image($this->input->post('imagen_id')))
+                {
+                    $this->session->set_flashdata('message', $this->plan_model->messages());
+                    redirect(uri_string(),'refresh');
+                }else{
+                    $this->session->set_flashdata('message', $this->plan_model->messages());
+                    redirect(uri_string(),'refresh');
+                }
+            }
+            
+        }
+
+        $this->data['images'] = $this->db->get('imagenes_pagina')->result();
+        $this->data['message'] = (validation_errors() ? validation_errors('<div class="alert alert-danger" role="alert">','</div>') : ($this->auth_model->errors() ? $this->auth_model->errors() : $this->session->flashdata('message')));
+        $this->data['csrf'] = $this->_get_csrf_nonce();
+        $this->_render('configuration/images',$this->data);
+    }
+
 
     public function edit_plan()
     {
@@ -241,7 +284,7 @@ class Configuration extends MY_Controller{
             redirect('configuracion/planes','refresh');
         }else
         {
-            $this->session->set_flashdata('message', $this->auth_model->messages());
+            $this->session->set_flashdata('message', $this->plan_model->messages());
             redirect('configuracion/planes','refresh');
         }
     }

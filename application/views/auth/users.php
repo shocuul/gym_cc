@@ -41,6 +41,7 @@
                                 </thead>
                                 <tbody>
                                     <?php foreach($users as $user): ?>
+                                    <?php if($user->grupo->nombre === 'member'){continue;}?>
                                     <tr>
                                         <td><?php echo htmlspecialchars($user->id, ENT_QUOTES, 'UTF-8'); ?></td>
                                         <td><?php echo htmlspecialchars($user->nombre .' '. $user->paterno .' '. $user->materno, ENT_QUOTES, 'UTF-8'); ?></td>

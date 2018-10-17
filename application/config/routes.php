@@ -56,7 +56,6 @@ $route['usuarios/editar_usuario/(:num)'] = 'auth/edit_user/$1';
 $route['usuarios/eliminar']['post'] = 'auth/delete_user';
 $route['usuarios']['get'] = 'auth/users';
 $route['usuarios/(:num)']['get'] = 'auth/users/$1';
-$route['usuarios/nuevo'] = 'member/create_member';
 $route['usuarios/editar_usuario/(:num)'] = 'auth/edit_user/$1';
 $route['usuarios/eliminar']['post'] = 'auth/delete_user';
 
@@ -89,6 +88,7 @@ $route['configuracion/plan/(:num)'] = 'configuration/plan/$1';
 $route['configuracion/plan/editar'] = 'configuration/edit_plan';
 $route['configuracion/plan/(:num)/rutina']['post'] = 'configuration/add_routine/$1'; 
 $route['configuracion/plan/(:num)/eliminar_rutina']['post'] = 'configuration/delete_rutine/$1';
+$route['configuracion/imagenes'] = 'configuration/images';
 $route['plan/eliminar'] = 'configuration/delete_plan';
 
 //CONFIGURACION
