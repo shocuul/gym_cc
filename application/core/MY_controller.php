@@ -4,12 +4,15 @@ class MY_Controller extends CI_Controller{
 
 	public $_permissions = null;
 
+	public $CI = NULL;
+
     public function __construct()
     {
         parent::__construct();
         $this->load->helper(array('url','form'));
         $this->load->model(array('auth_model','member_model','plan_model'));
         $this->load->library(array('form_validation','pagination'));
+        $this->CI = & get_instance();
         $query = $this->db->get_where('opciones',array('key' => 'permissions'),1)->row();
         if(!empty($query)){
         	$this->_permissions = json_decode($query->value, TRUE);
@@ -28,7 +31,11 @@ class MY_Controller extends CI_Controller{
     }
 
     public function has_permissions($section, $group = NULL){
+
     	$group = isset($group) ? $group : $this->session->userdata('group_name');
+    	if($group === NULL){
+    		return FALSE;
+    	}
     	return $this->_permissions[$group][$section];
     }
 
@@ -59,6 +66,9 @@ class MY_Controller extends CI_Controller{
    		//var_dump($this->_permissions);
     }
     	
+    public function get_group_name(){
+    	return $this->session->userdata('group_name');
+    }
 
     /**
 	 * @return array A CSRF key-value pair
@@ -88,7 +98,8 @@ class MY_Controller extends CI_Controller{
 
     public function _render($view, $data = NULL )
     {
-        $this->load->view('template/header');
+    	$data['header_group_name'] = $this->get_group_name();
+        $this->load->view('template/header',$data);
         $this->load->view($view,$data);
         $this->load->view('template/footer');
     }

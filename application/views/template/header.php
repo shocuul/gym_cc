@@ -74,6 +74,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <ul class="nav navbar-nav">
                                             <li> <a href="#">Inicio</span></a>
                                             </li>
+                                            <?php if($this->CI->has_permissions('profile')): ?>
+                                                <li>
+                                                    <?php echo anchor('perfil','Ver mi perfil'); ?>
+                                                </li>
+                                            <?php endif ?>
+                                            <?php if($this->CI->has_permissions('users')): ?>
                                             <li> <a href="#">Usuarios <span class="caret"></span></a>
                                                 <ul class="sub-menu">
                                                     <li>
@@ -84,6 +90,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                     </li>
                                                 </ul>
                                             </li>
+                                            <?php endif ?>
+                                            <?php if($this->CI->has_permissions('members')): ?>
                                             <li> <a href="#">Socios <span class="caret"></span></a>
                                                 <ul class="sub-menu">
                                                     <li>
@@ -94,6 +102,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                     </li>
                                                 </ul>
                                             </li>
+                                            <?php endif ?>
+                                            <?php if($this->CI->has_permissions('stats')): ?>
                                             <li> <a href="#">Estadisticas <span class="caret"></span></a>
                                                 <ul class="sub-menu">
                                                     <li><a href="blog-full.html">Blog Full</a></li>
@@ -103,18 +113,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                     <li><a href="single.html">Single</a></li>
                                                 </ul>
                                             </li>
+                                            <?php endif ?>
+                                            <?php if($this->CI->has_permissions('config') || $this->CI->has_permissions('plans')): ?>
                                             <li> <a href="#">Configuracion <span class="caret"></span></a>
                                                 <ul class="sub-menu">
+                                                    <?php if($this->CI->has_permissions('plans')): ?>
                                                     <li>
                                                     <?php echo anchor('configuracion/planes','Planes y Propositos') ?></li>
+                                                    <?php endif ?>
+                                                    <?php if($this->CI->has_permissions('config')): ?>
                                                     <li><?php echo anchor('configuracion/permisos','Permisos') ?></li>
                                                     <li><?php echo anchor('configuracion/imagenes','Imagenes') ?></li>
                                                     <li>
                                                         <?php echo anchor('cerrar_sesion','Cerrar Sesion'); ?>
                                                     </li>
+                                                    <?php endif ?>
                                                 </ul>
                                             </li>
-                                            
+                                            <?php endif ?>
                                         </ul>
                                     </div>
                                     <!-- /.navbar-collapse -->
@@ -128,7 +144,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <div class="header-action-bar">
                 <div class="container">
                     <div class="row">
-                        <div class="col-md-12 col-sm-12">
+                        <div class="col-md-10 col-sm-10">
                             <div class="newsticker" id="newsticker">
                                 <div class="bn-title"><strong>Comunicados:</strong><span></span></div>
                                 <ul>
@@ -141,6 +157,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 </ul>
                                 <div class="bn-navi"> <span></span> <span></span> </div>
                             </div>
+                        </div>
+                        <div class="col-md-2 col-sm-2">
+                            <ul class="acbar-right">
+                                <li>
+                                    <?php if(!$this->CI->auth_model->logged_in()): ?>
+                                        <?php echo anchor('iniciar_sesion','<i class="fa fa-user"></i> Iniciar Sesion','class="login-btn"'); ?>
+                                    <?php else: ?>
+                                        <?php echo anchor('cerrar_sesion','<i class="fas fa-sign-in-alt"></i> Cerrar Sesion','class="login-btn"'); ?>
+                                    <?php endif ?>
+                                </li>
+                            </ul>
                         </div>
                         
                     </div>

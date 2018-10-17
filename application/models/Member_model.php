@@ -96,7 +96,7 @@ class Member_model extends My_Model
 		$this->load->helper('date');
 		$this->db->trans_begin();
 		$data = array(
-			'fecha' => mdate('%Y-%m-%d %H:%i:%s', now()),
+			'fecha' => mdate('%Y-%m-%d', now()),
 			$this->join['users'] => $member_id
 		);
 
