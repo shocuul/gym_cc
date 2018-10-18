@@ -72,11 +72,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <!-- Collect the nav links, forms, and other content for toggling -->
                                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                         <ul class="nav navbar-nav">
-                                            <li> <a href="#">Inicio</span></a>
+                                            <li> <a href="<?php echo base_url(); ?>">Inicio</span></a>
                                             </li>
                                             <?php if($this->CI->has_permissions('profile')): ?>
                                                 <li>
                                                     <?php echo anchor('perfil','Ver mi perfil'); ?>
+                                                </li>
+                                                <li>
+                                                    <?php echo anchor('menus','Menus de Alimentacion'); ?>
                                                 </li>
                                             <?php endif ?>
                                             <?php if($this->CI->has_permissions('users')): ?>

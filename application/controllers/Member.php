@@ -540,6 +540,7 @@ class Member extends MY_Controller
         $this->form_validation->set_rules('pmc','Porcentaje de Masa Corporal','trim|required');
         $this->form_validation->set_rules('rcc','Relación Cintura-Cadera','trim|required');
         $this->form_validation->set_rules('mb','Metabolismo Basal','trim|required');
+        $this->form_validation->set_rules('imagen','Imagen','required');
 
         if($member_id != $this->input->post('member_id') && $current_id != $this->input->post('current_id'))
         {
@@ -548,34 +549,16 @@ class Member extends MY_Controller
 
         if($this->form_validation->run() === TRUE)
         {
-            //$user_id = $this->input->post('id');
-            $image_path = realpath(APPPATH . '../images');
-            $config['upload_path']          = $image_path;
-            $config['allowed_types']        = 'gif|jpg|png';
-            $config['max_size']             = 3000;
-            // $config['max_width']            = 2000;
-            // $config['max_height']           = 768;
-            $this->load->library('upload',$config);
-
-            if(! $this->upload->do_upload('imagen')){
-                $this->session->set_flashdata('message', $this->upload->display_errors());
-                redirect('socio/detalles/'.$member_id.'/plan/'.$current_id,'refresh');
-            }
-            else
-            {
-                $file_data = $this->upload->data();
-                $imagen = $file_data['file_name'];
-                $metric_data = array(
-                    'mme' => (float) $this->input->post('mme'),
-                    'mgc' => (float) $this->input->post('mgc'),
-                    'act' => (float) $this->input->post('act'),
-                    'imc' => (float) $this->input->post('imc'),
-                    'pmc' => (float) $this->input->post('pmc'),
-                    'rcc' => (float) $this->input->post('rcc'),
-                    'mb' => (float) $this->input->post('mb'),
-                );
-            }
-           
+           $imagen = $this->input->post('imagen');
+            $metric_data = array(
+                'mme' => (float) $this->input->post('mme'),
+                'mgc' => (float) $this->input->post('mgc'),
+                'act' => (float) $this->input->post('act'),
+                'imc' => (float) $this->input->post('imc'),
+                'pmc' => (float) $this->input->post('pmc'),
+                'rcc' => (float) $this->input->post('rcc'),
+                'mb' => (float) $this->input->post('mb'),
+            ); 
         }
 
         if($this->form_validation->run() === TRUE && $this->member_model->add_metric($member_id, $current_id , $metric_data, $imagen))

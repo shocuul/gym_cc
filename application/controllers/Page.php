@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Welcome extends CI_Controller {
+class Page extends MY_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -19,16 +19,17 @@ class Welcome extends CI_Controller {
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
 	public function index()
-	{
-		$password = password_hash("by45nt5k4n", PASSWORD_DEFAULT);
+	{	
+		$this->plan_model->where('tipo','promocion');
+		$this->data['ads'] = $this->plan_model->images()->result();
+		$this->plan_model->where('tipo','galeria');
+		$this->data['gallery'] = $this->plan_model->images()->result();
+		$this->_render('pages/index', $this->data);
+	}
 
-		if(password_verify('online', $password)){
-			$resultado = 'Contraseña Valida';
-		}else{
-			$resultado = 'Contraseña invalida';
-		}
-		$data['password'] = $resultado;
-
-		$this->load->view('pages/login', $data);
+	public function menus(){
+		$this->plan_model->where('tipo','menu');
+		$this->data['images'] = $this->plan_model->images()->result();
+		$this->_render('pages/menus', $this->data);
 	}
 }

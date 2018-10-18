@@ -263,7 +263,8 @@
       </div>
       <div class="form-group">
           <?php echo form_label('Imagen','imagen'); ?>
-          <?php echo form_upload($imagen); ?>
+          <input type="hidden" name="imagen" id="imagen">
+          <div id="fileupload" class="dropzone"></div>
       </div>
       </div>
       <div class="modal-footer">
@@ -280,6 +281,20 @@
 </div>
 
 <script>
+
+Dropzone.autoDiscover = false;
+    var myDropzone = new Dropzone("div#fileupload",{
+        url:'index.php?/ajax/upload',
+        acceptedFiles: 'image/*',
+        maxFilesize: 3,
+        maxFiles:1,
+        dictDefaultMessage:"Arrastra las imagenes aqui.",
+        success:function(file, response){
+            console.log(response);
+            $('#imagen').val(response.file_name);
+        }
+    });
+
 function fillRoutineModal(id, ejercicio, instruccion)
 {
     document.getElementById('ejercicio').setAttribute('value', ejercicio);

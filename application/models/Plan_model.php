@@ -228,6 +228,23 @@ class Plan_model extends My_Model
         return TRUE;
 	}
 
+	public function images()
+	{
+		if(isset($this->_where) && !empty($this->_where))
+		{
+			foreach($this->_where as $where)
+			{
+				$this->db->where($where);
+			}
+
+			$this->_where = array();
+		}
+
+		$this->response = $this->db->get($this->tables['page_images']);
+
+        return $this;
+	}
+
 	public function delete_image($id)
 	{
 		$this->db->trans_begin();

@@ -63,6 +63,7 @@ $route['usuarios/eliminar']['post'] = 'auth/delete_user';
 $route['perfil/(:num)'] = 'member/profile/$1';
 $route['perfil/(:num)/realizar/(:num)'] = 'member/routine_complete/$1/$2';
 $route['perfil/(:num)/asistencia'] = 'member/register_assists/$1';
+$route['menus'] = 'page/menus';
 
 //SOCIOS
 $route['socio/detalles/(:num)'] = 'member/detail/$1';
@@ -97,7 +98,7 @@ $route['configuracion/permisos'] = 'configuration/permissions';
 //AUTH
 $route['iniciar_sesion'] = 'auth/login';
 $route['cerrar_sesion'] = 'auth/logout';
-$route['default_controller'] = 'auth/users';
+$route['default_controller'] = 'page';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
