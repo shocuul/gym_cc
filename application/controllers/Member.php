@@ -823,6 +823,7 @@ class Member extends MY_Controller
         }
 
         $this->data['member'] = $this->member_model->member($id)->row();
+        $this->data['avatar'] = $this->member_model->get_avatar($id)->row();
 
         $this->data['subscribe_plans'] = $this->member_model->get_member_plans($id)->result();
 

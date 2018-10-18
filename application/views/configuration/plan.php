@@ -61,81 +61,30 @@
                         <div class="col-md-3">
                             <div class="sidebar">
 
-                                <!--Widget Start-->
-                                <div class="widget">
-                                    <div class="text-widget"> <img src="images/txt-img.jpg" alt="">
-                                        <h3>About us</h3>
-                                        <p> Duis aute dolor reprehenderit in voluptate cillum dolore pariatur. Ue Excepteur cupidatat proident, sunt in culpa officia deserunt mollit anim id est laborum. </p>
-                                        <a class="detail-btn" href="#">Read More</a> </div>
-                                </div>
+                                
                                 <!--Widget End-->
 
                                 <!--Widget Start-->
                                 <div class="widget">
-                                    <div class="social-counter">
-                                        <ul>
-                                            <li>
-                                                <a class="item facebook"> <i class="fa fa-facebook"></i> <span class="count">6709</span><em>Likes</em> </a>
-                                            </li>
-                                            <li>
-                                                <a class="item twitter"> <i class="fa fa-twitter"></i> <span class="count">2710</span><em>Followers</em> </a>
-                                            </li>
-                                            <li>
-                                                <a class="item google"> <i class="fa fa-google-plus"></i> <span class="count">209</span><em>Followers</em> </a>
-                                            </li>
-                                            <li>
-                                                <a class="item instagram"> <i class="fa fa-instagram"></i> <span class="count">5692</span><em>Followers</em> </a>
-                                            </li>
-                                            <li>
-                                                <a class="item youtube"> <i class="fa fa-youtube"></i> <span class="count">16378</span><em>Subscribers</em> </a>
-                                            </li>
-                                            <li>
-                                                <a class="item dribbble"> <i class="fa fa-dribbble"></i> <span class="count">15</span><em>Followers</em> </a>
-                                            </li>
-                                            <li></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <!--Widget End-->
-
-                                <!--Widget Start-->
-                                <div class="widget">
-                                    <h3>Latest News</h3>
+                                    <h3>Socios</h3>
                                     <ul class="small-grid">
                                         <!--Row Start-->
-                                        <li class="news">
-                                            <div class="small-thumb"> <img src="images/lng1.jpg" alt=""> </div>
-                                            <div class="news-txt">
-                                                <ul class="meta-info">
-                                                    <li><a href="#">NFL</a></li>
-                                                </ul>
-                                                <h6> <a href="#">Following Usain. Bolt's final 100m</a> </h6>
+                                        <?php if(!empty($users)): ?>
+                                            <?php foreach($users as $user): ?>
+                                                <li class="news">
+                                                <div class="small-thumb"> <img src="images/public/<?php echo $user->avatar->path; ?>" alt=""> </div>
+                                                <div class="news-txt">
+                                                <h6> <?php echo anchor('socio/detalles/'.$user->user_id,$user->nombre.' '. $user->paterno.' '.$user->materno); ?> </h6>
+                                                </div>
+                                                </li>
+                                            <?php endforeach ?>
+                                        <?php else: ?>
+                                            <div class="alert alert-info" role="alert">
+                                            No hay socios subscritos a este plan.
                                             </div>
-                                        </li>
+                                        <?php endif ?>
+                                        
                                         <!--Row End-->
-
-                                        <!--Row Start-->
-                                        <li class="news">
-                                            <div class="small-thumb"> <img src="images/lng2.jpg" alt=""> </div>
-                                            <div class="news-txt">
-                                                <ul class="meta-info">
-                                                    <li><a href="#">College Basketball</a></li>
-                                                </ul>
-                                                <h6> <a href="#">Dominique Wilkins' injury, Jordan </a> </h6>
-                                            </div>
-                                        </li>
-                                        <!--Row End-->
-
-                                        <!--Row Start-->
-                                        <li class="news">
-                                            <div class="small-thumb"> <img src="images/lng3.jpg" alt=""> </div>
-                                            <div class="news-txt">
-                                                <ul class="meta-info">
-                                                    <li><a href="#">Soccer</a></li>
-                                                </ul>
-                                                <h6> <a href="#">Eight of the top nine scorers from </a> </h6>
-                                            </div>
-                                        </li>
                                         <!--Row End-->
 
                                     </ul>

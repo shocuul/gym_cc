@@ -25,10 +25,10 @@
                                    <div class="row">
                                        <div class="col-md-4">
                                            <div class="pro-large-img" style="max-width:250px;">
-                                               <?php if(isset($avatar)): ?>
-                                               <img src="images/member1.jpg" class="pro-large-img" alt="Member1">
+                                               <?php if(!empty($avatar)): ?>
+                                               <img src="images/public/<?php echo $avatar->path; ?>" class="pro-large-img" alt="Member1" style="max-width:100%;">
                                                 <?php else: ?>
-                                                <img src="images/avatar-men.jpg" class="pro-large-img" alt="" style="max-width:100%;">
+                                                <img src="images/avatar.png" class="pro-large-img" alt="" style="max-width:100%;">
                                                 <?php endif; ?>
                                            </div>
                                        </div>
@@ -257,7 +257,7 @@
             type:"get",
             url:"index.php?/ajax/generate_chart_data/<?php echo $member->id ?>",
             success:function(response){
-                //console.log(response);
+                console.log(response);
                 var data = google.visualization.arrayToDataTable(response);
                 var options = {
                     vAxis: {title: 'Medidas'},

@@ -21,8 +21,10 @@ class Page extends MY_Controller {
 	public function index()
 	{	
 		$this->plan_model->where('tipo','promocion');
+		$this->plan_model->limit(2);
 		$this->data['ads'] = $this->plan_model->images()->result();
 		$this->plan_model->where('tipo','galeria');
+		$this->plan_model->limit(8);
 		$this->data['gallery'] = $this->plan_model->images()->result();
 		$this->_render('pages/index', $this->data);
 	}

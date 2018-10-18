@@ -10,7 +10,7 @@ class MY_Controller extends CI_Controller{
     {
         parent::__construct();
         $this->load->helper(array('url','form'));
-        $this->load->model(array('auth_model','member_model','plan_model'));
+        $this->load->model(array('auth_model','member_model','plan_model','stat_model'));
         $this->load->library(array('form_validation','pagination'));
         $this->CI = & get_instance();
         $query = $this->db->get_where('opciones',array('key' => 'permissions'),1)->row();

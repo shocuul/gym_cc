@@ -171,6 +171,11 @@ class Configuration extends MY_Controller{
             return show_error('No tienes permisos para ver esta pagina');
         }
         $this->data['plan'] = $this->plan_model->plan($id)->row();
+        $this->data['users'] = $this->plan_model->get_plan_users($id)->result();
+        foreach($this->data['users'] as $k => $user)
+        {
+            $this->data['users'][$k]->avatar = $this->member_model->get_avatar($user->user_id)->row();
+        }
         $this->data['routines'] = $this->plan_model->routines($id)->result();
         $this->data['csrf'] = $this->_get_csrf_nonce();
         $this->data['message'] = (validation_errors() ? validation_errors() : ($this->plan_model->errors() ? $this->plan_model->errors() : $this->session->flashdata('message')));

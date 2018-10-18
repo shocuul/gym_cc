@@ -85,6 +85,21 @@ class Plan_model extends My_Model
 		}
 	}
 
+	public function get_plan_users($id){
+		return $this->db->select($this->tables['users_plans'].'.id, '.$this->tables['users'].'.id as user_id, '.$this->tables['users'].'.nombre, '.$this->tables['users'].'.paterno, '.$this->tables['users'].'.materno')
+			->where($this->tables['users_plans'].'.'.$this->join['plans'],$id)
+			->join($this->tables['users'], $this->tables['users_plans'].'.'.$this->join['users'].'='.$this->tables['users'].'.id')
+			->get($this->tables['users_plans']);
+	}
+
+	// public function get_member_plans($id)
+	// {
+	// 	return $this->db->select($this->tables['users_plans'].'.id, '.$this->tables['plans'].'.id as plan_id, '.$this->tables['plans'].'.nombre')
+	// 			->where($this->tables['users_plans'].'.'.$this->join['users'],$id)
+	// 			->join($this->tables['plans'], $this->tables['users_plans'].'.'.$this->join['plans'].'='.$this->tables['plans'].'.id')
+	// 			->get($this->tables['users_plans']);
+	// }
+
 	public function get_total()
     {
         return $this->db->count_all($this->tables['plans']);
@@ -238,6 +253,18 @@ class Plan_model extends My_Model
 			}
 
 			$this->_where = array();
+		}
+
+		if(isset($this->_limit) && isset($this->_offset))
+		{
+			$this->db->limit($this->_limit, $this->_offset);
+			$this->_limit = NULL;
+			$this->_offset = NULL;
+		}
+		else if(isset($this->_limit))
+		{
+			$this->db->limit($this->_limit);
+			$this->_limit = NULL;
 		}
 
 		$this->response = $this->db->get($this->tables['page_images']);

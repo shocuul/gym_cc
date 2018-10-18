@@ -75,6 +75,8 @@ $route['socios/eliminar']['post'] = 'member/delete_member';
 $route['socios/nuevo'] = 'member/create_member';
 $route['socios/editar_socio/(:num)'] = 'member/edit_member/$1';
 
+//ESTADISTICAs
+$route['estadisticas'] = 'stats';
 
 //AJAX
 $route['ajax/generate_login_info']['post'] = 'member/generate_login_info';
@@ -82,6 +84,8 @@ $route['ajax/generate_chart_data/(:num)'] = 'member/generate_chart_data/$1';
 $route['ajax/usuarios'] = 'auth/ajax_users';
 $route['ajax/socios'] = 'member/ajax_members';
 $route['ajax/upload'] = 'member/upload';
+$route['ajax/generate_stats'] = 'stats/ajax_assists_charts';
+
 
 //PLANES
 $route['configuracion/planes'] = 'configuration/plans';
