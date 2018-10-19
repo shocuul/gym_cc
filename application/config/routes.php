@@ -89,6 +89,7 @@ $route['ajax/generate_stats'] = 'stats/ajax_assists_charts';
 
 //PLANES
 $route['configuracion/planes'] = 'configuration/plans';
+$route['configuracion/comunicados'] = 'configuration/notices';
 $route['configuracion/plan/(:num)'] = 'configuration/plan/$1';
 $route['configuracion/plan/editar'] = 'configuration/edit_plan';
 $route['configuracion/plan/(:num)/rutina']['post'] = 'configuration/add_routine/$1'; 

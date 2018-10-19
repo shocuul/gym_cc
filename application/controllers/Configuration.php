@@ -3,6 +3,56 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Configuration extends MY_Controller{
 
+    public function notices(){
+
+        if (!$this->auth_model->logged_in())
+        {
+            // redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }else if (!$this->has_permissions('stats')) // remove this elseif if you want to enable this for non-admins
+        {
+            // redirect them to the home page because they must be an administrator to view this
+            return show_error('No tienes permisos para ver esta pagina');
+        }
+
+        $this->form_validation->set_rules('comunicado','Comunicado','trim|required');
+        if(isset($_POST) && !empty($_POST)){
+            if($this->_valid_csrf_nonce() === FALSE)
+            {
+                show_error('Este formulario no pasó nuestras pruebas de seguridad.');
+            }
+            if($this->input->post('action') === 'add'){
+                if($this->form_validation->run() === TRUE)
+                {
+                $data = array(
+                'comunicado' => $this->input->post('comunicado'));
+
+                $this->db->insert('comunicados', $data);
+                redirect(uri_string(),'refresh');
+                }
+            }
+            if($this->input->post('action') === 'delete'){
+                $id = $this->input->post('delete_notice_id');
+                $this->db->delete('comunicados', array('id' => $id));
+                redirect(uri_string(),'refresh');
+            }  
+            
+        }
+            
+
+        $this->data['notices'] = $this->db->get('comunicados');
+
+        $this->data['csrf'] = $this->_get_csrf_nonce();
+
+        $this->data['comunicado'] = array(
+            'name' => 'comunicado',
+            'id' => 'comunicado',
+            'class' => 'form-control',
+        );
+
+        $this->_render('configuration/notices',$this->data);
+    }
+
     public function plans($offset = NULL)
     {
         if (!$this->auth_model->logged_in())
@@ -103,10 +153,32 @@ class Configuration extends MY_Controller{
             ';
             foreach ($plans as $plan) {
                 $output .= '
-                
+                    <tr>
+                        <td>'. htmlspecialchars($plan->id, ENT_QUOTES, 'UTF-8') .'</td>
+                        <td>'. htmlspecialchars($plan->nombre, ENT_QUOTES, 'UTF-8').'</td>
+                        <td>'. htmlspecialchars($plan->descripcion, ENT_QUOTES, 'UTF-8').'</td>
+                        <td>
+                            <div class="pro-share" style="margin:0;">
+                                '. anchor("configuracion/plan/".$plan->id,'<i class="fas fa-clipboard-list"></i>').'
+                            <a data-toggle="modal" href="#plansEdit" onClick="fillEditModal(\''. $plan->id .'\',\''. $plan->nombre.'\',\''.$plan->descripcion.'\')"><i class="fa fa-edit"></i></a>
+                            <a data-toggle="modal" href="#plansDelete" onClick="fillDeleteModal(\''.$plan->id.'\',\''.$plan->nombre.'\')"><i class="fa fa-trash"></i></a> 
+                            </div>
+                        </td>
+                    </tr>
                 ';
             }
+            $output .= '
+            <tbody></table>
+            ';
+        }else
+        {
+            $output .= '
+                <div class="alert alert-warning" role="alert">
+                No se encontraron socios.
+                </div>
+            ';
         }
+        $this->output->set_output($output);
     }
 
     public function add_routine($id)

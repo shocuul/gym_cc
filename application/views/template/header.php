@@ -56,7 +56,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <!--Logo Start-->
                         <div class="col-md-3 nop">
                             <div class="logo">
-                                <a href="index.html"> <img src="<?= base_url(); ?>images/logo.png" alt=""></a>
+                                <a href="<?php echo base_url(); ?>"> <img src="<?= base_url(); ?>images/logo.png" alt=""></a>
                             </div>
                         </div>
                         <!--Logo End-->
@@ -109,11 +109,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <?php if($this->CI->has_permissions('stats')): ?>
                                             <li> <a href="#">Estadisticas <span class="caret"></span></a>
                                                 <ul class="sub-menu">
-                                                    <li><a href="blog-full.html">Blog Full</a></li>
-                                                    <li><a href="blog-grid.html">Blog Grid</a></li>
-                                                    <li><a href="blog-list.html">Blog List</a></li>
-                                                    <li><a href="blog-sidebar.html">Blog With Sidebar</a></li>
-                                                    <li><a href="single.html">Single</a></li>
+                                                    <li><?php echo anchor('estadisticas','Asistencias de Socios') ?></li>
+                                                   
                                                 </ul>
                                             </li>
                                             <?php endif ?>
@@ -147,20 +144,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <div class="header-action-bar">
                 <div class="container">
                     <div class="row">
+                        <?php if(!empty($notices)): ?>
                         <div class="col-md-10 col-sm-10">
                             <div class="newsticker" id="newsticker">
                                 <div class="bn-title"><strong>Comunicados:</strong><span></span></div>
                                 <ul>
-                                    <li><a href="#">Horario del Gym: 8:00 am. a 9:00pm.</a></li>
-                                    <li><a href="#">Se les comunica que el sabado abra mantenimiento a las maquinas de cardio por lo cual no podran ser utilizadas</a></li>
-                                    <li><a href="#">Ofrescan los nuevos paquetes mensuales que incluyen tonificacion de torso y gluteos </a></li>
-                                    <li><a href="#">El dia 16 de Septiembre no se laborara en el gym</a></li>
-                                    <li><a href="#">Favor de limpiar su area de trabajo</a></li>
-                                    <li><a href="#">Mensaje Independiente 3 </a></li>
+                                    <?php foreach ($notices as $notice) : ?>
+                                    <li><a href="#"><?php $notice-> comunicado?></a></li>
+                                    <?php endforeach ?>
                                 </ul>
                                 <div class="bn-navi"> <span></span> <span></span> </div>
                             </div>
                         </div>
+                        <?php endif ?>
                         <div class="col-md-2 col-sm-2">
                             <ul class="acbar-right">
                                 <li>

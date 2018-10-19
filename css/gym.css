@@ -1,5 +1,17 @@
 /* Custom CSS FOR SYSTEM */
 
+
+.contact-form .submit:disabled{
+  background: #111F44;
+}
+.review-form input[type="text"]{
+  margin-bottom: 0 !important;
+}
+
+.review-form .input-group{
+  margin-bottom: 30px !important;
+}
+
 .modal-backdrop {
     z-index: 200000 !important;
   }

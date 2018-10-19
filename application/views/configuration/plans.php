@@ -13,7 +13,7 @@
                     <div class="col-md-4">
                         <div class="side-search">
                          <form>
-                            <input type="search" class="search" placeholder="Buscar aqui...">
+                            <input type="search" id="search" class="search" placeholder="Buscar aqui...">
                             <button>
                                 <i class="fa fa-search"></i>
                             </button>
@@ -180,6 +180,28 @@
 </div>
 
 <script>
+
+    function load_plans(query){
+        $.ajax({
+            type:"post",
+            url:"index.php?/ajax/plans",
+            data:{query:query},
+            success:function(data){
+                console.log(data);
+                //$('#points-listing').html(data);
+            }
+        })
+    }
+    $('#search').keyup(function(){
+        var search = $(this).val();
+        console.log(search)
+        if(search != '')
+        {
+            load_plans(search);
+        }else{
+            load_plans();
+        }
+    })
 
     function fillDeleteModal(id, nombre)
     {

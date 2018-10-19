@@ -4,6 +4,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Stats extends MY_Controller {
 	public function index()
 	{	
+		if (!$this->auth_model->logged_in())
+        {
+            // redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }else if (!$this->has_permissions('stats')) // remove this elseif if you want to enable this for non-admins
+        {
+            // redirect them to the home page because they must be an administrator to view this
+            return show_error('No tienes permisos para ver esta pagina');
+        }
 		date_default_timezone_set('UTC');
 		$this->data['dropdown'] = $this->stat_model->dropdown_date_range();
 		$this->data['range'] = $this->stat_model->get_date_range();

@@ -70,7 +70,7 @@
                             <label for="estatura" class="control-label">Estatura</label>
                              <div class="input-group">
                                  <!-- <input type="text" class="form-control" id="inputEmail3" placeholder="Estatura"> -->
-                                <?php echo form_input($estatura); ?>
+                                 <?php echo form_input($estatura); ?>
                                  <div class="input-group-addon">m.</div>
                              </div>
 
@@ -88,7 +88,10 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <label for="email" class="control-label">Correo Electronico</label>
+                                   
                                     <?php echo form_input($email); ?>
+                                       
+                                    
                                 </div>
                                 <div class="col-md-3">
                                     <label for="usuario" class="control-label">Usuario del Socio</label>

@@ -66,8 +66,8 @@ class MY_Controller extends CI_Controller{
    		//var_dump($this->_permissions);
     }
     	
-    public function get_group_name(){
-    	return $this->session->userdata('group_name');
+    public function get_notices(){
+    	return $this->db->get('comunicados')->result();
     }
 
     /**
@@ -98,7 +98,8 @@ class MY_Controller extends CI_Controller{
 
     public function _render($view, $data = NULL )
     {
-    	$data['header_group_name'] = $this->get_group_name();
+
+    	$data['notices'] = $this->get_notices();
         $this->load->view('template/header',$data);
         $this->load->view($view,$data);
         $this->load->view('template/footer');

@@ -6,10 +6,10 @@
             <div class="container">
                 <ul class="pull-left">
                     <li>
-                        <?php echo anchor('#rutinaAdd','<i class="fas fa-plus-circle"></i>  Agregar Rutina','data-toggle="modal" class="detail-btn"'); ?> </li>
+                        <?php //echo anchor('#rutinaAdd','<i class="fas fa-plus-circle"></i>  Agregar Rutina','data-toggle="modal" class="detail-btn"'); ?> </li>
                 </ul>
                 <ul class="pull-right">
-                    <li><?php echo anchor('configuracion/planes','<i class="fas fa-arrow-left"></i> Volver','class="detail-btn"'); ?></li>
+                    <li><?php //echo anchor('configuracion/planes','<i class="fas fa-arrow-left"></i> Volver','class="detail-btn"'); ?></li>
                 </ul>
              </div>
         </div>
@@ -41,76 +41,7 @@
                                 <!--Widget End-->
 
                                 <!--Widget Start-->
-                                <div class="widget">
-                                    <div class="social-counter">
-                                        <ul>
-                                            <li>
-                                                <a class="item facebook"> <i class="fa fa-facebook"></i> <span class="count">6709</span><em>Likes</em> </a>
-                                            </li>
-                                            <li>
-                                                <a class="item twitter"> <i class="fa fa-twitter"></i> <span class="count">2710</span><em>Followers</em> </a>
-                                            </li>
-                                            <li>
-                                                <a class="item google"> <i class="fa fa-google-plus"></i> <span class="count">209</span><em>Followers</em> </a>
-                                            </li>
-                                            <li>
-                                                <a class="item instagram"> <i class="fa fa-instagram"></i> <span class="count">5692</span><em>Followers</em> </a>
-                                            </li>
-                                            <li>
-                                                <a class="item youtube"> <i class="fa fa-youtube"></i> <span class="count">16378</span><em>Subscribers</em> </a>
-                                            </li>
-                                            <li>
-                                                <a class="item dribbble"> <i class="fa fa-dribbble"></i> <span class="count">15</span><em>Followers</em> </a>
-                                            </li>
-                                            <li></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <!--Widget End-->
-
-                                <!--Widget Start-->
-                                <div class="widget">
-                                    <h3>Latest News</h3>
-                                    <ul class="small-grid">
-                                        <!--Row Start-->
-                                        <li class="news">
-                                            <div class="small-thumb"> <img src="images/lng1.jpg" alt=""> </div>
-                                            <div class="news-txt">
-                                                <ul class="meta-info">
-                                                    <li><a href="#">NFL</a></li>
-                                                </ul>
-                                                <h6> <a href="#">Following Usain. Bolt's final 100m</a> </h6>
-                                            </div>
-                                        </li>
-                                        <!--Row End-->
-
-                                        <!--Row Start-->
-                                        <li class="news">
-                                            <div class="small-thumb"> <img src="images/lng2.jpg" alt=""> </div>
-                                            <div class="news-txt">
-                                                <ul class="meta-info">
-                                                    <li><a href="#">College Basketball</a></li>
-                                                </ul>
-                                                <h6> <a href="#">Dominique Wilkins' injury, Jordan </a> </h6>
-                                            </div>
-                                        </li>
-                                        <!--Row End-->
-
-                                        <!--Row Start-->
-                                        <li class="news">
-                                            <div class="small-thumb"> <img src="images/lng3.jpg" alt=""> </div>
-                                            <div class="news-txt">
-                                                <ul class="meta-info">
-                                                    <li><a href="#">Soccer</a></li>
-                                                </ul>
-                                                <h6> <a href="#">Eight of the top nine scorers from </a> </h6>
-                                            </div>
-                                        </li>
-                                        <!--Row End-->
-
-                                    </ul>
-                                </div>
-
+                                
                                 <!--Widget End-->
 
                                 
@@ -142,7 +73,7 @@
             url:"index.php?/ajax/generate_stats",
             data:{key:select_date},
             success:function(response){
-                console.log(response);
+                // console.log(response);
                 var data = google.visualization.arrayToDataTable(response);
                 var options = {
                     vAxis: {title: 'Asistencias'},
