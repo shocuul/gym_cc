@@ -91,29 +91,29 @@ class Member_model extends My_Model
 
 	}
 
-	public function register_assists($member_id)
-	{
-		$this->load->helper('date');
-		$this->db->trans_begin();
-		$data = array(
-			'fecha' => mdate('%Y-%m-%d', now()),
-			$this->join['users'] => $member_id
-		);
+	// public function register_assists($member_id)
+	// {
+	// 	$this->load->helper('date');
+	// 	$this->db->trans_begin();
+	// 	$data = array(
+	// 		'fecha' => mdate('%Y-%m-%d', now()),
+	// 		$this->join['users'] => $member_id
+	// 	);
 
-		$data = $this->_filter_data($this->tables['assists'], $data);
+	// 	$data = $this->_filter_data($this->tables['assists'], $data);
 
-		$this->db->insert($this->tables['assists'], $data);
+	// 	$this->db->insert($this->tables['assists'], $data);
 
-		if($this->db->trans_status() === FALSE){
-			$this->db->trans_rollback();
-			$this->set_error('No se ha podido completar la rutina');
-            return FALSE;
-		}
-		$this->db->trans_commit();
-		$this->set_message('Asistencia registrada con exito.');
-        return TRUE;
+	// 	if($this->db->trans_status() === FALSE){
+	// 		$this->db->trans_rollback();
+	// 		$this->set_error('No se ha podido completar la rutina');
+    //         return FALSE;
+	// 	}
+	// 	$this->db->trans_commit();
+	// 	$this->set_message('Asistencia registrada con exito.');
+    //     return TRUE;
         
-	}
+	// }
 	public function routine_completed($routine_id)
 	{
 		$this->load->helper('date');

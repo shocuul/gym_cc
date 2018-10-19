@@ -10,7 +10,7 @@
             <div class="container">
                 <ul class="pull-left">
                     <li>
-                    <?php echo anchor(uri_string().'/asistencia','Registrar Asistencia','data-toggle="modal" class="detail-btn"'); ?>
+                    <?php // echo anchor(uri_string().'/asistencia','Registrar Asistencia','data-toggle="modal" class="detail-btn"'); ?>
                         <?php echo anchor('#imageAdd','Subir Imagen','data-toggle="modal" class="detail-btn"'); ?> </li>
                 </ul>
                 <ul class="pull-right">

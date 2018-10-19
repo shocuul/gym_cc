@@ -62,7 +62,7 @@ $route['usuarios/eliminar']['post'] = 'auth/delete_user';
 //PERFIL
 $route['perfil/(:num)'] = 'member/profile/$1';
 $route['perfil/(:num)/realizar/(:num)'] = 'member/routine_complete/$1/$2';
-$route['perfil/(:num)/asistencia'] = 'member/register_assists/$1';
+//$route['perfil/(:num)/asistencia'] = 'member/register_assists/$1';
 $route['menus'] = 'page/menus';
 
 //SOCIOS

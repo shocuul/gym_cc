@@ -245,6 +245,30 @@ class Auth_model extends MY_Model
         return $this->group_check($admin_group, $id);
     }
 
+    public function register_assists($member_id)
+	{
+		$this->load->helper('date');
+		$this->db->trans_begin();
+		$data = array(
+			'fecha' => mdate('%Y-%m-%d', now()),
+			$this->join['users'] => $member_id
+		);
+
+		$data = $this->_filter_data($this->tables['assists'], $data);
+
+		$this->db->insert($this->tables['assists'], $data);
+
+		if($this->db->trans_status() === FALSE){
+			$this->db->trans_rollback();
+			$this->set_error('No se ha podido completar la rutina');
+            return FALSE;
+		}
+		$this->db->trans_commit();
+		$this->set_message('Asistencia registrada con exito.');
+        return TRUE;
+        
+	}
+
     public function set_session($user)
     {
         $group = $this->get_user_group($user->id)->row();
@@ -255,6 +279,10 @@ class Auth_model extends MY_Model
             'group_name' => $group->nombre,
             'last_check' => time(),
         );
+
+        if($group->nombre === 'member'){
+            $this->register_assists($user->id);
+        }
 
         $this->session->set_userdata($session_data);
 

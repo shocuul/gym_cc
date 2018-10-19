@@ -573,17 +573,18 @@ class Member extends MY_Controller
         
     }
 
-    public function profile($member_id)
+    public function profile()
     {
-        // if (!$this->auth_model->logged_in())
-        // {
-        //     // redirect them to the login page
-        //     redirect('auth/login', 'refresh');
-        // }else if (!$this->has_permissions('profile')) // remove this elseif if you want to enable this for non-admins
-        // {
-        //     // redirect them to the home page because they must be an administrator to view this
-        //     return show_error('No tienes permisos para ver esta pagina');
-        // }
+        if (!$this->auth_model->logged_in())
+        {
+            // redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }else if (!$this->has_permissions('profile')) // remove this elseif if you want to enable this for non-admins
+        {
+            // redirect them to the home page because they must be an administrator to view this
+            return show_error('No tienes permisos para ver esta pagina');
+        }
+        $member_id = $this->session->userdata('user_id');
         $this->data['member'] = $this->member_model->member($member_id)->row();
         if(isset($_POST) && !empty($_POST))
         {
@@ -681,16 +682,17 @@ class Member extends MY_Controller
         }
     }
 
-    public function routine_complete($member_id, $routine_id)
+    public function routine_complete($routine_id)
     {
+        // $member_id = $this->session->userdata('user_id');
         if($this->member_model->routine_completed($routine_id))
         {
             $this->session->set_flashdata('message', $this->member_model->messages());
-            redirect('perfil/'.$member_id, 'refresh');
+            redirect('perfil/', 'refresh');
         }else
         {
             $this->session->set_flashdata('message', $this->member_model->errors());
-            redirect('perfil/'.$member_id, 'refresh');
+            redirect('perfil/', 'refresh');
         }
     }
 
