@@ -60,7 +60,7 @@ $route['usuarios/editar_usuario/(:num)'] = 'auth/edit_user/$1';
 $route['usuarios/eliminar']['post'] = 'auth/delete_user';
 
 //PERFIL
-$route['perfil/(:num)'] = 'member/profile/$1';
+$route['perfil'] = 'member/profile';
 $route['perfil/(:num)/realizar/(:num)'] = 'member/routine_complete/$1/$2';
 //$route['perfil/(:num)/asistencia'] = 'member/register_assists/$1';
 $route['menus'] = 'page/menus';
@@ -99,6 +99,7 @@ $route['plan/eliminar'] = 'configuration/delete_plan';
 
 //CONFIGURACION
 $route['configuracion/permisos'] = 'configuration/permissions';
+$route['configuracion/permisos/eliminar'] = 'configuration/permissions_delete';
 
 //AUTH
 $route['iniciar_sesion'] = 'auth/login';

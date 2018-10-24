@@ -604,8 +604,10 @@ class Member extends MY_Controller
             }
 
         }
-            
-
+        setlocale(LC_TIME, 'es_ES.UTF-8');
+        $last_login = $this->member_model->get_last_login($member_id)->row()->fecha;
+        
+        $this->data['last_login'] = strftime("%A, %d de %B de %Y", strtotime($last_login));
         
         $this->data['csrf'] = $this->_get_csrf_nonce();
         //$this->member_model->routines($current_plan->id)->result();

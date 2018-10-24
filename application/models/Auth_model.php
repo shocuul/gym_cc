@@ -178,6 +178,37 @@ class Auth_model extends MY_Model
             ->get($this->tables['users_groups']);
     }
 
+    function group_have_users($group_id){
+        $query = $this->db->get_where($this->tables['users_groups'], array($this->join['groups'] => $group_id));
+        return ($query->num_rows() >= 1 ) ? TRUE : FALSE;
+        
+    }
+
+    function delete_group($group_id){
+        if($this->group_have_users($group_id)){
+            $this->set_error('El grupo contiene usuarios activos, reasignelos e intente de nuevo.');
+            return FALSE;
+        }else{
+            $this->db->trans_begin();
+
+            $this->db->delete($this->tables['groups'], array('id' => $group_id));
+
+            if($this->db->trans_status() === FALSE)
+            {
+                $this->db->trans_rollback();
+                $this->set_error('No se pudo eliminar el grupo');
+                return FALSE;
+            }
+
+            $this->db->trans_commit();
+
+            $this->set_message('Grupo eliminado correctamente');
+            return TRUE;
+        }
+
+        
+    }
+
     public function groups($skip_members = TRUE)
     {
         if(isset($this->_where) && !empty($this->_where))
@@ -396,15 +427,15 @@ class Auth_model extends MY_Model
 
         $data = $this->_filter_data($this->tables['users'], $data);
 
-        if(array_key_exists('password', $data))
+        if(array_key_exists('clave', $data))
         {
-            if(! empty($data['password']))
+            if(! empty($data['clave']))
             {
-                $data['password'] = $this->hash_password($data['password']);
+                $data['clave'] = $this->hash_password($data['clave']);
             }
             else
             {
-                unset($data['password']);
+                unset($data['clave']);
             }
         }
 

@@ -20,7 +20,7 @@ class MY_Controller extends CI_Controller{
         else
         {
         	$this->_permissions['admin'] = array('users' => TRUE, 'profile' => FALSE, 'members' => TRUE, 'plans' => TRUE, 'config' => TRUE, 'stats' => TRUE);
-        	$this->_permissions['member'] = array('users' => FALSE, 'profile' => TRUE, 'members' => FALSE, 'plans' => FALSE, 'config' => TRUE, 'stats' => FALSE);
+        	$this->_permissions['member'] = array('users' => FALSE, 'profile' => TRUE, 'members' => FALSE, 'plans' => FALSE, 'config' => FALSE, 'stats' => FALSE);
         	$data = array(
         		'key' => 'permissions',
         		'value' => json_encode($this->_permissions)

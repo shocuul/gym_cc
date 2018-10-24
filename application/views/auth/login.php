@@ -20,12 +20,13 @@
     <![endif]-->
 </head>
 <body class="align">
-    <?php echo $message; ?>
+    
     <div class="grid">
     <?php echo form_open('iniciar_sesion','class="form login"'); ?>
     <header class="login__header">
         <h3 class="login__title">Iniciar Sesion</h3>
     </header>
+    <?php echo $message; ?>
     <div class="login__body">
         <div class="form_field">
             <?php echo form_input($usuario); ?>

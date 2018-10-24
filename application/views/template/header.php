@@ -57,7 +57,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <div class="col-md-3 nop">
                             <div class="logo">
                                 <a href="<?php echo base_url(); ?>"> <img src="<?= base_url(); ?>images/logo.png" alt=""></a>
+                            <div class="gy_icon visible-sm visible-xs">
+                                <?php if(!$this->CI->auth_model->logged_in()): ?>
+                                        <?php echo anchor('iniciar_sesion','<i class="fa fa-user"></i>','class="login-btn"'); ?>
+                                    <?php else: ?>
+                                        <?php echo anchor('cerrar_sesion','<i class="fas fa-sign-in-alt"></i>','class="login-btn"'); ?>
+                                    <?php endif ?>
                             </div>
+                            </div>
+                            
                         </div>
                         <!--Logo End-->
 
@@ -125,7 +133,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                     <li><?php echo anchor('configuracion/permisos','Permisos') ?></li>
                                                     <li><?php echo anchor('configuracion/imagenes','Imagenes') ?></li>
                                                     <li>
-                                                        <?php echo anchor('cerrar_sesion','Cerrar Sesion'); ?>
+                                                        <?php echo anchor('configuracion/comunicados','Comunicados'); ?>
                                                     </li>
                                                     <?php endif ?>
                                                 </ul>
@@ -150,14 +158,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <div class="bn-title"><strong>Comunicados:</strong><span></span></div>
                                 <ul>
                                     <?php foreach ($notices as $notice) : ?>
-                                    <li><a href="#"><?php $notice-> comunicado?></a></li>
+                                    <li><a href="#"><?php echo $notice->comunicado?></a></li>
                                     <?php endforeach ?>
                                 </ul>
                                 <div class="bn-navi"> <span></span> <span></span> </div>
                             </div>
                         </div>
                         <?php endif ?>
-                        <div class="col-md-2 col-sm-2">
+                        <div class="col-md-2 col-sm-2 pull-right">
                             <ul class="acbar-right">
                                 <li>
                                     <?php if(!$this->CI->auth_model->logged_in()): ?>

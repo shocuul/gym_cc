@@ -335,7 +335,7 @@ class Auth extends MY_Controller{
 
                 if($this->input->post('password'))
                 {
-                    $data['password'] = $this->input->post('password');
+                    $data['clave'] = $this->input->post('password');
                 }
 
                 $updateGroup = $this->input->post('rol');
@@ -351,13 +351,13 @@ class Auth extends MY_Controller{
                 if($this->auth_model->update($user->id, $data))
                 {
                     $this->session->set_flashdata('message', $this->auth_model->messages());
-					$this->redirectUser();
+					//$this->redirectUser();
                 }
                 else
                 {
                     // redirect them back to the admin page if admin, or to the base url if non admin
 					$this->session->set_flashdata('message', $this->auth_model->errors());
-					$this->redirectUser();
+					//$this->redirectUser();
                 }
 
             }

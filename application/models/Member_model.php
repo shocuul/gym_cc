@@ -14,6 +14,12 @@ class Member_model extends My_Model
 				->get($this->tables['users_plans']);
 	}
 
+	public function get_last_login($member_id){
+		return $this->db->order_by('fecha','desc')
+				 ->where($this->join['users'],$member_id)
+				 ->get($this->tables['assists'],1);
+		
+	}
 	
 
 	public function add_routine($current, $rutina_id, $instruccion){

@@ -36,6 +36,7 @@
                                         <th>Modulo Planes</th>
                                         <th>Modulo Configuracion</th>
                                         <th>Modulo Estadisticas</th>
+                                        <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -48,6 +49,11 @@
                                         <td><input class="form-check-input" type="checkbox" value="planes" id="<?php echo $group->nombre; ?>[]" name="<?php echo $group->nombre; ?>[]" <?php echo ($permissions[$group->nombre]['plans']) ? 'checked' : ''?> <?php echo ($group->nombre === 'admin') ? 'disabled':'' ?>></td>
                                         <td><input class="form-check-input" type="checkbox" value="configuracion" id="<?php echo $group->nombre; ?>[]" name="<?php echo $group->nombre; ?>[]" <?php echo ($permissions[$group->nombre]['config']) ? 'checked' : ''?> <?php echo ($group->nombre === 'admin') ? 'disabled':'' ?>></td>
                                         <td><input class="form-check-input" type="checkbox" value="estadisticas" id="<?php echo $group->nombre; ?>[]" name="<?php echo $group->nombre; ?>[]" <?php echo ($permissions[$group->nombre]['stats']) ? 'checked' : ''?> <?php echo ($group->nombre === 'admin') ? 'disabled':'' ?>></td>
+                                        <td>
+                                            <?php if($group->nombre != 'admin'): ?>
+                                            <a data-toggle="modal" href="#groupDelete" onClick="fillDeleteModal('<?php echo $group->id ?>','<?php echo $group->descripcion; ?>')"><i class="fa fa-trash"></i></a>
+                                            <?php endif ?>
+                                        </td>
                                     </tr>
                                     <?php endforeach; ?>
                                     
@@ -162,11 +168,11 @@
     </div>
 </div>
 
-<div class="modal fade" id="plansDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index:200001;">
+<div class="modal fade" id="groupDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index:200001;">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Eliminar Plan | Confirmacion</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Eliminar Grupo | Confirmacion</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -175,11 +181,11 @@
         <h4 id="modalName"></h4>
       </div>
       <div class="modal-footer">
-        <?php echo form_open('plan/eliminar'); ?>
-        <input type="hidden" name="delete_plan_id" id="delete_plan_id" value="" />
+        <?php echo form_open('configuracion/permisos/eliminar'); ?>
+        <input type="hidden" name="group_id" id="group_id" value="" />
         <?php echo form_hidden($csrf); ?>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <?php echo form_submit('submit', 'Eliminar Plan','class="btn btn-danger"'); ?>
+        <?php echo form_submit('submit', 'Eliminar Grupo','class="btn btn-danger"'); ?>
         <!-- <button type="button" class="btn btn-danger">Eliminar</button> -->
         <?php echo form_close(); ?>
       </div>
@@ -191,8 +197,8 @@
 
     function fillDeleteModal(id, nombre)
     {
-        $('#modalName').html('¿Desea eliminar el plan ' + nombre + '?.');
-        document.getElementById('delete_plan_id').setAttribute('value', id);
+        $('#modalName').html('¿Desea eliminar el grupo ' + nombre + '?.');
+        document.getElementById('group_id').setAttribute('value', id);
     }
     function fillEditModal(id, nombre, descripcion)
     {

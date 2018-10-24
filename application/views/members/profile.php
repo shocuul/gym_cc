@@ -1,5 +1,14 @@
 <div class="inner-banner">
-            <img src="images/public/<?php echo $img_avatar->path; ?>" style="max-width: 250px; max-height: 200px;">
+            <?php if($img_avatar != NULL): ?>
+            <div class="avatar">
+            <img src="images/public/<?php echo $img_avatar->path; ?>">
+            </div>
+            
+            <?php else: ?>
+            <div class="avatar">
+            <img src="images/avatar.png">
+            </div>
+            <?php endif ?>
             <h1><?php echo htmlspecialchars($member->nombre .' '. $member->paterno .' '. $member->materno , ENT_QUOTES, 'UTF-8'); ?></h1>
             <p>
             <strong>Edad:</strong> <?php echo htmlspecialchars($member->edad , ENT_QUOTES, 'UTF-8'); ?>
@@ -14,7 +23,9 @@
                         <?php echo anchor('#imageAdd','Subir Imagen','data-toggle="modal" class="detail-btn"'); ?> </li>
                 </ul>
                 <ul class="pull-right">
-                    <li><?php //echo anchor('socio/detalles/'.$member->id.'','Volver','class="detail-btn"'); ?></li>
+                    <li style="margin-top: 10px;"><strong>Ultima asistencia: </strong>
+                        <?php echo $last_login; ?>
+                        <?php //echo anchor('socio/detalles/'.$member->id.'','Volver','class="detail-btn"'); ?></li>
                 </ul>
              </div>
         </div>

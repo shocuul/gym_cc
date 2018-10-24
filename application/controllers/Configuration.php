@@ -361,8 +361,23 @@ class Configuration extends MY_Controller{
             redirect('configuracion/planes','refresh');
         }else
         {
-            $this->session->set_flashdata('message', $this->plan_model->messages());
+            $this->session->set_flashdata('message', $this->plan_model->errors());
             redirect('configuracion/planes','refresh');
+        }
+    }
+
+    public function permissions_delete(){
+        if($this->_valid_csrf_nonce() === FALSE)
+        {
+            show_error('Este formulario no pasó nuestras pruebas de seguridad.');
+        }
+        $group_id = $this->input->post('group_id');
+        if($this->auth_model->delete_group($group_id)){
+            $this->session->set_flashdata('message', $this->auth_model->messages());
+            redirect('configuracion/permisos','refresh');
+        }else{
+            $this->session->set_flashdata('message', $this->auth_model->errors());
+            redirect('configuracion/permisos','refresh');
         }
     }
 
@@ -391,6 +406,7 @@ class Configuration extends MY_Controller{
                     $permission_group['plans'] = ($this->input->post('plans')) ? TRUE : FALSE;
                     $permission_group['stats'] = ($this->input->post('stats')) ? TRUE : FALSE;
                     $permission_group['config'] = ($this->input->post('config')) ? TRUE : FALSE;
+                    $permission_group['profile'] = FALSE;
                     
                     $data = array(
                         'nombre' => strtolower($this->input->post('nombre')),
