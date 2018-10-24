@@ -66,12 +66,7 @@
                                         <td>
                                             <div class="pro-share" style="margin:0;">
                                                 <?php echo anchor("usuarios/editar_usuario/" . $user->id, '<i class="fa fa-edit"></i>'); ?>
-                                                <!-- <a href="">
-                                                    <i class="fa fa-trash"></i>
-                                                </a> -->
-                                                <button type="button" class="btn" data-toggle="modal" data-target="#deleteModal" onClick="fillModal('<?php echo $user->id ?>','<?php echo $user->nombre .' '. $user->paterno .' '. $user->materno ?>')">
-                                                <i class="fa fa-trash"></i>
-</button>
+                                                <a data-toggle="modal" href="#deleteModal" onClick="fillModal('<?php echo $user->id ?>','<?php echo $user->nombre .' '. $user->paterno .' '. $user->materno ?>')"><i class="fa fa-trash"></i></a>
                                             </div>
                                         </td>
                                         
@@ -115,7 +110,7 @@
       <div class="modal-footer">
         <?php echo form_open('usuarios/eliminar'); ?>
         <input type="hidden" name="user_id" id="user_id" value="" />
-        <?php echo form_hidden($csrf); ?>
+        <?php echo form_input($csrf); ?>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         <?php echo form_submit('submit', 'Eliminar usuario','class="btn btn-danger"'); ?>
         <!-- <button type="button" class="btn btn-danger">Eliminar</button> -->
@@ -131,12 +126,14 @@
     {
         $.ajax({
             type:"post",
-            url:"index.php?/ajax/usuarios",
+            url:"<?= base_url(); ?>ajax/usuarios",
             data:{query:query},
             success:function(data){
                 console.log(data);
                 // $('#points-listing').html("");
-                $('#points-listing').html(data);
+                document.getElementById('csrf').setAttribute('value', data.csrf.value);
+                document.getElementById('csrf').setAttribute('name', data.csrf.name);
+                $('#points-listing').html(data.html);
             }
         })
     }

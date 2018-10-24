@@ -62,15 +62,15 @@ class Auth extends MY_Controller{
     }
 
     public function create_user(){
-        // if (!$this->auth_model->logged_in())
-        // {
-        //     // redirect them to the login page
-        //     redirect('auth/login', 'refresh');
-        // }else if (!$this->has_permissions('users')) // remove this elseif if you want to enable this for non-admins
-        // {
-        //     // redirect them to the home page because they must be an administrator to view this
-        //     return show_error('No tienes permisos para ver esta pagina');
-        // }
+        if (!$this->auth_model->logged_in())
+        {
+            // redirect them to the login page
+            redirect('auth/login', 'refresh');
+        }else if (!$this->has_permissions('users')) // remove this elseif if you want to enable this for non-admins
+        {
+            // redirect them to the home page because they must be an administrator to view this
+            return show_error('No tienes permisos para ver esta pagina');
+        }
         //validate form input 
         $this->form_validation->set_rules('nombre','Nombre','trim|required');
         $this->form_validation->set_rules('paterno','Apellido Paterno','trim|required');
@@ -78,85 +78,80 @@ class Auth extends MY_Controller{
         $this->form_validation->set_rules('email','Correo Electronico','trim|required|valid_email|is_unique[usuarios.email]');
         $this->form_validation->set_rules('password','Contraseña','required|min_length[8]');
         $this->form_validation->set_rules('rol','Seleccione el Rol','required');
-
-        if($this->form_validation->run() === TRUE){
-            $password = $this->input->post('password');
-            $username = $this->auth_model->generate_username($this->input->post('nombre'),$this->input->post('paterno'),$this->input->post('materno'));
-            $email = $this->input->post('email');
-            $grupo = $this->input->post('rol');
-            $additional_data = array(
-                'nombre' => $this->input->post('nombre'),
-                'paterno' => $this->input->post('paterno'),
-                'materno' => $this->input->post('materno')
-            );
-        }
-        if($this->form_validation->run() === TRUE && $this->auth_model->register($password, $username, $email, $additional_data, $grupo))
+        if(isset($_POST) && !empty($_POST)){
+            if($this->_valid_csrf_nonce() === FALSE)
         {
-            $this->session->set_flashdata('message', $this->auth_model->messages());
-            redirect("usuarios", 'refresh');
+            show_error('Este formulario no pasó nuestras pruebas de seguridad.');
         }
-        else
-        {
-            $this->data['message'] = (validation_errors() ? validation_errors() : ($this->auth_model->errors() ? $this->auth_model->errors() : $this->session->flashdata('message')));
-
-            $this->data['nombre'] = array(
+            if($this->form_validation->run() === TRUE){
+                $password = $this->input->post('password');
+                $username = $this->auth_model->generate_username($this->input->post('nombre'),$this->input->post('paterno'),$this->input->post('materno'));
+                $email = $this->input->post('email');
+                $grupo = $this->input->post('rol');
+                $additional_data = array(
+                    'nombre' => $this->input->post('nombre'),
+                    'paterno' => $this->input->post('paterno'),
+                    'materno' => $this->input->post('materno')
+                );
+            }
+            if($this->form_validation->run() === TRUE && $this->auth_model->register($password, $username, $email, $additional_data, $grupo))
+            {
+                $this->session->set_flashdata('message', $this->auth_model->messages());
+                redirect("usuarios", 'refresh');
+            }else{
+                $this->data['message'] = (validation_errors() ? validation_errors() : ($this->auth_model->errors() ? $this->auth_model->errors() : $this->session->flashdata('message')));
+            }
+        }    
+        
+        $this->data['nombre'] = array(
             'name' => 'nombre',
             'id' => 'nombre',
             'type' => 'text',
             'value' => $this->form_validation->set_value('nombre'),
             'class' => 'form-control'
             
-            );
+        );
 
-            $this->data['paterno'] = array(
-                'name' => 'paterno',
-                'id' => 'paterno',
-                'type' => 'text',
-                'value' => $this->form_validation->set_value('paterno'),
-                'class' => 'form-control'
-            );
+        $this->data['paterno'] = array(
+            'name' => 'paterno',
+            'id' => 'paterno',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('paterno'),
+            'class' => 'form-control'
+        );
 
-            $this->data['materno'] = array(
-                'name' => 'materno',
-                'id' => 'materno',
-                'type' => 'text',
-                'value' => $this->form_validation->set_value('materno'),
-                'class' => 'form-control'
-            );
+        $this->data['materno'] = array(
+            'name' => 'materno',
+            'id' => 'materno',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('materno'),
+            'class' => 'form-control'
+        );
 
-            $this->data['email'] = array(
-                'name' => 'email',
-                'id' => 'email',
-                'type' => 'email',
-                'value' => $this->form_validation->set_value('email'),
-                'class' => 'form-control'
-            );
+        $this->data['email'] = array(
+            'name' => 'email',
+            'id' => 'email',
+            'type' => 'email',
+            'value' => $this->form_validation->set_value('email'),
+            'class' => 'form-control'
+        );
 
-            $this->data['password'] = array(
-                'name' => 'password',
-                'id' => 'password',
-                'type' => 'password',
-                'value' => $this->form_validation->set_value('password'),
-                'class' => 'form-control'
-            );
+        $this->data['password'] = array(
+            'name' => 'password',
+            'id' => 'password',
+            'type' => 'password',
+            'value' => $this->form_validation->set_value('password'),
+            'class' => 'form-control'
+        );
 
-            // $this->data['rol_data'] = array(
-            //     '9' => 'Administrador',
-            //     '4' => 'Entrenador',
-            //     '1' => 'Empleado');
-            // $groups = $this->auth_model->groups()->result();
-            // $groups_array = array();
-            // foreach ($groups as $group) {
-            //     $groups_array[$group->id] = $group->descripcion;
-            // }
-            //
+        $this->data['csrf'] = $this->_get_csrf_nonce();
 
-            $this->data['rol_data'] = $this->auth_model->groups()->has_dropdown('descripcion');
+        $this->data['rol_data'] = $this->auth_model->groups()->has_dropdown('descripcion');
 
-            $this->data['rol'] = $this->form_validation->set_value('rol');
+        $this->data['rol'] = $this->form_validation->set_value('rol');
 
-            $this->_render('auth/create_user', $this->data);
-        }
+        $this->_render('auth/create_user', $this->data);
+        
         
 
         
@@ -180,7 +175,7 @@ class Auth extends MY_Controller{
         $this->auth_model->limit($limit_per_page);
         $this->auth_model->offset($offset);
         $this->data['users'] = $this->auth_model->users()->result();
-        $config['base_url'] = base_url() .'index.php?/usuarios';
+        $config['base_url'] = base_url() .'usuarios';
         $config['total_rows'] = $total_record;
         $config['per_page'] =  $limit_per_page;
         $config['cur_tag_open'] = '<span class="page-numbers current" aria-current="page">';
@@ -239,6 +234,7 @@ class Auth extends MY_Controller{
                 <tbody> ';
                 foreach($users as $user)
                 {
+                    if($user->grupo->nombre ==='member'){continue;}
                     $output .= '
                        <tr> 
                        <td>'. htmlspecialchars($user->id, ENT_QUOTES, 'UTF-8') .'</td>
@@ -248,7 +244,7 @@ class Auth extends MY_Controller{
                        <td>'. $user->grupo->descripcion .' </td>
                        <td><div class="pro-share" style="margin:0;">'.
                        anchor("usuarios/editar_usuario/". $user->id, '<i class="fa fa-edit"></i>').
-                       '<button type="button" class="btn" data-toggle="modal" data-target="#deleteModal" onClick="fillModal(\''.$user->id.'\',\''.$user->nombre.' '.$user->paterno.' '.$user->materno.'\')"><i class="fa fa-trash"></i></button>
+                       '<a data-toggle="modal" href="#deleteModal" onClick="fillModal(\''.$user->id.'\',\''.$user->nombre.' '.$user->paterno.' '.$user->materno.'\')"><i class="fa fa-trash"></i></a>
                             </div>
                         </td>
                         </tr>
@@ -265,8 +261,14 @@ class Auth extends MY_Controller{
             </div>
             ';
         }
+        $response = array(
+            'csrf' => $this->_get_csrf_nonce(),
+            'html' => $output
+        );
 
-        $this->output->set_output($output);
+        return $this->output
+                    ->set_content_type('application/json')
+                    ->set_output(json_encode($response));
         //echo "Soy AJAX";
     }
 

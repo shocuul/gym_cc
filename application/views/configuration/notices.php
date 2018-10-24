@@ -86,7 +86,7 @@
                 
             </div>
             <div class="modal-footer">
-                <?php echo form_hidden($csrf); ?>
+                <?php echo form_input($csrf); ?>
                 <?php echo form_hidden('action','add'); ?>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 <?php echo form_submit('submit', 'Añadir Comunicado','class="btn btn-info"'); ?>
@@ -113,7 +113,7 @@
       <div class="modal-footer">
         <?php echo form_open(uri_string()); ?>
         <input type="hidden" name="delete_notice_id" id="delete_notice_id" value="" />
-        <?php echo form_hidden($csrf); ?>
+        <?php echo form_input($csrf); ?>
         <?php echo form_hidden('action','delete'); ?>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         <?php echo form_submit('submit', 'Eliminar Plan','class="btn btn-danger"'); ?>

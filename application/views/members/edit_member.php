@@ -105,7 +105,7 @@
                                 </div>
                             </div>
                             <?php echo form_hidden('id', $member->id); ?>
-                            <?php echo form_hidden($csrf); ?>
+                            <?php echo form_input($csrf); ?>
                             <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10" style="margin-top: 1em;">
                               <!-- <button type="submit" class="submit">Agregar Socio</button> -->

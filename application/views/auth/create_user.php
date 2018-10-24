@@ -13,7 +13,11 @@
                         
                     </div>
                     <div class="col-md-12">
+                        <?php if(!empty($message)): ?>
+                        <div class="alert alert-danger" role="alert">
                         <?php echo $message; ?>
+                        </div>
+                        <?php endif ?>
                         <?php $form_attributes = array('class' => 'contact-form review-form','id'=>'add_user_form');
                         echo form_open(uri_string(), $form_attributes); ?>
                         <!-- <form class="contact-form review-form"> -->
@@ -61,6 +65,7 @@
                           <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10" style="margin-top: 1em;">
                               <!-- <button type="submit" class="submit">Agregar Usuario</button> -->
+                              <?php echo form_input($csrf); ?>
                               <?php echo form_submit('submit', 'Agregar Usuario', 'class="submit" style="max-width:15em;"'); ?>
                             </div>
                           </div>

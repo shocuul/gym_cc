@@ -64,7 +64,7 @@
                                                         <div class="event-content" style="width:90%;">
                                                             <div class="event-txt-wrap">
                                                                 <div class="event-thumb">
-                                                                    <img src="images/public/<?php echo $routine->imagen;?>" alt="<?php echo $routine->imagen;?>" style="width:100%;">
+                                                                    <img src="<?= base_url(); ?>images/public/<?php echo $routine->imagen;?>" alt="<?php echo $routine->imagen;?>" style="width:100%;">
                                                                 </div>
                                                                 <div class="event-txt">
                                                                     <h4><a href=""><?php echo $routine->instruccion;?></a></h4>
@@ -103,7 +103,7 @@
                                                         <div class="event-content" style="width:90%;">
                                                             <div class="event-txt-wrap">
                                                                 <div class="event-thumb">
-                                                                    <img src="images/public/<?php echo $routine->imagen;?>" alt="<?php echo $routine->imagen;?>" style="width:100%;">
+                                                                    <img src="<?= base_url(); ?>images/public/<?php echo $routine->imagen;?>" alt="<?php echo $routine->imagen;?>" style="width:100%;">
                                                                 </div>
                                                                 <div class="event-txt">
                                                                     <h4><a href=""><?php echo $routine->instruccion;?></a></h4>
@@ -143,7 +143,9 @@
                                                         <?php foreach($assists as $a):?>
                                                         <tr>
                                                             <td><img src="images/green.png" alt="" style="max-width:10px;"></td>
-                                                            <td><?php echo htmlspecialchars($a->fecha, ENT_QUOTES, 'UTF-8'); ?></td>
+                                                            <td><?php 
+                                                            setlocale(LC_TIME, 'es_ES.UTF-8');
+                                                            echo strftime("%A, %d de %B de %Y", strtotime($a->fecha)) ?></td>
                                                         </tr>
                                                         <?php endforeach?>
                                                     </tbody>
@@ -160,8 +162,8 @@
                                             <div class="col-md-4 col-sm-4">
                                             <div class="gall-thumb">
                                             <div class="cap">
-                                            <a href="images/public/<?php echo $image->path; ?>" rel="prettyPhoto[pp_gal]"> <i class="fa fa-expand" aria-hidden="true"></i> </a> <strong><?php echo htmlspecialchars($member->nombre .' '. $member->paterno .' '. $member->materno , ENT_QUOTES, 'UTF-8'); ?></strong> </div>
-                                            <img src="images/public/<?php echo $image->path; ?>" alt=""> </div>
+                                            <a href="<?= base_url(); ?>images/public/<?php echo $image->path; ?>" rel="prettyPhoto[pp_gal]"> <i class="fa fa-expand" aria-hidden="true"></i> </a> <strong><?php echo htmlspecialchars($member->nombre .' '. $member->paterno .' '. $member->materno , ENT_QUOTES, 'UTF-8'); ?></strong> </div>
+                                            <img src="<?= base_url(); ?>images/public/<?php echo $image->path; ?>" alt=""> </div>
                                             </div>
                                         <?php endforeach ?>
                                         <?php else: ?>
@@ -237,7 +239,7 @@
                 
             </div>
             <div class="modal-footer">
-                <?php echo form_hidden($csrf); ?>
+                <?php echo form_input($csrf); ?>
                 <?php echo form_hidden('id', $member->id); ?>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 <?php echo form_submit('submit', 'Subir Imagen','class="btn btn-info"'); ?>

@@ -178,7 +178,13 @@ class Configuration extends MY_Controller{
                 </div>
             ';
         }
-        $this->output->set_output($output);
+        $response = array(
+            'csrf' => $this->_get_csrf_nonce(),
+            'html' => $output
+        );
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($response));  
     }
 
     public function add_routine($id)

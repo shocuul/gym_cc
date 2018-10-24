@@ -122,7 +122,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <?php echo form_hidden($csrf); ?>
+                <?php echo form_input($csrf); ?>
                 <?php echo form_hidden('action','add_plan'); ?>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 <?php echo form_submit('submit', 'Añadir Grupo','class="btn btn-info"'); ?>
@@ -157,7 +157,7 @@
                 
             </div>
             <div class="modal-footer">
-                <?php echo form_hidden($csrf); ?>
+                <?php echo form_input($csrf); ?>
                 <input type="hidden" name="plan_id" id="plan_id" value="">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 <?php echo form_submit('submit', 'Editar Plan','class="btn btn-info"'); ?>
@@ -183,7 +183,7 @@
       <div class="modal-footer">
         <?php echo form_open('configuracion/permisos/eliminar'); ?>
         <input type="hidden" name="group_id" id="group_id" value="" />
-        <?php echo form_hidden($csrf); ?>
+        <?php echo form_input($csrf); ?>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         <?php echo form_submit('submit', 'Eliminar Grupo','class="btn btn-danger"'); ?>
         <!-- <button type="button" class="btn btn-danger">Eliminar</button> -->

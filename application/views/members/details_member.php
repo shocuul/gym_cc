@@ -26,9 +26,9 @@
                                        <div class="col-md-4">
                                            <div class="pro-large-img" style="max-width:250px;">
                                                <?php if(!empty($avatar)): ?>
-                                               <img src="images/public/<?php echo $avatar->path; ?>" class="pro-large-img" alt="Member1" style="max-width:100%;">
+                                               <img src="<?= base_url(); ?>images/public/<?php echo $avatar->path; ?>" class="pro-large-img" alt="Member1" style="max-width:100%;">
                                                 <?php else: ?>
-                                                <img src="images/avatar.png" class="pro-large-img" alt="" style="max-width:100%;">
+                                                <img src="<?= base_url(); ?>images/avatar.png" class="pro-large-img" alt="" style="max-width:100%;">
                                                 <?php endif; ?>
                                            </div>
                                        </div>
@@ -114,7 +114,7 @@
                                         <a href="<?php echo base_url().'index.php?/socio/detalles/' . $member->id .'/plan/' . $plan->plan_id ?>">
                                         <figure class="pl-banner">
                                             <div class="image-min">
-                                                <img src="images/fitness.jpg" alt="fitness">
+                                                <img src="<?= base_url(); ?>images/fitness.jpg" alt="fitness">
                                             </div>
                                             <figcaption>
                                                 <h3><?php echo $plan->nombre; ?></h3>
@@ -198,7 +198,7 @@
       </div>
       <div class="modal-footer">
         <?php echo form_hidden('id', $member->id); ?>
-        <?php echo form_hidden($csrf); ?>
+        <?php echo form_input($csrf); ?>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         <?php echo form_submit('submit', 'Añadir Medicion','class="btn btn-info"'); ?>
         <!-- <button type="button" class="btn btn-danger">Eliminar</button> -->
@@ -237,7 +237,7 @@
              <!--  </div> -->
             </div>
             <div class="modal-footer">
-                <?php echo form_hidden($csrf); ?>
+                <?php echo form_input($csrf); ?>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 <?php echo form_submit('submit', 'Añadir Plan','class="btn btn-info"'); ?>
 
@@ -255,7 +255,7 @@
     function drawVisualization() {
         $.ajax({
             type:"get",
-            url:"index.php?/ajax/generate_chart_data/<?php echo $member->id ?>",
+            url:"<?= base_url(); ?>ajax/generate_chart_data/<?php echo $member->id ?>",
             success:function(response){
                 console.log(response);
                 var data = google.visualization.arrayToDataTable(response);

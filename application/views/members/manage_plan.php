@@ -146,7 +146,7 @@
                                 </div>
                                 <div class="widget">
                                     <div class="text-widget .news-txt">
-                                    <a data-toggle="modal" class="detail-btn btn-block rm" href="#addreadingModal"><i class="fas fa-minus-circle"></i> Quitar Plan</a>
+                                    <a data-toggle="modal" class="detail-btn btn-block btn-warning" href="#planDelete"><i class="fas fa-minus-circle"></i> Quitar Plan</a>
                                     </div>
                                 </div>
                                 <!--Widget End-->
@@ -164,40 +164,29 @@
             </div>
             <!-- Blog Full End -->
 
-<div class="modal fade" id="rutineEdit" tabindex="-1" role="dialog" aria-labelledby="plansFormModalLabel" aria-hidden="true" style="z-index:200001;">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Editar Rutina</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <?php echo form_open(uri_string()); ?>
-                <div class="form-group">
-                    <?php echo form_label('Ejercicio', 'ejercicio'); ?>
-                    <h3 id="nombre_ejercicio"></h3>
-                    <input type="hidden" id="ejercicio" name="ejercicio" value="" class="form-control">
-                </div>
-
-                <div class="form-group">
-                    <?php echo form_label('Instruccion', 'instruccion'); ?>
-                    <textarea name="instruccion" id="instruccion" cols="20" rows="5" class="form-control"></textarea>
-
-                </div>
-                
-            </div>
-            <div class="modal-footer">
-                <?php echo form_hidden($csrf); ?>
-                <input type="hidden" name="rutine_id" id="rutine_id" value="">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <?php echo form_submit('submit', 'Confirmar Asignacion','class="btn btn-info"'); ?>
-                <?php echo form_close(); ?>
-            </div>
-        </div>
-        
+<div class="modal fade" id="planDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index:200001;">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Eliminar Plan | Confirmacion</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h4 id="modalName">Desea quitar el plan?</h4>
+      </div>
+      <div class="modal-footer">
+        <?php echo form_open('socio/detalles/'.$member_id.'/eliminar_plan'); ?>
+        <?php echo form_hidden('current_id', $current_plan->id);?>
+        <?php echo form_input($csrf); ?>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <?php echo form_submit('submit', 'Eliminar Plan','class="btn btn-danger"'); ?>
+        <!-- <button type="button" class="btn btn-danger">Eliminar</button> -->
+        <?php echo form_close(); ?>
+      </div>
     </div>
+  </div>
 </div>
 
 <div class="modal fade" id="addreadingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -270,7 +259,7 @@
       <div class="modal-footer">
         <?php echo form_hidden('current_id', $current_plan->id); ?>
         <?php echo form_hidden('member_id', $member_id); ?>
-        <?php echo form_hidden($csrf); ?>
+        <?php echo form_input($csrf); ?>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         <?php echo form_submit('submit', 'Añadir Medicion','class="btn btn-info"'); ?>
         <!-- <button type="button" class="btn btn-danger">Eliminar</button> -->

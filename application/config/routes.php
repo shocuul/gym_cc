@@ -70,6 +70,7 @@ $route['socio/detalles/(:num)'] = 'member/detail/$1';
 $route['socio/detalles/(:num)/plan/(:num)'] = 'member/manage_plan/$1/$2';
 $route['socio/detalles/(:num)/plan/(:num)/medidas']['post'] = 'member/add_metric/$1/$2';
 $route['socio/detalles/(:num)/plan'] = 'member/add_plan/$1';
+$route['socio/detalles/(:num)/eliminar_plan'] = 'member/delete_plan/$1';
 $route['socios']['get'] = 'member';
 $route['socios/eliminar']['post'] = 'member/delete_member';
 $route['socios/nuevo'] = 'member/create_member';
@@ -85,6 +86,7 @@ $route['ajax/usuarios'] = 'auth/ajax_users';
 $route['ajax/socios'] = 'member/ajax_members';
 $route['ajax/upload'] = 'member/upload';
 $route['ajax/generate_stats'] = 'stats/ajax_assists_charts';
+$route['ajax/plans'] = 'configuration/ajax_plans';
 
 
 //PLANES

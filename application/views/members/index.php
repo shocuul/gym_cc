@@ -60,9 +60,7 @@
                                                     <i class="fa fa-user-circle"></i>
                                                 </a> -->
                                                 <?php echo anchor("socios/editar_socio/" . $member->id, '<i class="fa fa-edit"></i>'); ?>
-                                                <button type="button" class="btn" data-toggle="modal" data-target="#deleteModal" onClick="fillModal('<?php echo $member->id ?>','<?php echo $member->nombre .' '. $member->paterno .' '. $member->materno ?>')">
-                                                <i class="fa fa-trash"></i>
-                                                
+                                                <a data-toggle="modal" href="#deleteModal" onClick="fillModal('<?php echo $member->id ?>','<?php echo $member->nombre .' '. $member->paterno .' '. $member->materno ?>')"><i class="fa fa-trash"></i></a>
                                             </div>
                                         </td>
                                         
@@ -94,7 +92,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Eliminar Usuario | Confirmacion</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Eliminar Socio | Confirmacion</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -105,7 +103,7 @@
       <div class="modal-footer">
         <?php echo form_open('socios/eliminar'); ?>
         <input type="hidden" name="user_id" id="user_id" value="" />
-        <?php echo form_hidden($csrf); ?>
+        <?php echo form_input($csrf); ?>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         <?php echo form_submit('submit', 'Eliminar socio','class="btn btn-danger"'); ?>
         <!-- <button type="button" class="btn btn-danger">Eliminar</button> -->
@@ -120,11 +118,13 @@
     {
         $.ajax({
             type:"post",
-            url:"index.php?/ajax/socios",
+            url:"<?= base_url(); ?>ajax/socios",
             data:{query:query},
             success:function(data){
                 console.log(data);
-                $('#points-listing').html(data);
+                document.getElementById('csrf').setAttribute('value', data.csrf.value);
+                document.getElementById('csrf').setAttribute('name', data.csrf.name);
+                $('#points-listing').html(data.html);
             }
         })
     }

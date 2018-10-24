@@ -104,7 +104,7 @@
 
                                 <div class="col-md-3">
                                     <?php
-                                    echo form_button('generate_button', '<i class="fas fa-fingerprint"></i> Generar Claves','id="generate_button" class="submit" disabled onClick="generate_login_info()" style="margin-top:1.4em;"'); ?>
+                                    echo form_button('generate_button', '<i class="fas fa-fingerprint"></i> Generar Claves','id="generate_button" class="submit" disabled onClick="generate_login_info()" style="margin-top:1.4em;" data-toggle="tooltip" data-placement="top" title="Para habilitar este boton escriba el nombre y apellidos del socio"'); ?>
                                 </div>
                             </div>
                             <span id="mensaje_generate">
@@ -182,7 +182,7 @@
                           <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10" style="margin-top: 1em;">
                               <!-- <button type="submit" class="submit">Agregar Socio</button> -->
-                              <?php echo form_submit('submit', 'Agregar Socio', 'class="submit" style="max-width:15em;"'); ?>
+                              <?php echo form_submit('submit', 'Agregar Socio', 'class="submit" style="max-width:15em;" data-toggle="tooltip" data-placement="top" title="Cerciorese de anotar el usuario y clave del socio."'); ?>
                             </div>
                           </div>
                           
@@ -221,7 +221,7 @@ function generate_login_info(){
     $.ajax(
     {
       type:"post",
-      url:"index.php?/ajax/generate_login_info",
+      url:"<?= base_url(); ?>ajax/generate_login_info",
       data:{nombre:nombre, paterno:paterno, materno:materno},
       success:function(response)
       {

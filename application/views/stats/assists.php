@@ -70,7 +70,7 @@
         var select_date = $("select[id^='date_dropdown']").val();
         $.ajax({
             type:"post",
-            url:"index.php?/ajax/generate_stats",
+            url:"<?= base_url(); ?>ajax/generate_stats",
             data:{key:select_date},
             success:function(response){
                 // console.log(response);

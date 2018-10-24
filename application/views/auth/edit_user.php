@@ -13,13 +13,7 @@
                         
                     </div>
                     <div class="col-md-12">
-                        <?php if (isset($message)): ?>
-                        <div class="alert alert-danger" role="alert">
-                          <ol>
-                            <?php echo $message; ?>
-                          </ol>
-                        </div>
-                        <?php endif; ?>
+                        <?php echo $message; ?>
                         <?php $form_attributes = array('class' => 'contact-form review-form','id'=>'add_user_form');
                         echo form_open(uri_string(), $form_attributes); ?>
                         <!-- <form class="contact-form review-form"> -->
@@ -70,7 +64,7 @@
                                 <?php echo form_dropdown('rol',$rol_data, $rol, 'class="form-control"'); ?>
                           </div>
                           <?php echo form_hidden('id', $user->id); ?>
-                          <?php echo form_hidden($csrf); ?>
+                          <?php echo form_input($csrf); ?>
                           <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10" style="margin-top: 1em;">
                               <!-- <button type="submit" class="submit">Agregar Usuario</button> -->

@@ -81,7 +81,12 @@ class MY_Controller extends CI_Controller{
 		$this->session->set_flashdata('csrfkey', $key);
 		$this->session->set_flashdata('csrfvalue', $value);
 
-		return array($key => $value);
+		return array(
+			'name' => $key,
+			'value' => $value,
+			'type' => 'hidden',
+			'id' => 'csrf'
+		);
 	}
 
 	/**

@@ -36,7 +36,7 @@ class Member extends MY_Controller
         $this->member_model->limit($limit_per_page);
         $this->member_model->offset($offset);
         $this->data['members'] = $this->member_model->members()->result();
-        $config['base_url'] = base_url() . 'index.php?/socios';
+        $config['base_url'] = base_url() . 'socios';
         $config['total_rows'] = $total_record;
         $config['per_page'] = $limit_per_page;
         $config['cur_tag_open'] = '<span class="page-numbers current" aria-current="page">';
@@ -106,7 +106,13 @@ class Member extends MY_Controller
             </div>
         ';
     }
-    $this->output->set_output($output);   
+    $response = array(
+        'csrf' => $this->_get_csrf_nonce(),
+        'html' => $output
+    );
+    return $this->output
+    ->set_content_type('application/json')
+    ->set_output(json_encode($response));  
     }
 
     
@@ -167,7 +173,7 @@ class Member extends MY_Controller
 
                 if($this->input->post('password'))
                 {
-                    $data['password'] = $this->input->post('password');
+                    $user_data['clave'] = $this->input->post('password');
                 }
 
                 if($this->auth_model->update($member->id,$user_data) && $this->member_model->update($member->id, $member_data))
@@ -901,7 +907,7 @@ class Member extends MY_Controller
         $this->_render('members/details_member', $this->data);
     }
 
-    public function delete_plan(){
+    public function delete_plan($member_id){
         if($this->_valid_csrf_nonce() === FALSE)
         {
             show_error('Este formulario no pasó nuestras pruebas de seguridad.');
@@ -912,12 +918,12 @@ class Member extends MY_Controller
         if($this->member_model->delete_subscribe($current_id))
         {
             $this->session->set_flashdata('message', $this->member_model->messages());
-			$this->redirectUser();
+			redirect('socio/detalles/'.$member_id, 'refresh');
         }
         else
         {
             $this->session->set_flashdata('message', $this->member_model->errors());
-			$this->redirectUser();
+			redirect('socio/detalles/'.$member_id, 'refresh');
         }
     }
 
@@ -930,7 +936,7 @@ class Member extends MY_Controller
 
         $user_id = $this->input->post('user_id');
 
-        if($this->member_model->delete_user($user_id))
+        if($this->member_model->delete_member($user_id))
         {
             $this->session->set_flashdata('message', $this->member_model->messages());
 			$this->redirectUser();

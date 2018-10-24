@@ -278,25 +278,39 @@ class Auth_model extends MY_Model
 
     public function register_assists($member_id)
 	{
-		$this->load->helper('date');
-		$this->db->trans_begin();
-		$data = array(
-			'fecha' => mdate('%Y-%m-%d', now()),
-			$this->join['users'] => $member_id
-		);
+        $this->load->helper('date');
+        $query = $this->get_last_login($member_id);
+        if($query->num_rows() >= 1){
+            $last_login = $query->row()->fecha;
+        }else{
+            $last_login = '00-00-0000';
+        } 
 
-		$data = $this->_filter_data($this->tables['assists'], $data);
-
-		$this->db->insert($this->tables['assists'], $data);
-
-		if($this->db->trans_status() === FALSE){
-			$this->db->trans_rollback();
-			$this->set_error('No se ha podido completar la rutina');
+        $actual_date = mdate('%Y-%m-%d', now());
+        if($last_login !== $actual_date){
+            $this->db->trans_begin();
+            $data = array(
+                'fecha' => $actual_date,
+                $this->join['users'] => $member_id
+            );
+    
+            $data = $this->_filter_data($this->tables['assists'], $data);
+    
+            $this->db->insert($this->tables['assists'], $data);
+    
+            if($this->db->trans_status() === FALSE){
+                $this->db->trans_rollback();
+                $this->set_error('Error al registrar asistencia');
+                return FALSE;
+            }
+            $this->db->trans_commit();
+            $this->set_message('Asistencia registrada con exito.');
+            return TRUE;
+        }else{
             return FALSE;
-		}
-		$this->db->trans_commit();
-		$this->set_message('Asistencia registrada con exito.');
-        return TRUE;
+        }
+
+		
         
 	}
 

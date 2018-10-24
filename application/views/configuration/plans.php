@@ -28,7 +28,7 @@
                         <?php echo $message; ?>
                         <?php if(!empty($plans)): ?>
                         <div class="sp-table-wrapper">
-                            <table class="points-listing">
+                            <table class="points-listing" id='points-listing'>
                                 <thead>
                                     <tr class="first">
                                         <th>#</th>
@@ -109,7 +109,7 @@
                 
             </div>
             <div class="modal-footer">
-                <?php echo form_hidden($csrf); ?>
+                <?php echo form_input($csrf); ?>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 <?php echo form_submit('submit', 'Añadir Plan','class="btn btn-info"'); ?>
                 <?php echo form_close(); ?>
@@ -143,7 +143,7 @@
                 
             </div>
             <div class="modal-footer">
-                <?php echo form_hidden($csrf); ?>
+                <?php echo form_input($csrf); ?>
                 <input type="hidden" name="plan_id" id="plan_id" value="">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 <?php echo form_submit('submit', 'Editar Plan','class="btn btn-info"'); ?>
@@ -169,7 +169,7 @@
       <div class="modal-footer">
         <?php echo form_open('plan/eliminar'); ?>
         <input type="hidden" name="delete_plan_id" id="delete_plan_id" value="" />
-        <?php echo form_hidden($csrf); ?>
+        <?php echo form_input($csrf); ?>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         <?php echo form_submit('submit', 'Eliminar Plan','class="btn btn-danger"'); ?>
         <!-- <button type="button" class="btn btn-danger">Eliminar</button> -->
@@ -184,11 +184,23 @@
     function load_plans(query){
         $.ajax({
             type:"post",
-            url:"index.php?/ajax/plans",
+            url:"<?= base_url(); ?>ajax/plans",
             data:{query:query},
             success:function(data){
                 console.log(data);
-                //$('#points-listing').html(data);
+                $('#points-listing').html(data.html);
+                 $('#csrf').each(function(index, ele){
+                    ele.val = data.csrf.value;
+                 });
+                //  $('#csrf').val(data.csrf.value);
+                // $('csrf').name('data.csrf.name');
+                // document.getElementsByName('csrf').forEach(function(ele, idx) {
+                //     ele.val(data.csrf.value);
+                //     ele.setAttribute('value', data.csrf.value);
+                //     ele.setAttribute('name', data.csrf.name);
+                // });
+                // document.getElementById('csrf').setAttribute('value', data.csrf.value);
+                // document.getElementById('csrf').setAttribute('name', data.csrf.name);
             }
         })
     }

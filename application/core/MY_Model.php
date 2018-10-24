@@ -90,6 +90,13 @@ class My_Model extends CI_Model
 
     }
 
+    public function get_last_login($member_id){
+		return $this->db->order_by('fecha','desc')
+				 ->where($this->join['users'],$member_id)
+				 ->get($this->tables['assists'],1);
+		
+	}
+
     protected function _filter_data($table, $data)
     {
         $filtered_data = array();

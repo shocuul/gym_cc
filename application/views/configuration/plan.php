@@ -136,7 +136,7 @@
             </div>
             <div class="modal-footer">
                 <?php echo form_hidden('id', $plan->id); ?>
-                <?php echo form_hidden($csrf); ?>
+                <?php echo form_input($csrf); ?>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 <?php echo form_submit('submit', 'Añadir Plan','class="btn btn-info"'); ?>
                 <?php echo form_close(); ?>
@@ -161,7 +161,7 @@
       <div class="modal-footer">
         <?php echo form_open(uri_string().'/eliminar_rutina'); ?>
         <input type="hidden" name="delete_rutina_id" id="delete_rutina_id" value="" />
-        <?php echo form_hidden($csrf); ?>
+        <?php echo form_input($csrf); ?>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         <?php echo form_submit('submit', 'Eliminar Rutina','class="btn btn-danger"'); ?>
         <!-- <button type="button" class="btn btn-danger">Eliminar</button> -->

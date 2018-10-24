@@ -14,12 +14,7 @@ class Member_model extends My_Model
 				->get($this->tables['users_plans']);
 	}
 
-	public function get_last_login($member_id){
-		return $this->db->order_by('fecha','desc')
-				 ->where($this->join['users'],$member_id)
-				 ->get($this->tables['assists'],1);
-		
-	}
+	
 	
 
 	public function add_routine($current, $rutina_id, $instruccion){
@@ -329,7 +324,7 @@ class Member_model extends My_Model
 
 	public function delete_subscribe($current){
 		$this->db->trans_begin();
-		$this->db->delete($this->tables['users_plans'], array('id' => $id));
+		$this->db->delete($this->tables['users_plans'], array('id' => $current));
 		if($this->db->trans_status() === FALSE)
 		{
 			$this->db->trans_rollback();

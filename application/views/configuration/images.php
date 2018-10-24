@@ -32,7 +32,7 @@
                                     <?php foreach($images as $image): ?>
                                     <tr>
                                         <td><?php echo htmlspecialchars($image->id, ENT_QUOTES, 'UTF-8'); ?></td>
-                                        <td style="text-align:center;"><img src="images/public/<?php echo $image->path; ?>" alt="<?php echo $image->path; ?>" style="max-width:200px;"></td>
+                                        <td style="text-align:center;"><img src="<?= base_url(); ?>images/public/<?php echo $image->path; ?>" alt="<?php echo $image->path; ?>" style="max-width:200px;"></td>
                                         <td><?php echo htmlspecialchars(ucfirst($image->tipo), ENT_QUOTES, 'UTF-8'); ?></td>
                                         <td>
                                             <div class="pro-share" style="margin:0;">
@@ -94,7 +94,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <?php echo form_hidden($csrf); ?>
+                <?php echo form_input($csrf); ?>
                 <?php echo form_hidden('action','add_image'); ?>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 <?php echo form_submit('submit', 'Añadir Imagen','class="btn btn-info"'); ?>
@@ -120,7 +120,7 @@
       <div class="modal-footer">
         <?php echo form_open(uri_string()); ?>
         <input type="hidden" name="imagen_id" id="imagen_id" value="" />
-        <?php echo form_hidden($csrf); ?>
+        <?php echo form_input($csrf); ?>
         <?php echo form_hidden('action','delete_image'); ?>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         <?php echo form_submit('submit', 'Eliminar Imagen','class="btn btn-danger"'); ?>
